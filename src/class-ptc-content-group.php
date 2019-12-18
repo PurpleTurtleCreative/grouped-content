@@ -18,62 +18,55 @@ class PTC_Content_Group {
   static function get_all_post_parent_ids() : array {
 
     global $wpdb;
-    $parent_post_ids = $wpdb->get_results( $wpdb->prepare(
+    $parent_post_ids = $wpdb->get_results(
       "
         SELECT DISTINCT parents.ID FROM {$wpdb->posts} posts
         JOIN {$wpdb->posts} parents
           ON parents.ID = posts.post_parent
-        WHERE posts.post_parent != %d
-          AND posts.post_type = %s
+        WHERE posts.post_parent != 0
+          AND posts.post_type = 'page'
         ORDER BY parents.post_title ASC
-      ",
-      0,
-      'page'
-    ), ARRAY_N );
+      ", ARRAY_N );
 
-    if ( is_array( $parent_post_ids ) ) {
+    if ( is_array( $parent_post_ids ) && ! empty( $parent_post_ids[0] ) ) {
 
-      foreach ( $parent_post_ids[0] as $i => $id ) {
-        $parent_post_ids[0][ $i ] = (int) $id;
+      foreach ( $parent_post_ids as $i => $cols ) {
+        $parent_post_ids[ $i ] = (int) $cols[0];
       }
 
-      return $parent_post_ids[0];
+      return $parent_post_ids;
 
-    } else {
-      return [];
     }
+
+    return [];
 
   }
 
   static function get_all_toplevel_parent_ids() : array {
 
     global $wpdb;
-    $parent_post_ids = $wpdb->get_results( $wpdb->prepare(
-      "
+    $parent_post_ids = $wpdb->get_results(
+       "
         SELECT DISTINCT parents.ID FROM {$wpdb->posts} posts
         JOIN {$wpdb->posts} parents
           ON parents.ID = posts.post_parent
-        WHERE posts.post_parent != %d
-          AND posts.post_type = %s
-          AND parents.post_parent = %d
+        WHERE posts.post_parent != 0
+          AND posts.post_type = 'page'
+          AND parents.post_parent = 0
         ORDER BY parents.post_title ASC
-      ",
-      0,
-      'page',
-      0
-    ), ARRAY_N );
+      ", ARRAY_N );
 
-    if ( is_array( $parent_post_ids ) ) {
+    if ( is_array( $parent_post_ids ) && ! empty( $parent_post_ids[0] ) ) {
 
-      foreach ( $parent_post_ids[0] as $i => $id ) {
-        $parent_post_ids[0][ $i ] = (int) $id;
+      foreach ( $parent_post_ids as $i => $cols ) {
+        $parent_post_ids[ $i ] = (int) $cols[0];
       }
 
-      return $parent_post_ids[0];
+      return $parent_post_ids;
 
-    } else {
-      return [];
     }
+
+    return [];
 
   }
 
@@ -87,27 +80,49 @@ class PTC_Content_Group {
 
   }
 
-  function count_children() : int {
+  function count_children( int $parent_post_id = 0 ) : int {
+
+    if ( $parent_post_id < 1 ) {
+      $parent_post_id = $this->id;
+    }
 
     global $wpdb;
     $child_count = $wpdb->get_var( $wpdb->prepare(
       "
         SELECT COUNT( DISTINCT posts.ID ) FROM {$wpdb->posts} posts
         WHERE posts.post_parent = %d
-          AND posts.post_type = %s
-        ORDER BY posts.post_title ASC
+          AND posts.post_type = 'page'
       ",
-      $this->id,
-      'page'
+      $parent_post_id
     ) );
 
     if ( is_numeric( $child_count ) ) {
       return (int) $child_count;
-    } else {
-      return 0;
     }
 
+    return 0;
+
   }
+
+  // TODO: Ahhhh, this is not gonna be as easy as I immediately thought because of recursion...
+  //       Gonna need to use maybe get_child_parent_ids and count_children..? Eh...
+  // function count_descendents() : int {
+
+  //   $descendents_count = 0;
+  //   $parent_id = $this->id;
+
+  //   while ( $parent_id > 0 ) {
+  //     $elder_ids[] = $elder_id;
+  //     $parent_id = $this->get_elder_id( $elder_id );
+  //   }
+
+  //   if ( is_array( $elder_ids ) ) {
+  //     return $elder_ids;
+  //   }
+
+  //   return [];
+
+  // }
 
   function get_all_children_ids() : array {
 
@@ -116,24 +131,95 @@ class PTC_Content_Group {
       "
         SELECT DISTINCT posts.ID FROM {$wpdb->posts} posts
         WHERE posts.post_parent = %d
-          AND posts.post_type = %s
+          AND posts.post_type = 'page'
         ORDER BY posts.post_title ASC
       ",
-      $this->id,
-      'page'
+      $this->id
     ), ARRAY_N );
 
-    if ( is_array( $children_post_ids ) ) {
+    if ( is_array( $children_post_ids ) && ! empty( $children_post_ids[0] ) ) {
 
-      foreach ( $children_post_ids[0] as $i => $id ) {
-        $children_post_ids[0][ $i ] = (int) $id;
+      foreach ( $children_post_ids as $i => $cols ) {
+        $children_post_ids[ $i ] = (int) $cols[0];
       }
 
-      return $children_post_ids[0];
+      return $children_post_ids;
 
-    } else {
-      return [];
     }
+
+    return [];
+
+  }
+
+  function get_child_parent_ids() : array {
+
+    global $wpdb;
+    $child_parent_post_ids = $wpdb->get_results( $wpdb->prepare(
+      "
+        SELECT DISTINCT posts.ID FROM {$wpdb->posts} posts
+        WHERE posts.post_parent = %d
+          AND posts.post_type = 'page'
+          AND posts.ID IN( SELECT post_parent FROM {$wpdb->posts} WHERE post_parent != 0 AND post_type = 'page' )
+        ORDER BY posts.post_title ASC
+      ",
+      $this->id
+    ), ARRAY_N );
+
+    if ( is_array( $child_parent_post_ids ) && ! empty( $child_parent_post_ids[0] ) ) {
+
+      foreach ( $child_parent_post_ids as $i => $cols ) {
+        $child_parent_post_ids[ $i ] = (int) $cols[0];
+      }
+
+      return $child_parent_post_ids;
+
+    }
+
+    return [];
+
+  }
+
+  function get_elder_id( int $post_id = 0 ) : int {
+
+    if ( $post_id < 1 ) {
+      $post_id = $this->id;
+    }
+
+    global $wpdb;
+    $elder_id = $wpdb->get_var( $wpdb->prepare(
+      "
+        SELECT parent.ID FROM {$wpdb->posts} post
+        JOIN {$wpdb->posts} parent
+          ON parent.ID = post.post_parent
+        WHERE post.ID = %d
+          AND parent.post_type = 'page'
+      ",
+      $post_id
+    ) );
+
+    if ( is_numeric( $elder_id ) && $elder_id > 0 ) {
+      return (int) $elder_id;
+    }
+
+    return 0;
+
+  }
+
+  function get_all_elder_ids() : array {
+
+    $elder_ids = [];
+    $elder_id = $this->get_elder_id();
+
+    while ( $elder_id > 0 ) {
+      $elder_ids[] = $elder_id;
+      $elder_id = $this->get_elder_id( $elder_id );
+    }
+
+    if ( is_array( $elder_ids ) ) {
+      return $elder_ids;
+    }
+
+    return [];
 
   }
 

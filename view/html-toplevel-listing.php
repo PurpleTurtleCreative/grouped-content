@@ -37,7 +37,7 @@ foreach ( $toplevel_parent_ids as $i => $parent_id ) {
 
       <div>
         <p><a class="title" href="<?php echo esc_url( $view_group_url ); ?>"><?php echo esc_html( $the_post->post_title ); ?></a></p>
-        <p><?php echo esc_html( $the_group->count_children() ); ?> Children</p>
+        <p><?php echo esc_html( $the_group->count_children() ); ?> Pages</p>
       </div>
 
   </section>

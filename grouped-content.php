@@ -31,7 +31,7 @@ if ( ! class_exists( 'PTC_Grouped_Content' ) ) {
     public $plugin_title;
     public $plugin_path;
 
-    function get_groups_list_admin_url( int $post_parent_id ) : string {
+    function get_groups_list_admin_url( int $post_parent_id = -1 ) : string {
 
       require_once $this->plugin_path . 'src/class-ptc-content-group.php';
 
@@ -60,15 +60,10 @@ if ( ! class_exists( 'PTC_Grouped_Content' ) ) {
     function add_admin_pages() {
 
       add_menu_page( 'Grouped Content &mdash; View Groups', 'Groups', 'edit_posts', 'ptc-grouped-content', function() {
-        $html_to_require = $this->plugin_path . 'view/html-toplevel-listing.php';
         if ( isset( $_GET['post_parent'] ) ) {
-          require_once $this->plugin_path . 'src/class-ptc-content-group.php';
-          try {
-            $content_group = new \ptc_grouped_content\PTC_Content_Group( $_GET['post_parent'] );
-            $html_to_require = $this->plugin_path . 'view/html-group-details.php';
-          } catch ( \Exception $e ) {
-            $html_to_require = $this->plugin_path . 'view/html-toplevel-listing.php';
-          }
+          $html_to_require = $this->plugin_path . 'view/html-group-details.php';
+        } else {
+          $html_to_require = $this->plugin_path . 'view/html-toplevel-listing.php';
         }
         require_once $html_to_require;
       }, 'dashicons-portfolio', 100 );
