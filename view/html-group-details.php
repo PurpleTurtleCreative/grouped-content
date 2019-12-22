@@ -93,13 +93,19 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
         foreach ( $subgroup_ids as $subgroup_id ) {
           $subgroup = get_post( $subgroup_id );
           $view_subgroup_url = $ptc_grouped_content->get_groups_list_admin_url( $subgroup->ID );
+          try {
+            $child_page_count = ( new PTC_Content_Group( $subgroup_id ) )->count_children();
+            $page_or_pages = $child_page_count === 1 ? ' Page' : ' Pages';
+          } catch ( \Exception $e ) {
+            continue;
+          }
           echo  '<p class="subgroup">' .
                   '<a href="' . esc_url( $view_subgroup_url ) . '">' .
                     '<i class="fas fa-folder"></i>' . esc_html( $subgroup->post_title ) .
                   '</a>' .
                   '&ndash;<span class="subgroup-children-count">' .
-                  esc_html( ( new PTC_Content_Group( $subgroup_id ) )->count_children() ) .
-                  ' Pages</span>' .
+                  esc_html( $child_page_count ) . esc_html( $page_or_pages ) .
+                  '</span>' .
                 '</p>';
         }//end foreach
       }//end else
