@@ -1,0 +1,61 @@
+#wpcontent {
+  padding: 20px;
+}
+
+/* GRID */
+
+#group-related-content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: flex-start;
+}
+
+#group-related-content aside {
+    flex-grow: 1;
+}
+
+#group-related-content main {
+    flex-grow: 2;
+}
+
+/* BREADCRUMB NAV */
+
+/* SUBGROUPS */
+
+/* PAGES */
+
+.post-row-header,
+.post-row {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    align-content: flex-start;
+}
+
+.post-row-header > div,
+.post-row > div {
+    flex: 1 1;
+}
+
+.post-row-header > div:first-of-type,
+.post-row > div:first-of-type {
+    flex: 4;
+}
+
+.post-row:hover .row-actions {
+    left: 0;
+}
+
+.post-row-header > div:not(:first-of-type) {
+    text-align: center;
+}
+
+.post-row > div:not(:first-of-type) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* ASSIGNED MENU */

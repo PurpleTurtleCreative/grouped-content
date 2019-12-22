@@ -1,0 +1,208 @@
+#wpcontent {
+  padding: 20px;
+}
+
+/* GRID */
+#group-related-content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+#group-related-content aside {
+  flex-grow: 1;
+}
+
+#group-related-content main {
+  flex-grow: 2;
+}
+
+/* BREADCRUMB NAV */
+/* SUBGROUPS */
+/* PAGES */
+.post-row-header,
+.post-row {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  align-content: flex-start;
+}
+
+.post-row-header > div,
+.post-row > div {
+  flex: 1 1;
+}
+
+.post-row-header > div:first-of-type,
+.post-row > div:first-of-type {
+  flex: 4;
+}
+
+.post-row:hover .row-actions {
+  left: 0;
+}
+
+.post-row-header > div:not(:first-of-type) {
+  text-align: center;
+}
+
+.post-row > div:not(:first-of-type) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* ASSIGNED MENU */
+/* MAIN */
+html, body {
+  background: #f1f1f1;
+}
+
+#wpbody-content h1 {
+  font-size: 1em;
+  text-transform: capitalize;
+  margin: 0;
+  padding: 7px 13px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+#wpbody-content a {
+  color: #3525E6;
+  text-decoration: none;
+}
+
+#wpbody-content a:hover {
+  text-decoration: underline;
+}
+
+#wpbody-content .row-actions span.trash a {
+  color: #CF1124;
+}
+
+#wpbody-content span.default {
+  color: #b9b6c5;
+}
+
+#wpbody-content a i.fa-folder {
+  width: 1.5em;
+}
+
+#wpbody-content a:hover i.fa-folder:before {
+  content: "\f07c";
+}
+
+aside,
+main > section {
+  border: 2px solid #e6e6e6;
+  background: #fff;
+  margin: 7px;
+  border-radius: 7px;
+}
+
+aside {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+aside > *,
+main > section > * {
+  padding: 0 13px;
+}
+
+#wpbody-content span[title] {
+  border-bottom: 1px dashed #a9a6b7;
+  padding-bottom: 1px;
+  cursor: help;
+}
+
+/* BREADCRUMB NAV */
+nav#hierarchy-breadcrumb .crumb {
+  margin: 0 3px;
+}
+
+nav#hierarchy-breadcrumb .crumb-current {
+  font-style: italic;
+}
+
+nav#hierarchy-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* SUBGROUPS */
+aside#subgroups p.subgroups-empty {
+  font-style: italic;
+}
+
+aside#subgroups p.subgroups-empty i {
+  margin-right: 4px;
+}
+
+aside#subgroups nav p.subgroup a {
+  font-weight: 600;
+  margin-right: 0.5em;
+}
+
+aside#subgroups nav p.subgroup span {
+  margin-left: 0.5em;
+}
+
+/* PAGES */
+main section h1 {
+  background: #f1f1f1;
+}
+
+.post-row-header {
+  padding: 5px 13px;
+  color: #22272d;
+}
+
+.post-row {
+  padding: 7px 13px 9px;
+  border-top: 1px solid #e6e6e6;
+}
+
+.post-row p,
+.post-row .row-actions {
+  margin: 5px 0;
+}
+
+.post-row .post-author img {
+  border-radius: 100%;
+  border: 1px solid #ccc;
+  margin-right: 7px;
+}
+
+.post-row .post-author .author-name {
+  text-align: left;
+  line-height: 1.2;
+}
+
+.post-row .post-title .post-heading span.post-status {
+  background: #3EBD93;
+  color: #FFF;
+  padding: 2px 7px 3px;
+  border-radius: 15px;
+  font-size: 0.9em;
+  margin-left: 3px;
+}
+
+.post-row .post-title .post-heading span.post-status_private {
+  background: #ffad00;
+}
+
+.post-row .post-title .post-heading span.post-status_draft {
+  background: #f73b3b;
+}
+
+.post-row .post-title .post-heading a {
+  font-weight: 700;
+  font-size: 1.15em;
+}
+
+.post-row .post-subgroup i.fa-folder {
+  font-size: 18px;
+}
+
+/* ASSIGNED MENU */

@@ -106,9 +106,10 @@ class PTC_Content_Group {
 
   // TODO: Ahhhh, this is not gonna be as easy as I immediately thought because of recursion...
   //       Gonna need to use maybe get_child_parent_ids and count_children..? Eh...
-  // function count_descendents() : int {
+  //       Basically counting all nodes in this post_parent's subtree...
+  // function count_descendants() : int {
 
-  //   $descendents_count = 0;
+  //   $descendants_count = 0;
   //   $parent_id = $this->id;
 
   //   while ( $parent_id > 0 ) {

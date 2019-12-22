@@ -3,7 +3,7 @@
 Plugin Name:   Grouped Content
 Plugin URI:    https://purpleturtlecreative.com/plugins/grouped-content/
 Description:   Organize and quickly generate groups of related content in your site admin area. Easily manage and review content hierarchies and subsections on your site such as courses, sales funnels, user engagement flows, product information, and anything else you'd like to organize!
-Version:       1.0
+Version:       1.0.0
 Requires PHP:  7.0.0
 Author:        Purple Turtle Creative
 Author URI:    https://purpleturtlecreative.com/
@@ -55,6 +55,7 @@ if ( ! class_exists( 'PTC_Grouped_Content' ) ) {
 
     function register() {
       add_action( 'admin_menu', [ $this, 'add_admin_pages' ] );
+      add_action( 'admin_enqueue_scripts', [ $this, 'register_scripts' ] );
     }
 
     function add_admin_pages() {
@@ -73,6 +74,32 @@ if ( ! class_exists( 'PTC_Grouped_Content' ) ) {
       //   }, 10 );
 
     }
+
+    function register_scripts( $hook_suffix ) {
+
+      wp_register_style(
+        'fontawesome-5',
+        plugins_url( '/assets/fonts/fontawesome-free-5.12.0-web/css/all.min.css', __FILE__ ),
+        [],
+        '5.12.0'
+      );
+
+      if ( $hook_suffix == 'toplevel_page_ptc-grouped-content' ) {
+        wp_enqueue_style(
+          'ptc-grouped-content_view-groups-css',
+          plugins_url( 'assets/css/view-groups.css', __FILE__ ),
+          [ 'fontawesome-5' ],
+          '0.0.0'
+        );
+        // wp_enqueue_script(
+        //   'ptc-grouped-content_view-groups-js',
+        //   plugins_url( 'assets/js/view-groups.js', __FILE__ ),
+        //   [ 'jquery' ],
+        //   '0.0.0'
+        // );
+      }
+
+    }//end register_scripts()
 
   }//end class
 
