@@ -104,27 +104,6 @@ class PTC_Content_Group {
 
   }
 
-  // TODO: Ahhhh, this is not gonna be as easy as I immediately thought because of recursion...
-  //       Gonna need to use maybe get_child_parent_ids and count_children..? Eh...
-  //       Basically counting all nodes in this post_parent's subtree...
-  // function count_descendants() : int {
-
-  //   $descendants_count = 0;
-  //   $parent_id = $this->id;
-
-  //   while ( $parent_id > 0 ) {
-  //     $elder_ids[] = $elder_id;
-  //     $parent_id = $this->get_elder_id( $elder_id );
-  //   }
-
-  //   if ( is_array( $elder_ids ) ) {
-  //     return $elder_ids;
-  //   }
-
-  //   return [];
-
-  // }
-
   function get_all_children_ids() : array {
 
     global $wpdb;
@@ -149,6 +128,32 @@ class PTC_Content_Group {
     }
 
     return [];
+
+  }
+
+  function count_children_parents( int $parent_post_id = 0 ) : int {
+
+    if ( $parent_post_id < 1 ) {
+      $parent_post_id = $this->id;
+    }
+
+    global $wpdb;
+    $child_count = $wpdb->get_var( $wpdb->prepare(
+      "
+        SELECT COUNT( DISTINCT posts.ID ) FROM {$wpdb->posts} posts
+        WHERE posts.post_parent = %d
+          AND posts.post_type = 'page'
+          AND posts.ID IN( SELECT post_parent FROM {$wpdb->posts} WHERE post_parent != 0 AND post_type = 'page' )
+        ORDER BY posts.post_title ASC
+      ",
+      $parent_post_id
+    ) );
+
+    if ( is_numeric( $child_count ) ) {
+      return (int) $child_count;
+    }
+
+    return 0;
 
   }
 
@@ -223,13 +228,5 @@ class PTC_Content_Group {
     return [];
 
   }
-
-  function assign_child_post( int $post_id ) {}
-
-  function is_child( int $post_id ) {}
-
-  function add_post_to_group( int $post_id, string $subsection_title = '' ) {}
-
-  function get_assigned_menu_id() {}
 
 }//end class

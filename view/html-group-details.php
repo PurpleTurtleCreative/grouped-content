@@ -78,42 +78,52 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
 
 <div id="group-related-content">
 
-  <aside id="subgroups">
-    <h1>Subgroups</h1>
-    <nav>
-      <?php
-      $subgroup_ids = $content_group->get_child_parent_ids();
+  <aside id="left-sidebar">
 
-      if ( empty( $subgroup_ids ) ) {
-        echo  '<p class="subgroups-empty">' .
-                '<i class="fas fa-folder-open"></i>' .
-                'There are no subgroups.' .
-              '</p>';
-      } else {
-        foreach ( $subgroup_ids as $subgroup_id ) {
-          $subgroup = get_post( $subgroup_id );
-          $view_subgroup_url = $ptc_grouped_content->get_groups_list_admin_url( $subgroup->ID );
-          try {
-            $child_page_count = ( new PTC_Content_Group( $subgroup_id ) )->count_children();
-            $page_or_pages = $child_page_count === 1 ? ' Page' : ' Pages';
-          } catch ( \Exception $e ) {
-            continue;
-          }
-          echo  '<p class="subgroup">' .
-                  '<a href="' . esc_url( $view_subgroup_url ) . '">' .
-                    '<i class="fas fa-folder"></i>' . esc_html( $subgroup->post_title ) .
-                  '</a>' .
-                  '&ndash;<span class="subgroup-children-count">' .
-                  esc_html( $child_page_count ) . esc_html( $page_or_pages ) .
-                  '</span>' .
+    <?php do_action( 'ptc_view_grouped_content_before_subgroups', $content_group->id ); ?>
+
+    <section id="subgroups">
+      <h1>Subgroups</h1>
+      <nav>
+        <?php
+        $subgroup_ids = $content_group->get_child_parent_ids();
+
+        if ( empty( $subgroup_ids ) ) {
+          echo  '<p class="subgroups-empty">' .
+                  '<i class="fas fa-folder-open"></i>' .
+                  'There are no subgroups.' .
                 '</p>';
-        }//end foreach
-      }//end else
-      ?>
-    </nav>
+        } else {
+          foreach ( $subgroup_ids as $subgroup_id ) {
+            $subgroup = get_post( $subgroup_id );
+            $view_subgroup_url = $ptc_grouped_content->get_groups_list_admin_url( $subgroup->ID );
+            try {
+              $child_page_count = ( new PTC_Content_Group( $subgroup_id ) )->count_children();
+              $page_or_pages = $child_page_count === 1 ? ' Page' : ' Pages';
+            } catch ( \Exception $e ) {
+              continue;
+            }
+            echo  '<p class="subgroup">' .
+                    '<a href="' . esc_url( $view_subgroup_url ) . '">' .
+                      '<i class="fas fa-folder"></i>' . esc_html( $subgroup->post_title ) .
+                    '</a>' .
+                    '&ndash;<span class="subgroup-children-count">' .
+                    esc_html( $child_page_count ) . esc_html( $page_or_pages ) .
+                    '</span>' .
+                  '</p>';
+          }//end foreach
+        }//end else
+        ?>
+      </nav>
+    </section>
+
+  <?php do_action( 'ptc_view_grouped_content_after_subgroups', $content_group->id ); ?>
+
   </aside>
 
   <main id="pages">
+
+    <?php do_action( 'ptc_view_grouped_content_before_parent', $content_group->id ); ?>
 
     <section id="post-parent">
       <h1>Parent</h1>
@@ -122,6 +132,8 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
         output_post_row( $content_group->id, TRUE );
       ?>
     </section>
+
+    <?php do_action( 'ptc_view_grouped_content_after_parent', $content_group->id ); ?>
 
     <section id="children-posts">
       <h1>Children</h1>
@@ -133,11 +145,12 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
         ?>
     </section>
 
+    <?php do_action( 'ptc_view_grouped_content_after_children', $content_group->id ); ?>
+
   </main>
 
-  <aside id="assigned-menu">
-    <h1>Menu</h1>
-    <!-- List item objects and their object titles and list item type (Page, Media, Custom URL, etc.) -->
+  <aside id="right-sidebar">
+    <?php do_action( 'ptc_view_grouped_content_right_sidebar', $content_group->id ); ?>
   </aside>
 
 </div>

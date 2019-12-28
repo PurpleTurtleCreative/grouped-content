@@ -1,7 +1,6 @@
 <?php
 /*
 Plugin Name:   Grouped Content
-Plugin URI:    https://purpleturtlecreative.com/plugins/grouped-content/
 Description:   Organize and quickly generate groups of related content in your site admin area. Easily manage and review content hierarchies and subsections on your site such as courses, sales funnels, user engagement flows, product information, and anything else you'd like to organize!
 Version:       1.0.0
 Requires PHP:  7.0.0
@@ -69,10 +68,6 @@ if ( ! class_exists( 'PTC_Grouped_Content' ) ) {
         require_once $html_to_require;
       }, 'dashicons-portfolio', 100 );
 
-      // add_submenu_page( 'ptc-grouped-content', 'Grouped Content &mdash; Generate New Group', 'Generate New Group', 'publish_pages', 'ptc-grouped-content-generator', function() {
-      //     require_once $this->plugin_path . 'view/html-admin-generator.php';
-      //   }, 10 );
-
     }
 
     function register_scripts( $hook_suffix ) {
@@ -85,18 +80,14 @@ if ( ! class_exists( 'PTC_Grouped_Content' ) ) {
       );
 
       if ( $hook_suffix == 'toplevel_page_ptc-grouped-content' ) {
+
         wp_enqueue_style(
           'ptc-grouped-content_view-groups-css',
           plugins_url( 'assets/css/view-groups.css', __FILE__ ),
           [ 'fontawesome-5' ],
           '0.0.0'
         );
-        // wp_enqueue_script(
-        //   'ptc-grouped-content_view-groups-js',
-        //   plugins_url( 'assets/js/view-groups.js', __FILE__ ),
-        //   [ 'jquery' ],
-        //   '0.0.0'
-        // );
+
       }
 
     }//end register_scripts()
@@ -106,4 +97,4 @@ if ( ! class_exists( 'PTC_Grouped_Content' ) ) {
   $ptc_grouped_content = new PTC_Grouped_Content();
   $ptc_grouped_content->register();
 
-}
+}//end if class_exists

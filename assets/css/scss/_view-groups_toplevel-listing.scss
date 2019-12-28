@@ -1,0 +1,39 @@
+/** BEGIN _view-groups_toplevel-listing.scss **/
+
+/* TOPLEVEL GROUPS VIEW */
+
+#wpbody-content h1#toplevel-parents {
+  padding: 7px 3px;
+  border-color: #dedede;
+}
+
+h1#toplevel-parents span#count-total-toplevel-groups {
+  background: #3EBD93;
+  color: #FFF;
+  padding: 2px 7px 3px;
+  border-radius: 15px;
+  font-size: 0.9em;
+  margin-left: 3px;
+  position: relative;
+  bottom: 1px;
+}
+
+main#ptc-toplevel-content-groups section.ptc-content-group {
+  margin: 10px 0 0;
+}
+
+main#ptc-toplevel-content-groups section.ptc-content-group > div {
+  padding: 15px 14px;
+}
+
+main#ptc-toplevel-content-groups section.ptc-content-group a.title {
+  font-weight: 700;
+  font-size: 1.1em;
+  margin-right: 3px;
+}
+
+main#ptc-toplevel-content-groups section.ptc-content-group span:first-of-type {
+  margin-left: 3px;
+}
+
+/** END _view-groups_toplevel-listing.scss **/

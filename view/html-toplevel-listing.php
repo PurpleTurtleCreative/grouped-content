@@ -20,26 +20,37 @@ $count = count( $toplevel_parent_ids );
 
 ?>
 
-<h1>Main Groups</h1>
-<p><?php echo esc_html( $count ); ?> Total</p>
+<h1 id="toplevel-parents">Main Groups <span id="count-total-toplevel-groups"><?php echo esc_html( $count ); ?> Total</span></h1>
 
-<main id="ptc-content-groups">
+<main id="ptc-toplevel-content-groups">
 
 <?php
 foreach ( $toplevel_parent_ids as $i => $parent_id ) {
 
+  try {
+    $the_group = new PTC_Content_Group( $parent_id );
+  } catch ( \Exception $e ) {
+    continue;
+  }
+
   $the_post = get_post( $parent_id );
-  $the_group = new PTC_Content_Group( $parent_id );
   $view_group_url = $ptc_grouped_content->get_groups_list_admin_url( $parent_id );
+
+  $child_page_count = $the_group->count_children();
+  $page_or_pages = $child_page_count === 1 ? 'Page' : 'Pages';
+
+  $child_subgroups_count = $the_group->count_children_parents();
+  $subgroup_or_subgroups = $child_subgroups_count === 1 ? 'Subgroup' : 'Subgroups';
   ?>
 
   <section class="ptc-content-group" data-post-id="<?php echo esc_attr( $parent_id ); ?>">
-
       <div>
-        <p><a class="title" href="<?php echo esc_url( $view_group_url ); ?>"><?php echo esc_html( $the_post->post_title ); ?></a></p>
-        <p><?php echo esc_html( $the_group->count_children() ); ?> Pages</p>
+        <a class="title" href="<?php echo esc_url( $view_group_url ); ?>"><i class="fas fa-folder"></i><?php echo esc_html( $the_post->post_title ); ?></a>
+        &ndash;
+        <span class="child-counts">
+          <?php echo esc_html( "{$child_page_count} {$page_or_pages}, {$child_subgroups_count} {$subgroup_or_subgroups}" ); ?>
+        </span>
       </div>
-
   </section>
 
   <?php

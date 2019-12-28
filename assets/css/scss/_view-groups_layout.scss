@@ -1,3 +1,5 @@
+/** BEGIN _view-groups_layout.scss **/
+
 #wpcontent {
   padding: 20px;
 }
@@ -5,18 +7,18 @@
 /* GRID */
 
 #group-related-content {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    align-content: flex-start;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
 }
 
 #group-related-content aside {
-    flex-grow: 1;
+  flex: 1;
 }
 
 #group-related-content main {
-    flex-grow: 2;
+  flex: 3 2;
 }
 
 /* BREADCRUMB NAV */
@@ -58,4 +60,4 @@
     text-align: center;
 }
 
-/* ASSIGNED MENU */
+/** END _view-groups_layout.scss **/
