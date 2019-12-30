@@ -20,7 +20,7 @@ if ( isset( $_GET['post_parent'] ) ) {
   try {
     $filtered_get_post_parent = (int) filter_input( INPUT_GET, 'post_parent', FILTER_SANITIZE_NUMBER_INT );
     if ( $filtered_get_post_parent === FALSE || $filtered_get_post_parent === NULL ) {
-      throw new \Exception('Failed to filter a sanitized integer value from _GET[post_parent].');
+      throw new \Exception('Failed to filter a sanitized integer value from $_GET[post_parent].');
     }
     $content_group = new PTC_Content_Group( $filtered_get_post_parent );
     $redirect = FALSE;
@@ -35,13 +35,14 @@ if ( $redirect ) {
   $the_parent_id = $the_post->post_parent;
 
   if ( $the_post !== NULL && $the_parent_id > 0 ) {
+    /* Redirect to parent group if id of child page was given */
     $redirect_url = $ptc_grouped_content->get_groups_list_admin_url( $the_parent_id );
   } else {
     $redirect_url = $ptc_grouped_content->get_groups_list_admin_url();
   }
 
   header( 'Location: ' . $redirect_url );
-  die('We attempted to redirect you, yet here you are! Please <a href="' . esc_url( $redirect_url ) . '">click here to continue</a>.');
+  die( 'We attempted to redirect you, yet here you are! Please <a href="' . esc_url( $redirect_url ) . '">click here to continue</a>.' );
 
 }
 
@@ -69,7 +70,7 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
     echo ' > ';
   }//end for
 
-  $the_post_parent = get_post( $content_group->id );
+  $the_post_parent = $content_group->post;
   echo '<span class="crumb crumb-current">' .
           esc_html( $the_post_parent->post_title ) .
         '</span>';
@@ -80,7 +81,7 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
 
   <aside id="left-sidebar">
 
-    <?php do_action( 'ptc_view_grouped_content_before_subgroups', $content_group->id ); ?>
+    <?php do_action( 'ptc_view_grouped_content_before_subgroups', $content_group ); ?>
 
     <section id="subgroups">
       <h1>Subgroups</h1>
@@ -117,40 +118,41 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
       </nav>
     </section>
 
-  <?php do_action( 'ptc_view_grouped_content_after_subgroups', $content_group->id ); ?>
+  <?php do_action( 'ptc_view_grouped_content_after_subgroups', $content_group ); ?>
 
   </aside>
 
   <main id="pages">
 
-    <?php do_action( 'ptc_view_grouped_content_before_parent', $content_group->id ); ?>
+    <?php do_action( 'ptc_view_grouped_content_before_parent', $content_group ); ?>
 
     <section id="post-parent">
       <h1>Parent</h1>
       <?php
         output_post_row_header( TRUE );
-        output_post_row( $content_group->id, TRUE );
+        output_post_row( $content_group->post, TRUE );
       ?>
     </section>
 
-    <?php do_action( 'ptc_view_grouped_content_after_parent', $content_group->id ); ?>
+    <?php do_action( 'ptc_view_grouped_content_after_parent', $content_group ); ?>
 
     <section id="children-posts">
       <h1>Children</h1>
         <?php
         output_post_row_header();
         foreach ( $content_group->get_all_children_ids() as $child_id ) {
-          output_post_row( $child_id );
+          $child_post = get_post( $child_id );
+          output_post_row( $child_post );
         }//end foreach
         ?>
     </section>
 
-    <?php do_action( 'ptc_view_grouped_content_after_children', $content_group->id ); ?>
+    <?php do_action( 'ptc_view_grouped_content_after_children', $content_group ); ?>
 
   </main>
 
   <aside id="right-sidebar">
-    <?php do_action( 'ptc_view_grouped_content_right_sidebar', $content_group->id ); ?>
+    <?php do_action( 'ptc_view_grouped_content_right_sidebar', $content_group ); ?>
   </aside>
 
 </div>
@@ -172,10 +174,9 @@ function output_post_row_header( bool $is_current_group = FALSE ) : void {
 
   </div>
   <?php
-}
+}//end output_post_row_header()
 
-function output_post_row( int $post_id, bool $is_current_group = FALSE ) : void {
-  $the_post = get_post( $post_id );
+function output_post_row( \WP_Post $the_post, bool $is_current_group = FALSE ) : void {
   if ( NULL === $the_post ) {
     return;
   }
@@ -263,4 +264,4 @@ function output_post_date( \WP_Post $the_post ) : void {
   echo esc_html( $status ) . '<br />';
   echo '<span title="' . esc_attr( $t_time ) . '">' . esc_html( $h_time ) . '</span>';
 
-}
+}//end output_post_date()

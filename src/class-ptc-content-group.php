@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || die();
 class PTC_Content_Group {
 
   public $id;
+  public $post;
 
   static function get_all_post_parent_ids() : array {
 
@@ -73,6 +74,14 @@ class PTC_Content_Group {
   function __construct( int $post_parent_id ) {
 
     $this->id = $post_parent_id;
+    if ( $this->id < 1 ) {
+      throw new \Exception("Cannot make page group from post id {$this->id} because the post id is invalid.");
+    }
+
+    $this->post = get_post( $this->id );
+    if ( NULL === $this->post || 'page' !== $this->post->post_type ) {
+      throw new \Exception("Cannot make page group from post id {$this->id} because it is not a page post.");
+    }
 
     if ( $this->count_children() === 0 ) {
       throw new \Exception("Cannot make page group from post id {$this->id} because it is not assigned as a parent of any page post.");
@@ -185,7 +194,7 @@ class PTC_Content_Group {
 
   }
 
-  function get_elder_id( int $post_id = 0 ) : int {
+  function get_parent_id( int $post_id = 0 ) : int {
 
     if ( $post_id < 1 ) {
       $post_id = $this->id;
@@ -214,11 +223,11 @@ class PTC_Content_Group {
   function get_all_elder_ids() : array {
 
     $elder_ids = [];
-    $elder_id = $this->get_elder_id();
+    $elder_id = $this->get_parent_id();
 
     while ( $elder_id > 0 ) {
       $elder_ids[] = $elder_id;
-      $elder_id = $this->get_elder_id( $elder_id );
+      $elder_id = $this->get_parent_id( $elder_id );
     }
 
     if ( is_array( $elder_ids ) ) {

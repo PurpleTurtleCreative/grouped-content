@@ -55,6 +55,7 @@ if ( ! class_exists( 'PTC_Grouped_Content' ) ) {
     function register() {
       add_action( 'admin_menu', [ $this, 'add_admin_pages' ] );
       add_action( 'admin_enqueue_scripts', [ $this, 'register_scripts' ] );
+      add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
     }
 
     function add_admin_pages() {
@@ -68,7 +69,7 @@ if ( ! class_exists( 'PTC_Grouped_Content' ) ) {
         require_once $html_to_require;
       }, 'dashicons-portfolio', 100 );
 
-    }
+    }//end add_admin_pages()
 
     function register_scripts( $hook_suffix ) {
 
@@ -91,6 +92,20 @@ if ( ! class_exists( 'PTC_Grouped_Content' ) ) {
       }
 
     }//end register_scripts()
+
+    function add_meta_boxes() {
+      add_meta_box(
+        'ptc-grouped-content',
+        'Page Relatives',
+        [ $this, 'related_content_metabox_html' ],
+        'page',
+        'side'
+      );
+    }
+
+    function related_content_metabox_html() {
+      include_once $this->plugin_path . 'view/html-metabox-page-attributes.php';
+    }
 
   }//end class
 
