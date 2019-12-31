@@ -17,7 +17,11 @@ global $post;
 
 if ( isset( $post ) && 'page' == $post->post_type ) {
 
-  output_page_family_subtree( $post );
+  $is_tree_displayed = output_page_family_subtree( $post );
+
+  if ( $is_tree_displayed ) {
+    echo '<p class="page-family-tree-help"><i class="fas fa-mouse-pointer"></i><strong>TIP:</strong> Click a folder icon to visit the group. Click a page title to edit that page.</p>';
+  }
 
 } else {
   return;
@@ -25,7 +29,7 @@ if ( isset( $post ) && 'page' == $post->post_type ) {
 
 /* HELPERS */
 
-function output_page_family_subtree( \WP_Post $post ) : void {
+function output_page_family_subtree( \WP_Post $post ) : bool {
 
   global $ptc_grouped_content;
   require_once $ptc_grouped_content->plugin_path . 'src/class-ptc-content-group.php';
@@ -46,13 +50,17 @@ function output_page_family_subtree( \WP_Post $post ) : void {
 
   if ( $parent_content_group === NULL && $this_content_group === NULL ) {
     echo '<p class="page-family-tree_no-family"><em>This page has no relatives.</em></p>';
+    echo '</div>';/* close div.page-family-tree wrapper */
+    return FALSE;
   } elseif ( $parent_content_group === NULL ) {
     echo '<p class="page-family-tree_no-parent"><em>This page has no parent.</em></p>';
-    output_page_family_subtree_children( $this_content_group );
-    return;
+    output_page_family_subtree_children( $this_content_group, $post->ID );
+    echo '</div>';/* close div.page-family-tree wrapper */
+    return TRUE;
   } elseif ( $this_content_group === NULL ) {
-    output_page_family_subtree_children( $parent_content_group );
-    return;
+    output_page_family_subtree_children( $parent_content_group, $post->ID );
+    echo '</div>';/* close div.page-family-tree wrapper */
+    return TRUE;
   }
 
   /* BEGIN DRAWING */
@@ -74,7 +82,7 @@ function output_page_family_subtree( \WP_Post $post ) : void {
 
     foreach ( $sibling_ids as $i => $sibling_id ) {
 
-      if ( $sibling_id === $this_content_group->id ) {
+      if ( $this_content_group->id === $sibling_id ) {
         $class_list = 'post-sibling post-current';
         $p = $this_content_group->post;
         if ( $this_content_group->count_children() < 1 ) {
@@ -115,7 +123,12 @@ function output_page_family_subtree( \WP_Post $post ) : void {
             '</p>';
 
       if ( $if_list_children ) {
-        output_page_family_subtree_children( $this_content_group, TRUE, $is_last_subtree );
+        output_page_family_subtree_children(
+          $this_content_group,
+          $this_content_group->id,
+          TRUE,
+          $is_last_subtree
+        );
       }//end if if_list_children
 
     }//end foreach sibling_ids
@@ -127,12 +140,19 @@ function output_page_family_subtree( \WP_Post $post ) : void {
 
   echo '</div>';/* close div.page-family-tree wrapper */
 
+  return TRUE;
+
 }//end output_page_family_subtree()
 
-function output_page_family_subtree_children( PTC_Content_Group $root_group, bool $is_subtree = FALSE, bool $is_last_subtree = FALSE ) : void {
+function output_page_family_subtree_children( PTC_Content_Group $root_group, int $current_post_id = 0, bool $is_subtree = FALSE, bool $is_last_subtree = FALSE ) : void {
 
   if ( ! $is_subtree ) {
-    echo  '<p class="post-parent post-current">' .
+    if ( $root_group->id === $current_post_id ) {
+      $class_list = 'post-parent post-current';
+    } else {
+      $class_list = 'post-parent';
+    }
+    echo  '<p class="' . esc_attr( $class_list ) . '">' .
             group_icon_link( $root_group->id, 'fas fa-folder-open' ) .
             '<a class="post-title" href="' . esc_url( get_edit_post_link( $root_group->post->ID ) ) . '">' .
               esc_html( $root_group->post->post_title ) .
@@ -159,13 +179,19 @@ function output_page_family_subtree_children( PTC_Content_Group $root_group, boo
       throw new \Exception( "Child post $child_id is an invalid page post." );
     }
 
+    if ( $current_post_id === $child_id ) {
+      $class_list = 'child-post post-current';
+    } else {
+      $class_list = 'child-post';
+    }
+
     if ( $i < $children_ids_count - 1 ) {
       $box_drawing_entity = '&#9507;'; /* vertical and right */
     } else {
       $box_drawing_entity = '&#9495;'; /* up and right */
     }
 
-    echo  '<p class="child-post">' .
+    echo  '<p class="' . esc_attr( $class_list ) . '">' .
             $box_drawing_parent_level .
             '<span class="box-level-2">' . $box_drawing_entity . '</span>' .
             group_icon_link( $p->ID, 'fas fa-folder' ) .

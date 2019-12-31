@@ -71,28 +71,6 @@ if ( ! class_exists( 'PTC_Grouped_Content' ) ) {
 
     }//end add_admin_pages()
 
-    function register_scripts( $hook_suffix ) {
-
-      wp_register_style(
-        'fontawesome-5',
-        plugins_url( '/assets/fonts/fontawesome-free-5.12.0-web/css/all.min.css', __FILE__ ),
-        [],
-        '5.12.0'
-      );
-
-      if ( $hook_suffix == 'toplevel_page_ptc-grouped-content' ) {
-
-        wp_enqueue_style(
-          'ptc-grouped-content_view-groups-css',
-          plugins_url( 'assets/css/view-groups.css', __FILE__ ),
-          [ 'fontawesome-5' ],
-          '0.0.0'
-        );
-
-      }
-
-    }//end register_scripts()
-
     function add_meta_boxes() {
       add_meta_box(
         'ptc-grouped-content',
@@ -106,6 +84,33 @@ if ( ! class_exists( 'PTC_Grouped_Content' ) ) {
     function related_content_metabox_html() {
       include_once $this->plugin_path . 'view/html-metabox-page-attributes.php';
     }
+
+    function register_scripts( $hook_suffix ) {
+
+      wp_register_style(
+        'fontawesome-5',
+        plugins_url( '/assets/fonts/fontawesome-free-5.12.0-web/css/all.min.css', __FILE__ ),
+        [],
+        '5.12.0'
+      );
+
+      if ( $hook_suffix == 'toplevel_page_ptc-grouped-content' ) {
+        wp_enqueue_style(
+          'ptc-grouped-content_view-groups-css',
+          plugins_url( 'assets/css/view-groups.css', __FILE__ ),
+          [ 'fontawesome-5' ],
+          '0.0.0'
+        );
+      } elseif ( $hook_suffix == 'post.php' ) {
+        wp_enqueue_style(
+          'ptc-grouped-content_metabox-page-relatives-css',
+          plugins_url( 'assets/css/metabox_page-relatives.css', __FILE__ ),
+          [ 'fontawesome-5' ],
+          '0.0.0'
+        );
+      }
+
+    }//end register_scripts()
 
   }//end class
 
