@@ -13,9 +13,27 @@ defined( 'ABSPATH' ) || die();
  */
 class PTC_Content_Group {
 
+  /**
+   * @var int The id of the post_parent that this group represents
+   *
+   * @since 1.0.0 Introduced
+   */
   public $id;
+
+  /**
+   * @var \WP_Post The post that this group represents
+   *
+   * @since 1.0.0 Introduced
+   */
   public $post;
 
+  /**
+   * Get all distinct post ids of pages assigned as a post_parent.
+   *
+   * @return int[] The post ids
+   *
+   * @since 1.0.0 Introduced
+   */
   static function get_all_post_parent_ids() : array {
 
     global $wpdb;
@@ -43,6 +61,13 @@ class PTC_Content_Group {
 
   }
 
+  /**
+   * Get all distinct post ids of pages assigned as a post_parent that do not have a post_parent.
+   *
+   * @return int[] The post ids
+   *
+   * @since 1.0.0 Introduced
+   */
   static function get_all_toplevel_parent_ids() : array {
 
     global $wpdb;
@@ -71,9 +96,19 @@ class PTC_Content_Group {
 
   }
 
-  function __construct( int $post_parent_id ) {
+  /**
+   * Construct a new instance.
+   *
+   * @param int $parent_post_id The post id of an existing page that is assigned as the post_parent
+   * on other page posts.
+   *
+   * @throws \Exception if the provided post id is invalid to represent a page group.
+   *
+   * @since 1.0.0 Introduced
+   */
+  function __construct( int $parent_post_id ) {
 
-    $this->id = $post_parent_id;
+    $this->id = $parent_post_id;
     if ( $this->id < 1 ) {
       throw new \Exception("Cannot make page group from post id {$this->id} because the post id is invalid.");
     }
@@ -89,6 +124,16 @@ class PTC_Content_Group {
 
   }
 
+  /**
+   * Count the direct child pages of the group.
+   *
+   * @param int $parent_post_id The post id of an existing page. Used to count how many page posts
+   * have this id assigned as their post_parent. Default: 0 to use the current group object
+   *
+   * @return int The count
+   *
+   * @since 1.0.0 Introduced
+   */
   function count_children( int $parent_post_id = 0 ) : int {
 
     if ( $parent_post_id < 1 ) {
@@ -113,6 +158,13 @@ class PTC_Content_Group {
 
   }
 
+  /**
+   * Retrieve the post ids of the direct child pages of the group.
+   *
+   * @return int[] The post ids
+   *
+   * @since 1.0.0 Introduced
+   */
   function get_all_children_ids() : array {
 
     global $wpdb;
@@ -140,6 +192,17 @@ class PTC_Content_Group {
 
   }
 
+  /**
+   * Count the direct child pages of the group that are assigned as a post_parent. This is the same
+   * as counting the direct subgroups of the provided group.
+   *
+   * @param int $parent_post_id The post id of an existing page. Used to find child page posts that
+   * have this id assigned as their post_parent. Default: 0 to use the current group object
+   *
+   * @return int The count
+   *
+   * @since 1.0.0 Introduced
+   */
   function count_children_parents( int $parent_post_id = 0 ) : int {
 
     if ( $parent_post_id < 1 ) {
@@ -166,6 +229,14 @@ class PTC_Content_Group {
 
   }
 
+  /**
+   * Retrieve the post ids for the direct child pages of the group that are assigned as a post_parent.
+   * This is the same as retrieving the direct subgroups of the group.
+   *
+   * @return int[] The post ids
+   *
+   * @since 1.0.0 Introduced
+   */
   function get_child_parent_ids() : array {
 
     global $wpdb;
@@ -194,6 +265,14 @@ class PTC_Content_Group {
 
   }
 
+  /**
+   * Retrieve the post id for the group's post_parent. This is the same as retrieving the group id
+   * of the parent group.
+   *
+   * @return int[] The post ids
+   *
+   * @since 1.0.0 Introduced
+   */
   function get_parent_id( int $post_id = 0 ) : int {
 
     if ( $post_id < 1 ) {
@@ -220,6 +299,14 @@ class PTC_Content_Group {
 
   }
 
+  /**
+   * Retrieve all post_parent ids up from the current group. This is usually used to generate
+   * breadcrumb navigation.
+   *
+   * @return int[] The post ids from this group's post_parent to the toplevel post_parent
+   *
+   * @since 1.0.0 Introduced
+   */
   function get_all_elder_ids() : array {
 
     $elder_ids = [];
