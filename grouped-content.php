@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name:   Grouped Content
-Description:   Organize and quickly generate groups of related content in your site admin area. Easily manage and review content hierarchies and subsections on your site such as courses, sales funnels, user engagement flows, product information, and anything else you'd like to organize!
+Description:   Enhances the functionality of page hierarchies by providing easy access to the parent page, sibling pages, and child pages in your admin area. Easily manage and review content hierarchies and subsections on your site such as courses, sales funnels, user engagement flows, knowledgebases, and anything else you'd like to organize through hierarchies!
 Version:       1.0.0
 Requires PHP:  7.0.0
 Author:        Purple Turtle Creative
@@ -24,7 +24,12 @@ along with Grouped Content. If not, see https://www.gnu.org/licenses/gpl-3.0.txt
 
 defined( 'ABSPATH' ) || die();
 
-if ( ! class_exists( 'PTC_Grouped_Content' ) ) {
+if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
+  /**
+   * Provides helper functions and information relevant to this plugin for use in the global space.
+   *
+   * @author Michelle Blanchette <michelle@purpleturtlecreative.com>
+   */
   class PTC_Grouped_Content {
 
     public $plugin_title;
@@ -60,14 +65,14 @@ if ( ! class_exists( 'PTC_Grouped_Content' ) ) {
 
     function add_admin_pages() {
 
-      add_menu_page( 'Grouped Content &mdash; View Groups', 'Groups', 'edit_posts', 'ptc-grouped-content', function() {
+      add_menu_page( 'Grouped Content &mdash; View Groups', 'Groups', 'edit_pages', 'ptc-grouped-content', function() {
         if ( isset( $_GET['post_parent'] ) ) {
           $html_to_require = $this->plugin_path . 'view/html-group-details.php';
         } else {
           $html_to_require = $this->plugin_path . 'view/html-toplevel-listing.php';
         }
         require_once $html_to_require;
-      }, 'dashicons-portfolio', 100 );
+      }, 'dashicons-portfolio', 21 ); /* Pages menu item is priority 20, see https://developer.wordpress.org/reference/functions/add_menu_page/#default-bottom-of-menu-structure */
 
     }//end add_admin_pages()
 
