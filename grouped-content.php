@@ -6,11 +6,9 @@
  * @copyright         2019 Michelle Blanchette
  * @license           GPL-3.0-or-later
  *
- * @wordpress-plugin
  * Plugin Name:       Grouped Content
  * Plugin URI:        https://purpleturtlecreative.com/grouped-content/
- * Description:       Enhances the use of page hierarchies by providing easy
- * access to the parent page, sibling pages, and child pages in your admin area.
+ * Description:       Enhances the use of page hierarchies by providing easy access to the parent page, sibling pages, and child pages in your admin area.
  * Version:           1.0.0
  * Requires PHP:      7.0
  * Author:            Purple Turtle Creative
