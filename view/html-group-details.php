@@ -1,16 +1,18 @@
 <?php
+/**
+ * Groups detailed admin page view
+ *
+ * Provides group details and navigation. View the details of or navigate to
+ * child pages and subgroups of the current group.
+ *
+ * @since 1.0.0
+ */
 
 declare(strict_types=1);
 
 namespace ptc_grouped_content;
 
 defined( 'ABSPATH' ) || die();
-
-/**
- * View content related to a post_parent which represents a content group.
- *
- * @author Michelle Blanchette <michelle@purpleturtlecreative.com>
- */
 
 global $ptc_grouped_content;
 $redirect = TRUE;
@@ -81,7 +83,17 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
 
   <aside id="left-sidebar">
 
-    <?php do_action( 'ptc_view_grouped_content_before_subgroups', $content_group ); ?>
+    <?php
+    /**
+     * Fires before the subgroups section in the lefthand sidebar.
+     *
+     * @param \ptc_grouped_content\PTC_Content_Group $content_group The content
+     * group currently being viewed.
+     *
+     * @since 1.0.0
+     */
+    do_action( 'ptc_view_grouped_content_before_subgroups', $content_group );
+    ?>
 
     <section id="subgroups">
       <h1>Subgroups</h1>
@@ -118,13 +130,33 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
       </nav>
     </section>
 
-  <?php do_action( 'ptc_view_grouped_content_after_subgroups', $content_group ); ?>
+    <?php
+    /**
+     * Fires after the subgroups section in the lefthand sidebar.
+     *
+     * @param \ptc_grouped_content\PTC_Content_Group $content_group The content
+     * group currently being viewed.
+     *
+     * @since 1.0.0
+     */
+    do_action( 'ptc_view_grouped_content_after_subgroups', $content_group );
+    ?>
 
   </aside>
 
   <main id="pages">
 
-    <?php do_action( 'ptc_view_grouped_content_before_parent', $content_group ); ?>
+    <?php
+    /**
+     * Fires before the parent page section in the main column.
+     *
+     * @param \ptc_grouped_content\PTC_Content_Group $content_group The content
+     * group currently being viewed.
+     *
+     * @since 1.0.0
+     */
+    do_action( 'ptc_view_grouped_content_before_parent', $content_group );
+    ?>
 
     <section id="post-parent">
       <h1>Parent</h1>
@@ -134,7 +166,17 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
       ?>
     </section>
 
-    <?php do_action( 'ptc_view_grouped_content_after_parent', $content_group ); ?>
+    <?php
+    /**
+     * Fires after the parent page section in the main column.
+     *
+     * @param \ptc_grouped_content\PTC_Content_Group $content_group The content
+     * group currently being viewed.
+     *
+     * @since 1.0.0
+     */
+    do_action( 'ptc_view_grouped_content_after_parent', $content_group );
+    ?>
 
     <section id="children-posts">
       <h1>Children</h1>
@@ -147,12 +189,32 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
         ?>
     </section>
 
-    <?php do_action( 'ptc_view_grouped_content_after_children', $content_group ); ?>
+    <?php
+    /**
+     * Fires after the children pages section in the main column.
+     *
+     * @param \ptc_grouped_content\PTC_Content_Group $content_group The content
+     * group currently being viewed.
+     *
+     * @since 1.0.0
+     */
+    do_action( 'ptc_view_grouped_content_after_children', $content_group );
+    ?>
 
   </main>
 
   <aside id="right-sidebar">
-    <?php do_action( 'ptc_view_grouped_content_right_sidebar', $content_group ); ?>
+    <?php
+    /**
+     * Fires in the righthand sidebar.
+     *
+     * @param \ptc_grouped_content\PTC_Content_Group $content_group The content
+     * group currently being viewed.
+     *
+     * @since 1.0.0
+     */
+    do_action( 'ptc_view_grouped_content_right_sidebar', $content_group );
+    ?>
   </aside>
 
 </div>
@@ -160,6 +222,18 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
 
 /* HELPER FUNCTIONS */
 
+/**
+ * Displays the header row for a post row.
+ *
+ * @since 1.0.0
+ *
+ * @see \ptc_grouped_content\output_post_row() for outputting a corresponding
+ * post row.
+ *
+ * @param bool $is_current_group Optional. Set to TRUE to not display the
+ * "Subgroups" column header. Intended to match the argument with the same name
+ * passed to \ptc_grouped_content\output_post_row(). Default FALSE.
+ */
 function output_post_row_header( bool $is_current_group = FALSE ) : void {
   ?>
   <div class="post-row-header">
@@ -176,6 +250,20 @@ function output_post_row_header( bool $is_current_group = FALSE ) : void {
   <?php
 }//end output_post_row_header()
 
+/**
+ * Displays information about a post.
+ *
+ * @since 1.0.0
+ *
+ * @see \ptc_grouped_content\output_post_row_header() for outputting a
+ * corresponding header row.
+ *
+ * @param \WP_Post $the_post The post to display information about.
+ *
+ * @param bool $is_current_group Optional. Set to TRUE to not display the
+ * "Subgroups" column content. Intended to match the argument with the same name
+ * passed to \ptc_grouped_content\output_post_row_header(). Default FALSE.
+ */
 function output_post_row( \WP_Post $the_post, bool $is_current_group = FALSE ) : void {
   if ( NULL === $the_post ) {
     return;
@@ -245,6 +333,13 @@ function output_post_row( \WP_Post $the_post, bool $is_current_group = FALSE ) :
   <?php
 }//end output_post_row()
 
+/**
+ * Displays date information for a post.
+ *
+ * @since 1.0.0
+ *
+ * @param \WP_Post $the_post The post for retrieving a date.
+ */
 function output_post_date( \WP_Post $the_post ) : void {
 
   if ( '0000-00-00 00:00:00' === $the_post->post_date ) {

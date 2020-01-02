@@ -1,4 +1,12 @@
 <?php
+/**
+ * Page Relatives metabox content
+ *
+ * Displays links to related pages and groups for a post including, when
+ * relevant, the current page's parent, siblings, and children.
+ *
+ * @since 1.0.0
+ */
 
 declare(strict_types=1);
 
@@ -6,14 +14,8 @@ namespace ptc_grouped_content;
 
 defined( 'ABSPATH' ) || die();
 
-/**
- * List groups and sibling links based on current page post's post_parent.
- *
- * @author Michelle Blanchette <michelle@purpleturtlecreative.com>
- */
-
 global $post;
-// TODO: if not defined due to AJAX refresh for Gutenberg, check POSTed id and get_post
+// TODO: if not defined due to AJAX refresh for Gutenberg, check POSTed id then use get_post()
 
 if ( isset( $post ) && 'page' == $post->post_type ) {
 
@@ -27,8 +29,18 @@ if ( isset( $post ) && 'page' == $post->post_type ) {
   return;
 }
 
-/* HELPERS */
+/* HELPER FUNCTIONS */
 
+/**
+ * Displays related pages and groups in a directory tree format.
+ *
+ * @since 1.0.0
+ *
+ * @param \WP_Post $post The post for displaying related content.
+ *
+ * @return bool TRUE if a tree was able to be output, FALSE if no output was
+ * possible.
+ */
 function output_page_family_subtree( \WP_Post $post ) : bool {
 
   global $ptc_grouped_content;
@@ -144,6 +156,27 @@ function output_page_family_subtree( \WP_Post $post ) : bool {
 
 }//end output_page_family_subtree()
 
+/**
+ * Displays children pages and groups in a directory tree format.
+ *
+ * @since 1.0.0
+ *
+ * @param \ptc_grouped_content\PTC_Content_Group $root_group The group for
+ * displaying.
+ *
+ * @param int $current_post_id Optional. Used for classifying the current post.
+ * Default 0 for no current post.
+ *
+ * @param bool $is_subtree Optional. Set to TRUE if the provided root group
+ * should be output as the parent. Default FALSE.
+ *
+ * @param bool $is_last_subtree Optional. Determines the box-level-1 glyph.
+ * Vertical line if TRUE, nothing if FALSE. Default FALSE.
+ *
+ * @throws \Exception if a truly exceptional situation has occurred such as:
+ * * the $root_group has no children
+ * * a child is retrieved that is not an actual page-type post
+ */
 function output_page_family_subtree_children( PTC_Content_Group $root_group, int $current_post_id = 0, bool $is_subtree = FALSE, bool $is_last_subtree = FALSE ) : void {
 
   if ( ! $is_subtree ) {
@@ -204,6 +237,24 @@ function output_page_family_subtree_children( PTC_Content_Group $root_group, int
 
 }//end output_page_family_subtree_children()
 
+/**
+ * Returns HTML of a Font Awesome icon linking to a group details page.
+ *
+ * @since 1.0.0
+ *
+ * @see https://fontawesome.com/icons?d=gallery&s=solid&m=free for free icons
+ * included in this plugin.
+ *
+ * @param int $post_id The post id for creating the group link.
+ *
+ * @param string $fontawesome_classlist Optional. The Font Awesome class list
+ * for the icon. Default 'fas fa-folder'.
+ *
+ * @param string $fallback_html Optional. HTML to return if the provided
+ * $post_id cannot represent a group. Default ''.
+ *
+ * @return string The anchor tag.
+ */
 function group_icon_link( int $post_id, string $fontawesome_classlist = 'fas fa-folder', string $fallback_html = '' ) : string {
   try {
     $subgroup = new PTC_Content_Group( $post_id );

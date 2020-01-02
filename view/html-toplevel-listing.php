@@ -1,16 +1,18 @@
 <?php
+/**
+ * Groups home admin page view
+ *
+ * Lists group links and information for all toplevel groups. This is used as
+ * the "home" Groups page when no valid group id is provided.
+ *
+ * @since 1.0.0
+ */
 
 declare(strict_types=1);
 
 namespace ptc_grouped_content;
 
 defined( 'ABSPATH' ) || die();
-
-/**
- * View top-level groups.
- *
- * @author Michelle Blanchette <michelle@purpleturtlecreative.com>
- */
 
 global $ptc_grouped_content;
 require_once $ptc_grouped_content->plugin_path . 'src/class-ptc-content-group.php';

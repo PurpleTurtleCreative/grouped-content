@@ -1,14 +1,25 @@
 <?php
-/*
-Plugin Name:   Grouped Content
-Description:   Enhances the functionality of page hierarchies by providing easy access to the parent page, sibling pages, and child pages in your admin area. Easily manage and review content hierarchies and subsections on your site such as courses, sales funnels, user engagement flows, knowledgebases, and anything else you'd like to organize through hierarchies!
-Version:       1.0.0
-Requires PHP:  7.0.0
-Author:        Purple Turtle Creative
-Author URI:    https://purpleturtlecreative.com/
-License:       GPLv3
-License URI:   https://www.gnu.org/licenses/gpl-3.0.txt
+/**
+ * Grouped Content
+ *
+ * @author            Michelle Blanchette
+ * @copyright         2020 Michelle Blanchette
+ * @license           GPL-3.0-or-later
+ *
+ * @wordpress-plugin
+ * Plugin Name:       Grouped Content
+ * Plugin URI:        https://purpleturtlecreative.com/grouped-content/
+ * Description:       Enhances the use of page hierarchies by providing easy
+ * access to the parent page, sibling pages, and child pages in your admin area.
+ * Version:           1.0.0
+ * Requires PHP:      7.0
+ * Author:            Purple Turtle Creative
+ * Author URI:        https://purpleturtlecreative.com/
+ * License:           GPL v3 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-3.0.txt
+ */
 
+/*
 Grouped Content is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, version 3 of the License.
@@ -26,16 +37,43 @@ defined( 'ABSPATH' ) || die();
 
 if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
   /**
-   * Provides helper functions and information relevant to this plugin for use in the global space.
+   * Provides helper functions and information relevant to this plugin for use
+   * in the global space.
    *
-   * @author Michelle Blanchette <michelle@purpleturtlecreative.com>
+   * @since 1.0.0
    */
   class PTC_Grouped_Content {
 
+    /**
+     * This plugin's basename.
+     *
+     * @since 1.0.0
+     *
+     * @ignore
+     */
     public $plugin_title;
+
+    /**
+     * The full file path to this plugin's directory ending with a slash.
+     *
+     * @since 1.0.0
+     *
+     * @ignore
+     */
     public $plugin_path;
 
-    function get_groups_list_admin_url( int $post_parent_id = -1 ) : string {
+    /**
+     * Get the admin url for the relevant Groups details page.
+     *
+     * @since 1.0.0
+     *
+     * @param int $post_parent_id Optional. The post id to use as the group to
+     * be linked. Default 0 for default Groups home directory url.
+     *
+     * @return string The admin url for the provided group. If the provided id
+     * cannot represent a group, the Groups home directory url is returned.
+     */
+    function get_groups_list_admin_url( int $post_parent_id = 0 ) : string {
 
       require_once $this->plugin_path . 'src/class-ptc-content-group.php';
 
@@ -52,17 +90,38 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
 
     /* Plugin Initialization */
 
+    /**
+     * Sets plugin member variables.
+     *
+     * @since 1.0.0
+     *
+     * @ignore
+     */
     function __construct() {
       $this->plugin_title = plugin_basename( __FILE__ );
       $this->plugin_path = plugin_dir_path( __FILE__ );
     }
 
+    /**
+     * Hook code into WordPress.
+     *
+     * @since 1.0.0
+     *
+     * @ignore
+     */
     function register() {
       add_action( 'admin_menu', [ $this, 'add_admin_pages' ] );
       add_action( 'admin_enqueue_scripts', [ $this, 'register_scripts' ] );
       add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
     }
 
+    /**
+     * Add the administrative pages.
+     *
+     * @since 1.0.0
+     *
+     * @ignore
+     */
     function add_admin_pages() {
 
       add_menu_page( 'Grouped Content &mdash; View Groups', 'Groups', 'edit_pages', 'ptc-grouped-content', function() {
@@ -76,6 +135,13 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
 
     }//end add_admin_pages()
 
+    /**
+     * Add metaboxes.
+     *
+     * @since 1.0.0
+     *
+     * @ignore
+     */
     function add_meta_boxes() {
       add_meta_box(
         'ptc-grouped-content',
@@ -86,10 +152,24 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
       );
     }
 
+    /**
+     * Content for the Page Relatives metabox.
+     *
+     * @since 1.0.0
+     *
+     * @ignore
+     */
     function related_content_metabox_html() {
       include_once $this->plugin_path . 'view/html-metabox-page-attributes.php';
     }
 
+    /**
+     * Register and enqueue plugin CSS and JS.
+     *
+     * @since 1.0.0
+     *
+     * @ignore
+     */
     function register_scripts( $hook_suffix ) {
 
       wp_register_style(

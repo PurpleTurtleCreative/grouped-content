@@ -1,9 +1,26 @@
 <?php
-/*
-  WordPress Core class WP_Posts_List_Table: /wp-admin/includes/class-wp-list-table.php
-  @see https://codex.wordpress.org/Class_Reference/WP_List_Table
-*/
+/**
+ * Display row action links
+ *
+ * Copied from WordPress Core class WP_Posts_List_Table for plugin use.
+ * Originaly defined in /wp-admin/includes/class-wp-list-table.php.
+ *
+ * @since 1.0.0
+ *
+ * @link https://codex.wordpress.org/Class_Reference/WP_List_Table
+ *
+ * @ignore
+ */
 
+/**
+ * Generates a list of actions for a post.
+ *
+ * @since 1.0.0
+ *
+ * @param \WP_Post $post The post for generating action links.
+ *
+ * @ignore
+ */
 function handle_row_actions( $post ) {
 
     $post_type_object = get_post_type_object( $post->post_type );
@@ -127,6 +144,15 @@ function handle_row_actions( $post ) {
     return $actions;
 }
 
+/**
+ * Displays a <div> of action links for a post.
+ *
+ * @since 1.0.0
+ *
+ * @param \WP_Post $post The post for displaying action links.
+ *
+ * @ignore
+ */
 function display_row_action_links( $post ) {
 
   $action_links = handle_row_actions( $post );

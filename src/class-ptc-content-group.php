@@ -1,4 +1,13 @@
 <?php
+/**
+ * Content Group class
+ *
+ * The Grouped Content plugin mainly provides functionality to enhance page
+ * hierarchies by providing additional relational information for page posts.
+ * The PTC_Content_Group class is the core class that provides this information.
+ *
+ * @since 1.0.0
+ */
 
 declare(strict_types=1);
 
@@ -9,31 +18,29 @@ defined( 'ABSPATH' ) || die();
 if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
   /**
    * Maintain content related to a post_parent which represents a group.
-   *
-   * @author Michelle Blanchette <michelle@purpleturtlecreative.com>
    */
   class PTC_Content_Group {
 
     /**
-     * @var int The id of the post_parent that this group represents
+     * @var int The id of the post_parent that this group represents.
      *
-     * @since 1.0.0 Introduced
+     * @since 1.0.0
      */
     public $id;
 
     /**
-     * @var \WP_Post The post that this group represents
+     * @var \WP_Post The post that this group represents.
      *
-     * @since 1.0.0 Introduced
+     * @since 1.0.0
      */
     public $post;
 
     /**
-     * Get all distinct post ids of pages assigned as a post_parent.
+     * Get all post ids of pages assigned as a post_parent.
      *
-     * @return int[] The post ids
+     * @since 1.0.0
      *
-     * @since 1.0.0 Introduced
+     * @return int[] The post ids.
      */
     static function get_all_post_parent_ids() : array {
 
@@ -63,11 +70,12 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
     }
 
     /**
-     * Get all distinct post ids of pages assigned as a post_parent that do not have a post_parent.
+     * Get all post ids of pages assigned as a post_parent that
+     * do not have a post_parent (where post_parent = 0, the default).
      *
-     * @return int[] The post ids
+     * @since 1.0.0
      *
-     * @since 1.0.0 Introduced
+     * @return int[] The post ids.
      */
     static function get_all_toplevel_parent_ids() : array {
 
@@ -98,14 +106,18 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
     }
 
     /**
-     * Construct a new instance.
+     * Validates object creation and sets member variables.
      *
-     * @param int $parent_post_id The post id of an existing page that is assigned as the post_parent
-     * on other page posts.
+     * @since 1.0.0
      *
-     * @throws \Exception if the provided post id is invalid to represent a page group.
+     * @param int $parent_post_id The post id of an existing page that is
+     * assigned as the post_parent on other page posts.
      *
-     * @since 1.0.0 Introduced
+     * @throws \Exception if the provided post id is invalid to represent a page
+     * group by the provided id:
+     * * not being greater than 1
+     * * not belonging to an existing "page" typed post
+     * * not having any children pages
      */
     function __construct( int $parent_post_id ) {
 
@@ -128,12 +140,12 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
     /**
      * Count the direct child pages of the group.
      *
-     * @param int $parent_post_id The post id of an existing page. Used to count how many page posts
-     * have this id assigned as their post_parent. Default: 0 to use the current group object
+     * @since 1.0.0
+     *
+     * @param int $parent_post_id Optional. The post id of an existing page.
+     * Default 0 to use the current group object.
      *
      * @return int The count
-     *
-     * @since 1.0.0 Introduced
      */
     function count_children( int $parent_post_id = 0 ) : int {
 
@@ -162,9 +174,9 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
     /**
      * Retrieve the post ids of the direct child pages of the group.
      *
-     * @return int[] The post ids
+     * @since 1.0.0
      *
-     * @since 1.0.0 Introduced
+     * @return int[] The post ids.
      */
     function get_all_children_ids() : array {
 
@@ -194,15 +206,15 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
     }
 
     /**
-     * Count the direct child pages of the group that are assigned as a post_parent. This is the same
-     * as counting the direct subgroups of the provided group.
+     * Count the direct child pages of the group that are assigned as a
+     * post_parent. This is analogous to counting direct subgroups of the group.
      *
-     * @param int $parent_post_id The post id of an existing page. Used to find child page posts that
-     * have this id assigned as their post_parent. Default: 0 to use the current group object
+     * @since 1.0.0
      *
-     * @return int The count
+     * @param int $parent_post_id Optional. The post id of an existing page.
+     * Default 0 to use the current group object.
      *
-     * @since 1.0.0 Introduced
+     * @return int The count.
      */
     function count_children_parents( int $parent_post_id = 0 ) : int {
 
@@ -231,12 +243,13 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
     }
 
     /**
-     * Retrieve the post ids for the direct child pages of the group that are assigned as a post_parent.
-     * This is the same as retrieving the direct subgroups of the group.
+     * Retrieve the post ids for the direct child pages of the group that are
+     * assigned as a post_parent. This is analogous to retrieving the ids of
+     * direct subgroups of the group.
      *
-     * @return int[] The post ids
+     * @since 1.0.0
      *
-     * @since 1.0.0 Introduced
+     * @return int[] The post ids.
      */
     function get_child_parent_ids() : array {
 
@@ -267,12 +280,14 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
     }
 
     /**
-     * Retrieve the post id for the group's post_parent. This is the same as retrieving the group id
-     * of the parent group.
+     * Retrieve the post_parent of a post.
      *
-     * @return int[] The post ids
+     * @param int $post_id Optional. The post id to retrieve the post_parent.
+     * Default 0 to use the current group.
      *
-     * @since 1.0.0 Introduced
+     * @since 1.0.0
+     *
+     * @return int[] The post ids.
      */
     function get_parent_id( int $post_id = 0 ) : int {
 
@@ -301,12 +316,12 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
     }
 
     /**
-     * Retrieve all post_parent ids up from the current group. This is usually used to generate
-     * breadcrumb navigation.
+     * Retrieve all post_parent ids up from the current group.
      *
-     * @return int[] The post ids from this group's post_parent to the toplevel post_parent
+     * @since 1.0.0
      *
-     * @since 1.0.0 Introduced
+     * @return int[] The post ids from this group's post_parent to the toplevel
+     * post_parent.
      */
     function get_all_elder_ids() : array {
 
