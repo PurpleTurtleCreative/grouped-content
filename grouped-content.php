@@ -3,7 +3,7 @@
  * Grouped Content
  *
  * @author            Michelle Blanchette
- * @copyright         2020 Michelle Blanchette
+ * @copyright         2019 Michelle Blanchette
  * @license           GPL-3.0-or-later
  *
  * @wordpress-plugin
