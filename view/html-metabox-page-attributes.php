@@ -48,11 +48,15 @@ function output_page_family_subtree( \WP_Post $post ) : bool {
 
   echo '<div class="page-family-tree" data-post-id="' . esc_html( $post->ID ) . '">';
 
+  $post->post_parent = (int) $post->post_parent;
+
   try {
     $parent_content_group = new PTC_Content_Group( $post->post_parent );
   } catch ( \Exception $e ) {
     $parent_content_group = NULL;
   }
+
+  $post->ID = (int) $post->ID;
 
   try {
     $this_content_group = new PTC_Content_Group( $post->ID );
