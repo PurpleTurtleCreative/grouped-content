@@ -9,7 +9,7 @@
  * Plugin Name:       Grouped Content
  * Plugin URI:        https://purpleturtlecreative.com/grouped-content/
  * Description:       Enhances the use of page hierarchies by providing easy access to the parent page, sibling pages, and child pages in your admin area.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Requires PHP:      7.0
  * Author:            Purple Turtle Creative
  * Author URI:        https://purpleturtlecreative.com/
@@ -117,19 +117,54 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
      * Add the administrative pages.
      *
      * @since 1.0.0
+     * @since 1.1.0 Added generator submenu page
      *
      * @ignore
      */
     function add_admin_pages() {
 
-      add_menu_page( 'Grouped Content &mdash; View Groups', 'Groups', 'edit_pages', 'ptc-grouped-content', function() {
-        if ( isset( $_GET['post_parent'] ) ) {
-          $html_to_require = $this->plugin_path . 'view/html-group-details.php';
-        } else {
-          $html_to_require = $this->plugin_path . 'view/html-toplevel-listing.php';
+      add_menu_page(
+        'Grouped Content &mdash; View Groups',
+        'Groups',
+        'edit_pages',
+        'ptc-grouped-content',
+        function() {
+
+          if ( current_user_can( 'edit_pages' ) ) {
+
+            if ( isset( $_GET['post_parent'] ) ) {
+              $html_to_require = $this->plugin_path . 'view/html-group-details.php';
+            } else {
+              $html_to_require = $this->plugin_path . 'view/html-toplevel-listing.php';
+            }
+
+            require_once $html_to_require;
+
+          } else {
+            echo '<p><strong>You do not have the proper permissions to access this page.</strong></p>';
+          }
+
+        },
+        'dashicons-portfolio',
+        21 /* Pages menu item is priority 20, see https://developer.wordpress.org/reference/functions/add_menu_page/#default-bottom-of-menu-structure */
+      );
+
+      add_submenu_page(
+        'ptc-grouped-content',
+        'Grouped Content &mdash; Generator',
+        'Add New',
+        'publish_pages',
+        'ptc-grouped-content_generator',
+        function() {
+
+          if ( current_user_can( 'edit_pages' ) ) {
+            echo '<p>Woohoo! The content generator is coming soon!</p>';
+          } else {
+            echo '<p><strong>You do not have the proper permissions to access this page.</strong></p>';
+          }
+
         }
-        require_once $html_to_require;
-      }, 'dashicons-portfolio', 21 ); /* Pages menu item is priority 20, see https://developer.wordpress.org/reference/functions/add_menu_page/#default-bottom-of-menu-structure */
+      );
 
     }//end add_admin_pages()
 
