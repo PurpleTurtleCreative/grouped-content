@@ -282,10 +282,10 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
     /**
      * Retrieve the post_parent of a post.
      *
+     * @since 1.0.0
+     *
      * @param int $post_id Optional. The post id to retrieve the post_parent.
      * Default 0 to use the current group.
-     *
-     * @since 1.0.0
      *
      * @return int[] The post ids.
      */

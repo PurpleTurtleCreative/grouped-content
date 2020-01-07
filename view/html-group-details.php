@@ -87,10 +87,10 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
     /**
      * Fires before the subgroups section in the lefthand sidebar.
      *
+     * @since 1.0.0
+     *
      * @param \ptc_grouped_content\PTC_Content_Group $content_group The content
      * group currently being viewed.
-     *
-     * @since 1.0.0
      */
     do_action( 'ptc_view_grouped_content_before_subgroups', $content_group );
     ?>
@@ -134,10 +134,10 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
     /**
      * Fires after the subgroups section in the lefthand sidebar.
      *
+     * @since 1.0.0
+     *
      * @param \ptc_grouped_content\PTC_Content_Group $content_group The content
      * group currently being viewed.
-     *
-     * @since 1.0.0
      */
     do_action( 'ptc_view_grouped_content_after_subgroups', $content_group );
     ?>
@@ -150,10 +150,10 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
     /**
      * Fires before the parent page section in the main column.
      *
+     * @since 1.0.0
+     *
      * @param \ptc_grouped_content\PTC_Content_Group $content_group The content
      * group currently being viewed.
-     *
-     * @since 1.0.0
      */
     do_action( 'ptc_view_grouped_content_before_parent', $content_group );
     ?>
@@ -170,10 +170,10 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
     /**
      * Fires after the parent page section in the main column.
      *
+     * @since 1.0.0
+     *
      * @param \ptc_grouped_content\PTC_Content_Group $content_group The content
      * group currently being viewed.
-     *
-     * @since 1.0.0
      */
     do_action( 'ptc_view_grouped_content_after_parent', $content_group );
     ?>
@@ -193,10 +193,10 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
     /**
      * Fires after the children pages section in the main column.
      *
+     * @since 1.0.0
+     *
      * @param \ptc_grouped_content\PTC_Content_Group $content_group The content
      * group currently being viewed.
-     *
-     * @since 1.0.0
      */
     do_action( 'ptc_view_grouped_content_after_children', $content_group );
     ?>
@@ -208,10 +208,10 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
     /**
      * Fires in the righthand sidebar.
      *
+     * @since 1.0.0
+     *
      * @param \ptc_grouped_content\PTC_Content_Group $content_group The content
      * group currently being viewed.
-     *
-     * @since 1.0.0
      */
     do_action( 'ptc_view_grouped_content_right_sidebar', $content_group );
     ?>
