@@ -34,11 +34,10 @@ if ( isset( $_GET['post_parent'] ) ) {
 if ( $redirect ) {
 
   $the_post = get_post( $filtered_get_post_parent );
-  $the_parent_id = $the_post->post_parent;
 
-  if ( $the_post !== NULL && $the_parent_id > 0 ) {
+  if ( $the_post !== NULL && $the_post->post_parent > 0 ) {
     /* Redirect to parent group if id of child page was given */
-    $redirect_url = $ptc_grouped_content->get_groups_list_admin_url( $the_parent_id );
+    $redirect_url = $ptc_grouped_content->get_groups_list_admin_url( $the_post->post_parent );
   } else {
     $redirect_url = $ptc_grouped_content->get_groups_list_admin_url();
   }
