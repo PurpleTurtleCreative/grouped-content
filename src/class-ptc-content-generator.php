@@ -2,8 +2,7 @@
 /**
  * Content Generator class
  *
- * Used for rapidly creating content, primarily when submitting the Generate
- * Group form in the wp-admin area.
+ * Used for rapidly creating content.
  *
  * @since 1.1.0
  */
@@ -16,7 +15,7 @@ defined( 'ABSPATH' ) || die();
 
 if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Generator' ) ) {
   /**
-   * Create new content.
+   * Creates new content.
    */
   class PTC_Content_Generator {
 
@@ -41,8 +40,8 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Generator' ) ) {
         if ( NULL === $parent_post ) {
           error_log( "Failed to create pages for invalid parent_page_id = $parent_page_id" );
           return [];
-        } elseif ( 'page' !== $parent_post->post_status ) {
-          error_log( "Failed to create pages for {$parent_post->post_status} parent post $parent_page_id. It should be of type 'page'." );
+        } elseif ( 'page' !== $parent_post->post_type ) {
+          error_log( "Failed to create pages for {$parent_post->post_type} parent post $parent_page_id. It should be of type 'page'." );
           return [];
         }
 
@@ -57,6 +56,13 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Generator' ) ) {
             FILTER_SANITIZE_STRING,
             FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH
           );
+
+        $sanitized_title = trim( $sanitized_title );
+
+        if ( empty( $sanitized_title ) ) {
+          error_log( 'Skipping page creation for empty title: $title' );
+          continue;
+        }
 
         $new_post_id = wp_insert_post( [
             'post_title' => $sanitized_title,
@@ -86,7 +92,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Generator' ) ) {
      * @param int[] $page_ids The ids of the page's to link in the menu.
      *
      * @param string $menu_title Optional. The desired name for the new menu.
-     * Default '' to use first page's parent page title.
+     * Default '' to attempt using the first page's parent page title.
      *
      * @return int The id of the created menu. Returns 0 if no menu was created.
      */
@@ -128,25 +134,30 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Generator' ) ) {
             FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH
           );
 
-      }
+        /**
+         * Filters the menu title when creating a menu.
+         *
+         * @since 1.1.0
+         *
+         * @param string $menu_title The desired menu title.
+         *
+         * @param int[] $page_ids The provided page ids for the menu.
+         */
+        $menu_title = apply_filters( 'ptc_generated_menu_title', $menu_title, $page_ids );
 
-      /**
-       * Filters the menu title when creating a menu.
-       *
-       * @since 1.1.0
-       *
-       * @param string $menu_title The desired menu title.
-       *
-       * @param int[] $page_ids The provided page ids for the menu.
-       */
-      $menu_title = apply_filters( 'ptc_generated_menu_title', $menu_title, $page_ids );
+      }
 
       /* Ensure menu title is unique */
       $menu_term_object = wp_get_nav_menu_object( $menu_title );
       $count_suffix = 1;
       while ( $menu_term_object !== FALSE ) {
-        $menu_title .= " - {++$count_suffix}";
-        $menu_term_object = wp_get_nav_menu_object( $menu_title );
+        ++$count_suffix;
+        $mod_menu_title = "$menu_title - $count_suffix";
+        $menu_term_object = wp_get_nav_menu_object( $mod_menu_title );
+      }
+
+      if ( isset( $mod_menu_title ) ) {
+        $menu_title = $mod_menu_title;
       }
 
       /* Create the menu */
@@ -163,7 +174,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Generator' ) ) {
       }
 
       $new_menu = wp_get_nav_menu_object( $new_menu_id );
-      if ( 'WP_Term' !== get_class( $new_menu ) ) {
+      if ( FALSE === $new_menu || 'WP_Term' !== get_class( $new_menu ) ) {
         error_log( "Failed to get new menu with id: $new_menu_id");
         return $new_menu_id;
       }

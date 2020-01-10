@@ -117,7 +117,7 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
      * Add the administrative pages.
      *
      * @since 1.0.0
-     * @since 1.1.0 Added generator submenu page
+     * @since 1.1.0 Added content generator submenu page
      *
      * @ignore
      */
@@ -157,8 +157,8 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
         'ptc-grouped-content_generator',
         function() {
 
-          if ( current_user_can( 'edit_pages' ) ) {
-            echo '<p>Woohoo! The content generator is coming soon!</p>';
+          if ( current_user_can( 'publish_pages' ) ) {
+            require_once $this->plugin_path . 'view/html-content-generator.php';
           } else {
             echo '<p><strong>You do not have the proper permissions to access this page.</strong></p>';
           }
@@ -200,6 +200,7 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
      * Register and enqueue plugin CSS and JS.
      *
      * @since 1.0.0
+     * @since 1.1.0 Added content generator scripts
      *
      * @ignore
      */
@@ -212,20 +213,31 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
         '5.12.0'
       );
 
-      if ( $hook_suffix == 'toplevel_page_ptc-grouped-content' ) {
-        wp_enqueue_style(
-          'ptc-grouped-content_view-groups-css',
-          plugins_url( 'assets/css/view-groups.css', __FILE__ ),
-          [ 'fontawesome-5' ],
-          '0.0.0'
-        );
-      } elseif ( $hook_suffix == 'post.php' ) {
-        wp_enqueue_style(
-          'ptc-grouped-content_metabox-page-relatives-css',
-          plugins_url( 'assets/css/metabox_page-relatives.css', __FILE__ ),
-          [ 'fontawesome-5' ],
-          '0.0.0'
-        );
+      switch ( $hook_suffix ) {
+        case 'toplevel_page_ptc-grouped-content':
+          wp_enqueue_style(
+            'ptc-grouped-content_view-groups-css',
+            plugins_url( 'assets/css/view-groups.css', __FILE__ ),
+            [ 'fontawesome-5' ],
+            '0.0.0'
+          );
+          break;
+        case 'post.php':
+          wp_enqueue_style(
+            'ptc-grouped-content_metabox-page-relatives-css',
+            plugins_url( 'assets/css/metabox_page-relatives.css', __FILE__ ),
+            [ 'fontawesome-5' ],
+            '0.0.0'
+          );
+          break;
+        case 'groups_page_ptc-grouped-content_generator':
+          wp_enqueue_style(
+            'ptc-grouped-content_content-generator-css',
+            plugins_url( 'assets/css/content-generator.css', __FILE__ ),
+            [ 'fontawesome-5' ],
+            '0.0.0'
+          );
+          break;
       }
 
     }//end register_scripts()
