@@ -237,6 +237,12 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
             [ 'fontawesome-5' ],
             '0.0.0'
           );
+          wp_enqueue_script(
+            'ptc-grouped-content_content-generator-js',
+            plugins_url( 'assets/js/content-generator.js', __FILE__ ),
+            [ 'jquery' ],
+            '0.0.0'
+          );
           break;
       }
 

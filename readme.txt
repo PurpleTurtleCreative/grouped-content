@@ -2,7 +2,7 @@
 Contributors: michelleblanchette
 Tags: pages, hierarchy, organize, order, sort, view, content, group, related, seo
 Tested up to: 5.3.2
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 Requires PHP: 7.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -10,6 +10,8 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 Enhances the use of page hierarchies by providing easy access to the parent page, sibling pages, and child pages in your admin area.
 
 == Description ==
+
+= **Version 1.1.0 includes new Content Generator feature for you to quickly build out your site's structure!** Learn more in the Content Generator section below. =
 
 Parent pages and hierarchical content strategies are often overlooked when building a WordPress site because it’s too illusive. When setting a parent page, what does it really mean in terms of your site’s overall structure?
 
@@ -31,6 +33,9 @@ Now that you’re able to automatically see your site’s structure as you estab
 = Developer Friendly Code =
 Grouped Content is built open-source and fully documented so that your developers can quickly build Grouped Content into exactly what you need it to be. To make customization even easier, plenty of hooks are also made available to developers so that changes can be quickly added and easily maintained as new versions of Grouped Content are released.
 
+= **NEW!** Content Generator =
+Quickly add new draft pages and automate menu creation to rapidly create new groups of content for your site. Clicking to add new pages, assigning each the same parent page, and then putting all the pages in a new menu is a tedious and inefficient process. With the **Add New** Groups page, you can use Content Generator to rapidly add new groups of pages and even automatically create a new menu for the group.
+
 == Installation ==
 
 Grouped Content does not require any configurations after being activated. If you have already been making use of page hierarchies, Grouped Content will automatically enhance your experience maintaining page structures. Grouped Content makes use of WordPress’s native page hierarchies system rather than cluttering your database with additional data. It is extremely lightweight. Here are the features you should notice upon proper installation and activation:
@@ -41,11 +46,11 @@ After installing and activating Grouped Content on your WordPress website, you�
 = The Page Relatives Metabox =
 Another noticeable feature that’s been added to your admin area is the Page Relatives metabox. It is available in the righthand sidebar when editing a Page. If the page currently being edited has been assigned a Parent Page or the page has been assigned as the Parent Page on other pages, the Page Relatives box will display links to the related content where you can readily access them.
 
-**If you are unsure of proper functioning or installation of Grouped Content, please review the screenshots listed at the bottom of the plugin’s Details section. If you are still experiencing issues, please do not hesitate to submit to the support forum.**
+**If you are unsure of proper functioning or installation of Grouped Content, please review the screenshots listed at the bottom of the plugin’s Details section. If you are still experiencing issues, please do not hesitate to submit to the [support forum](https://wordpress.org/support/plugin/grouped-content/).**
 
 *This plugin is multisite compatible and may be activated per site or network activated for all sites. There is no difference in functionality between the different activation methods.*
 
-*If you have any questions during or after installation, please submit to Grouped Content’s support forum.*
+*If you have any questions during or after installation, please submit to [Grouped Content’s support forum](https://wordpress.org/support/plugin/grouped-content/).*
 
 == Frequently Asked Questions ==
 
@@ -63,9 +68,12 @@ If the Page Relatives metabox is not listed on the righthand side when editing a
 
 = Where can I find documentation for this plugin? =
 
-Tutorials and developer documentation for Grouped Content are currently being prepared on the new Purple Turtle Creative website. Building the documentation for Grouped Content is currently our top priority. In the meantime, please post any questions you may have in the plugin support forum. We’re happy to help!
+Tutorials and developer documentation for Grouped Content are currently being prepared on the new Purple Turtle Creative website. Building the documentation for Grouped Content is currently our top priority. In the meantime, please post any questions you may have in the [plugin support forum](https://wordpress.org/support/plugin/grouped-content/). I'm happy to help!
 
 == Changelog ==
+
+= 1.1.0 – 2020-01-10 =
+* New: Content Generator
 
 = 1.0.0 – 2020-01-03 =
 * New: Groups admin menu page
