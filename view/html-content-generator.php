@@ -97,9 +97,25 @@ global $ptc_grouped_content;
 
       <div>
 
-        <p class="help-default"><i class="fas fa-mouse-pointer"></i> Hover or click on a form element to learn more.</p>
+        <p>Use the Content Generator to quickly add new draft pages to your site.</p>
+
+        <ol>
+          <li>
+            Select an existing <strong>parent page</strong>, create a new page to use as the parent page, or choose to not assign a parent page.
+          </li>
+          <li>
+            On separate lines, enter the titles of the <strong>pages you would like to create</strong>. They will all be assigned the selected parent page.
+          </li>
+          <li>
+            Choose if you would like to <strong>create a menu</strong> which links the created pages in the order you have listed them. The parent page will not be included, however the generated menu will be named after the selected parent page, if applicable.
+          </li>
+        </ol>
 
       </div>
+
+      <p id="contact-support">
+        <i class="fas fa-envelope"></i> If you have any questions, suggestions, or feedback, please submit your comments to the <a href="https://wordpress.org/support/plugin/grouped-content/" target="_blank">Grouped Content plugin support forum</a>.
+      </p>
 
     </section>
 
