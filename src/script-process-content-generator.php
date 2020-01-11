@@ -73,8 +73,7 @@ if (
               $parent_page_post = get_post( $parent_page_id );
 
               if ( NULL !== $parent_page_post && 'page' === $parent_page_post->post_type ) {
-                //TODO: Hyperlink to edit the parent page
-                display_notice( 'success', 'Created parent page: <strong>' . esc_html( $parent_page_post->post_title ) . '</strong>' );
+                display_notice( 'success', 'Created parent page: <a href="' . esc_url( get_edit_post_link( $parent_page_post->ID ) ) . '">' . esc_html( $parent_page_post->post_title ) . '</a>' );
               } else {
                 throw new \Exception( 'Something went wrong when creating the parent page.' );
               }
@@ -87,18 +86,17 @@ if (
             throw new \Exception( 'A page title is required to create a new parent page.' );
           }
 
-        } else {
+        } elseif ( $parent_page_id > 0 ) {
           /* Use existing page as parent */
           $parent_page_post = get_post( $parent_page_id );
 
           if ( NULL !== $parent_page_post && 'page' === $parent_page_post->post_type ) {
-            //TODO: Hyperlink to edit the parent page
-            display_notice( 'info', 'Using parent page: <strong>' . esc_html( $parent_page_post->post_title ) . '</strong>' );
+            display_notice( 'info', 'Using parent page: <a href="' . esc_url( get_edit_post_link( $parent_page_post->ID ) ) . '">' . esc_html( $parent_page_post->post_title ) . '</a>' );
           } else {
             throw new \Exception( "Failed to use parent page {$parent_page_id}." );
           }
 
-        }//end if-else parent_page_id < 0
+        }//end if-else parent_page_id
 
         /* Create child pages */
         $child_page_ids = PTC_Content_Generator::create_pages_from_titles( $children_page_titles, $parent_page_id );
@@ -108,8 +106,15 @@ if (
         } else {
           $child_page_count = count( $child_page_ids );
           $page_or_pages = $child_page_count === 1 ? 'page' : 'pages';
-          $child_or_not = $parent_page_id === 0 ? '' : 'child ';
+          $child_or_not = $parent_page_id === 0 ? 'top-level ' : 'child ';
           display_notice( 'success', "Created {$child_page_count} {$child_or_not}{$page_or_pages}." );
+        }
+
+        /* Finished generating group */
+        if ( $parent_page_id > 0 ) {
+          global $ptc_grouped_content;
+          $view_group_url = $ptc_grouped_content->get_groups_list_admin_url( $parent_page_post->ID );
+          display_notice( 'success', 'Added pages to group: <a href="' . esc_url( $view_group_url ) . '">View Group</a>');
         }
 
         if (
@@ -130,8 +135,7 @@ if (
               throw new \Exception( 'Something went wrong when creating the menu.' );
             }
 
-            //TODO: Hyperlink to edit menu
-            display_notice( 'success', 'Created menu: <strong>' . esc_html( $new_menu->name ) . '</strong>' );
+            display_notice( 'success', 'Created menu: <a href="' . esc_url( admin_url( 'nav-menus.php?action=edit&menu=' . $new_menu->term_id ) ) . '">' . esc_html( $new_menu->name ) . '</a>' );
 
             //TODO: Assign created menu to the parent page, when applicable
 
