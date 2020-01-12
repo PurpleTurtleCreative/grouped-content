@@ -5,13 +5,16 @@
 
 #ptc-grouped-content .inside .page-family-tree {
   margin: 0;
-  padding: 15px 10px 17px;
+  padding: 20px;
 }
 
 #ptc-grouped-content .inside .page-family-tree p {
   margin: 0;
   color: #BCCCDC;
   font-size: 1.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #ptc-grouped-content .inside .page-family-tree p.page-family-tree_no-parent {
@@ -30,7 +33,6 @@
 #ptc-grouped-content .inside .page-family-tree span[class^=box-level] {
   display: inline-block;
   width: 1.5em;
-  height: 1.5em;
 }
 
 #ptc-grouped-content .inside .page-family-tree i {
@@ -61,8 +63,6 @@
   font-weight: bolder;
   background: #e8eef5;
   border-radius: 5px;
-  width: auto;
-  display: inline-block;
 }
 
 #ptc-grouped-content .inside .page-family-tree p.post-current .post-title {
