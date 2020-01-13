@@ -1,6 +1,6 @@
 ﻿=== Grouped Content ===
 Contributors: michelleblanchette
-Tags: pages, hierarchy, organize, order, sort, view, content, group, related, seo
+Tags: page, generator, menu, hierarchy, efficiency tool, automation, organize, order, sort, view, content, group, related, create, metabox
 Tested up to: 5.3.2
 Stable tag: 1.1.0
 Requires PHP: 7.0
@@ -56,23 +56,35 @@ Another noticeable feature that’s been added to your admin area is the Page Re
 
 = Can I request a feature? =
 
-Absolutely! Feedback and feature requests are strongly encouraged. Please email [hello@purpleturtlecreative.com](mailto:hello@purpleturtlecreative.com). It helps a lot if you describe your problem and how you see Grouped Content solving it.
+Absolutely! Feedback and feature requests are strongly encouraged.
+
+Please email [hello@purpleturtlecreative.com](mailto:hello@purpleturtlecreative.com). It helps a lot if you describe your problem and how you see Grouped Content solving or improving your situation.
 
 = Why don’t I see anything in Groups? =
 
-Groups are formed when you assign a Parent Page to a page. When editing a page, you may assign a Parent Page in the Page Attributes section on the righthand side of your edit screen. If you can’t find this box and are using Classic view (non-Gutenberg), it may be hidden. To show the Page Attributes metabox, click Screen Options at the top of the edit screen and then tick the checkbox to show Page Attributes.
+Groups are formed when you assign a Parent Page to a page. When editing a page, you may assign a Parent Page in the Page Attributes section on the righthand side of your edit screen.
+
+If you can’t find this box and are using Classic view (non-Gutenberg), it may be hidden. To show the Page Attributes metabox, click Screen Options at the top of the edit screen and then tick the checkbox to show Page Attributes.
 
 = Why can’t I find the Page Relatives metabox? =
+
+If you’re using Classic view (non-Gutenberg), it may be hidden.
 
 If the Page Relatives metabox is not listed on the righthand side when editing a page, be sure to check your Screen Options if you’re using Classic view (non-Gutenberg). Click the Screen Options tab at the top of the page edit screen and then tick the checkbox to show Page Relatives.
 
 = Where can I find documentation for this plugin? =
 
-Tutorials and developer documentation for Grouped Content are currently being prepared on the new Purple Turtle Creative website. Building the documentation for Grouped Content is currently our top priority. In the meantime, please post any questions you may have in the [plugin support forum](https://wordpress.org/support/plugin/grouped-content/). I'm happy to help!
+Tutorials and developer documentation for Grouped Content are currently being prepared on the new Purple Turtle Creative website. In the meantime, please post any questions you may have in the [plugin support forum](https://wordpress.org/support/plugin/grouped-content/). I'm happy to help!
+
+== Screenshots ==
+
+1. **View Group Contents.** Quickly navigate through parent pages to access their child pages.
+2. **Content Generator.** Automate the process of adding new pages to your site's hierarchy and creating site menus for the generated pages.
+3. **Page Relatives Metabox.** Immediately have access to parent, sibling, and child pages and groups of the currently edited page.
 
 == Changelog ==
 
-= 1.1.0 – 2020-01-10 =
+= 1.1.0 – 2020-01-13 =
 * New: Content Generator
 
 = 1.0.0 – 2020-01-03 =
