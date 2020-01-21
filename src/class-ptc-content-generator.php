@@ -23,7 +23,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Generator' ) ) {
      * Creates empty page posts from the list of provided titles.
      *
      * @since 1.1.0
-     * @since 1.2.0 Added $is_sequential argument
+     * @since 1.2.0 Added $is_sequential argument.
      *
      * @param string[] $page_titles The title strings to create each page.
      *
