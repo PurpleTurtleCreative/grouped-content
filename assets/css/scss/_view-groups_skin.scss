@@ -1,16 +1,21 @@
 /** BEGIN _view-groups_skin.scss **/
-
 /* MAIN */
 html, body {
   background: #f1f1f1;
 }
 
+#wpbody-content {
+  color: #486581;
+}
+
 #wpbody-content h1 {
+  background: #F0F4F8;
   font-size: 1em;
   text-transform: capitalize;
   margin: 0;
   padding: 7px 13px;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid #D9E2EC;
+  color: #627D98;
 }
 
 #wpbody-content a {
@@ -26,8 +31,8 @@ html, body {
   color: #CF1124;
 }
 
-#wpbody-content span.default {
-  color: #b9b6c5;
+#wpbody-content .default {
+  color: #9FB3C8;
 }
 
 #wpbody-content a i.fa-folder {
@@ -40,7 +45,7 @@ html, body {
 
 aside > section,
 main > section {
-  border: 2px solid #e6e6e6;
+  border: 2px solid #D9E2EC;
   background: #fff;
   margin: 7px;
   border-radius: 7px;
@@ -76,12 +81,12 @@ nav#hierarchy-breadcrumb a:hover {
 }
 
 /* SUBGROUPS */
-aside section#subgroups p.subgroups-empty {
+p.subgroups-none {
   font-style: italic;
 }
 
-aside section#subgroups p.subgroups-empty i {
-  margin-right: 4px;
+p.subgroups-none i {
+  width: 1.5em;
 }
 
 aside section#subgroups nav p.subgroup a {
@@ -100,12 +105,12 @@ main section h1 {
 
 .post-row-header {
   padding: 5px 13px;
-  color: #22272d;
+  color: #486581;
 }
 
 .post-row {
   padding: 7px 13px 9px;
-  border-top: 1px solid #e6e6e6;
+  border-top: 1px solid #D9E2EC;
 }
 
 .post-row p,
@@ -124,7 +129,7 @@ main section h1 {
   line-height: 1.2;
 }
 
-.post-row .post-title .post-heading span.post-status {
+.post-row span.post-status {
   background: #3EBD93;
   color: #FFF;
   padding: 2px 7px 3px;
@@ -133,11 +138,12 @@ main section h1 {
   margin-left: 3px;
 }
 
-.post-row .post-title .post-heading span.post-status_private {
+.post-row span.post-status_private {
   background: #ffad00;
 }
 
-.post-row .post-title .post-heading span.post-status_draft {
+.post-row span.post-status_draft,
+.post-row span.post-status_trash {
   background: #f73b3b;
 }
 

@@ -1,39 +1,62 @@
 /** BEGIN _view-groups_toplevel-listing.scss **/
-
-/* TOPLEVEL GROUPS VIEW */
-
-#wpbody-content h1#toplevel-parents {
-  padding: 7px 3px;
-  border-color: #dedede;
-}
-
-h1#toplevel-parents span#count-total-toplevel-groups {
+section#toplevel-groups h1 span#count-total-toplevel-groups {
   background: #3EBD93;
   color: #FFF;
   padding: 2px 7px 3px;
   border-radius: 15px;
   font-size: 0.9em;
-  margin-left: 3px;
   position: relative;
-  bottom: 1px;
+  margin-left: 0.15em;
 }
 
-main#ptc-toplevel-content-groups section.ptc-content-group {
-  margin: 10px 0 0;
+section#toplevel-groups .post-row-header > div:first-of-type,
+section#toplevel-groups .post-row > div:first-of-type {
+  flex: 2;
 }
 
-main#ptc-toplevel-content-groups section.ptc-content-group > div {
-  padding: 15px 14px;
+section#toplevel-groups .post-row-header > div.col-subgroups,
+section#toplevel-groups .post-row > div.col-subgroups {
+  flex: 2;
 }
 
-main#ptc-toplevel-content-groups section.ptc-content-group a.title {
+section#toplevel-groups .col-group-title a.title {
   font-weight: 700;
-  font-size: 1.1em;
-  margin-right: 3px;
+  font-size: 1.15em;
+  margin: 7px 0;
+  display: inline-block;
 }
 
-main#ptc-toplevel-content-groups section.ptc-content-group span:first-of-type {
-  margin-left: 3px;
+section#toplevel-groups .post-row > div:not(:first-of-type) {
+  align-items: start;
+}
+
+section#toplevel-groups .post-row .col-unpublished-pages p:not(.default),
+section#toplevel-groups .post-row .col-total-pages p:not(.default),
+section#toplevel-groups .post-row .col-subgroups a {
+  display: block;
+  text-align: left;
+  margin: 7px 0 7px 1.6em;
+  position: relative;
+}
+
+section#toplevel-groups .post-row .col-unpublished-pages p:not(.default) {
+  margin: 7px 0;
+}
+
+section#toplevel-groups .post-row .col-total-pages p:not(.default) i,
+section#toplevel-groups .post-row .col-subgroups a i {
+  position: absolute;
+  left: -1.5em;
+  top: 1px;
+}
+
+section#toplevel-groups .post-row i {
+  font-size: 1.1em;
+  width: 1.5em;
+}
+
+section#toplevel-groups .post-row .col-unpublished-pages span.post-status {
+  margin-left: 0.5em;
 }
 
 /** END _view-groups_toplevel-listing.scss **/

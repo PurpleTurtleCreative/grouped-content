@@ -101,10 +101,7 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
         $subgroup_ids = $content_group->get_child_parent_ids();
 
         if ( empty( $subgroup_ids ) ) {
-          echo  '<p class="subgroups-empty">' .
-                  '<i class="fas fa-folder-open"></i>' .
-                  'There are no subgroups.' .
-                '</p>';
+          echo  '<p class="default subgroups-none"><i class="fas fa-folder-open"></i>There are no subgroups.</p>';
         } else {
           foreach ( $subgroup_ids as $subgroup_id ) {
             $subgroup = get_post( $subgroup_id );

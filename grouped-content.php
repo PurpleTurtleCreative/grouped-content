@@ -219,7 +219,7 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
             'ptc-grouped-content_view-groups-css',
             plugins_url( 'assets/css/view-groups.css', __FILE__ ),
             [ 'fontawesome-5' ],
-            '0.0.0'
+            '1.0.0'
           );
           break;
         case 'post.php':

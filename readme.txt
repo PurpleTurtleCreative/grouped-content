@@ -84,6 +84,11 @@ Tutorials and developer documentation for Grouped Content are currently being pr
 
 == Changelog ==
 
+= 1.2.0 – 2020-01-21 =
+* New: Groups toplevel directory details
+* New: Added sequential content option to Content Generator to improve page order when listed
+* Tweak: Improved styling consistency for Groups admin screens
+
 = 1.1.0 – 2020-01-13 =
 * New: Content Generator
 

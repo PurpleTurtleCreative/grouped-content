@@ -110,6 +110,40 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
     }
 
     /**
+     * Organizes posts by their post_status.
+     *
+     * @since 1.2.0
+     *
+     * @param int[] $post_ids The post ids to organize.
+     *
+     * @param string $property_name The \WP_Post member name to key by.
+     *
+     * @return \WP_Post[] The post objects keyed by their property value.
+     */
+    static function organize_posts_by( array $post_ids, string $property_name ) : array {
+
+      $posts_by_property = [];
+
+      foreach ( $post_ids as $p_id ) {
+
+        $the_post = get_post( $p_id );
+
+        if (
+          NULL === $the_post
+          && isset( $the_post->$property_name )
+        ) {
+          continue;
+        }
+
+        $posts_by_property[ $the_post->$property_name ][] = $the_post;
+
+      }
+
+      return $posts_by_property;
+
+    }
+
+    /**
      * Validates object creation and sets member variables.
      *
      * @since 1.0.0
@@ -362,22 +396,22 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
     }
 
     /**
-     * Retrieve all descendent children ids in a flat array.
+     * Retrieve all descendant children ids in a flat array.
      *
      * @since 1.2.0
      *
-     * @param int $post_id Optional. The post id to retrieve all descendents.
+     * @param int $post_id Optional. The post id to retrieve all descendants.
      * Default 0 to use the current group.
      *
      * @return int[] The post ids.
      */
-    function get_all_descendent_ids( int $post_id = 0 ) : array {
+    function get_all_descendant_ids( int $post_id = 0 ) : array {
 
       if ( $post_id < 1 ) {
         $post_id = $this->id;
       }
 
-      $descendent_ids = [];
+      $descendant_ids = [];
 
       $child_ids = $this->get_all_children_ids( $post_id );
 
@@ -394,7 +428,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
 
         foreach ( $child_ids as $c_id ) {
 
-          $descendent_ids[] = $c_id;
+          $descendant_ids[] = $c_id;
           $current_child_ids = $this->get_all_children_ids( $c_id );
 
           if ( count( $current_child_ids ) > 0 ) {
@@ -413,7 +447,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
 
       }//end while $found_children
 
-      return $descendent_ids;
+      return $descendant_ids;
 
     }
 
