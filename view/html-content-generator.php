@@ -67,6 +67,11 @@ global $ptc_grouped_content;
             placeholder="Enter each page title on a separate line..."></textarea>
         </div>
 
+        <div class="form-group">
+          <label for="sequential-content">Content is sequential</label>
+          <input id="sequential-content" type="checkbox" name="sequential_content" value="yes" checked>
+        </div>
+
       </section>
 
       <section id="menu">
@@ -107,7 +112,7 @@ global $ptc_grouped_content;
             On separate lines, enter the titles of the <strong>pages you would like to create</strong>. They will all be assigned the selected parent page.
           </li>
           <li>
-            Choose if you would like to <strong>create a menu</strong> which links the created pages in the order you have listed them. The parent page will not be included, however the generated menu will be named after the selected parent page, if applicable.
+            Choose if you would like to <strong>create a menu</strong> which links the created pages in the order you have listed them. The parent page will not be included, yet the generated menu will be named after the selected parent page, if applicable.
           </li>
         </ol>
 

@@ -23,15 +23,20 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Generator' ) ) {
      * Creates empty page posts from the list of provided titles.
      *
      * @since 1.1.0
+     * @since 1.2.0 Added $is_sequential argument
      *
      * @param string[] $page_titles The title strings to create each page.
      *
      * @param int $parent_page_id Optional. The id of the page post to assign as
      * the parent post of each created page. Default 0 for no parent.
      *
+     * @param bool $is_sequential Optional. If sequential menu_order values
+     * should be assigned to created pages. Default FALSE for all pages to have
+     * default menu_order of 0.
+     *
      * @return int[] The ids of the created page posts.
      */
-    static function create_pages_from_titles( array $page_titles, int $parent_page_id = 0 ) : array {
+    static function create_pages_from_titles( array $page_titles, int $parent_page_id = 0, bool $is_sequential = FALSE ) : array {
 
       if ( $parent_page_id !== 0 ) {
 
@@ -49,7 +54,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Generator' ) ) {
 
       $generated_page_ids = [];
 
-      foreach ( $page_titles as $title ) {
+      foreach ( $page_titles as $i => $title ) {
 
         $sanitized_title = filter_var(
             $title,
@@ -64,12 +69,18 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Generator' ) ) {
           continue;
         }
 
+        $menu_order = 0;
+        if ( $is_sequential ) {
+          $menu_order = $i;
+        }
+
         $new_post_id = wp_insert_post( [
             'post_title' => $sanitized_title,
             'post_content' => '',
             'post_type' => 'page',
             'post_status' => 'draft',
             'post_parent' => $parent_page_id,
+            'menu_order' => $menu_order,
           ] );
 
         if ( is_int( $new_post_id ) && $new_post_id > 0 ) {

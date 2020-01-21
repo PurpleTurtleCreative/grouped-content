@@ -163,9 +163,11 @@ div#content-generator form #menu {
   color: #486581;
 }
 
-div#content-generator form #menu label {
+div#content-generator form #menu label,
+div#content-generator form #children-pages label[for="sequential-content"] {
   color: #486581;
   font-size: 1.05em;
+  display: inline;
 }
 
 /* Submit */

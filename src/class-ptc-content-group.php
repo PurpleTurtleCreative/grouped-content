@@ -52,7 +52,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
             ON parents.ID = posts.post_parent
           WHERE posts.post_parent != 0
             AND posts.post_type = 'page'
-          ORDER BY parents.post_title ASC
+          ORDER BY parents.menu_order, parents.post_title ASC
         ", ARRAY_N );
 
       if ( is_array( $parent_post_ids ) && ! empty( $parent_post_ids[0] ) ) {
@@ -88,7 +88,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
           WHERE posts.post_parent != 0
             AND posts.post_type = 'page'
             AND parents.post_parent = 0
-          ORDER BY parents.post_title ASC
+          ORDER BY parents.menu_order, parents.post_title ASC
         ", ARRAY_N );
 
       if ( is_array( $parent_post_ids ) && ! empty( $parent_post_ids[0] ) ) {
@@ -186,7 +186,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
           SELECT DISTINCT posts.ID FROM {$wpdb->posts} posts
           WHERE posts.post_parent = %d
             AND posts.post_type = 'page'
-          ORDER BY posts.post_title ASC
+          ORDER BY posts.menu_order, posts.post_title ASC
         ",
         $this->id
       ), ARRAY_N );
@@ -229,7 +229,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
           WHERE posts.post_parent = %d
             AND posts.post_type = 'page'
             AND posts.ID IN( SELECT post_parent FROM {$wpdb->posts} WHERE post_parent != 0 AND post_type = 'page' )
-          ORDER BY posts.post_title ASC
+          ORDER BY posts.menu_order, posts.post_title ASC
         ",
         $parent_post_id
       ) );
@@ -260,7 +260,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
           WHERE posts.post_parent = %d
             AND posts.post_type = 'page'
             AND posts.ID IN( SELECT post_parent FROM {$wpdb->posts} WHERE post_parent != 0 AND post_type = 'page' )
-          ORDER BY posts.post_title ASC
+          ORDER BY posts.menu_order, posts.post_title ASC
         ",
         $this->id
       ), ARRAY_N );

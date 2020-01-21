@@ -9,7 +9,7 @@
  * Plugin Name:       Grouped Content
  * Plugin URI:        https://purpleturtlecreative.com/grouped-content/
  * Description:       Enhances the use of page hierarchies by providing easy access to the parent page, sibling pages, and child pages in your admin area.
- * Version:           1.1.0
+ * Version:           1.2.0
  * Requires PHP:      7.0
  * Author:            Purple Turtle Creative
  * Author URI:        https://purpleturtlecreative.com/

@@ -98,8 +98,17 @@ if (
 
         }//end if-else parent_page_id
 
+        if (
+          isset( $_POST['sequential_content'] )
+          && 'yes' === $_POST['sequential_content']
+        ) {
+          $is_sequential = TRUE;
+        } else {
+          $is_sequential = FALSE;
+        }
+
         /* Create child pages */
-        $child_page_ids = PTC_Content_Generator::create_pages_from_titles( $children_page_titles, $parent_page_id );
+        $child_page_ids = PTC_Content_Generator::create_pages_from_titles( $children_page_titles, $parent_page_id, $is_sequential );
 
         if ( empty( $child_page_ids ) ) {
           throw new \Exception( 'No child pages could be created.' );
