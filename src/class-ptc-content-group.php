@@ -22,16 +22,20 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
   class PTC_Content_Group {
 
     /**
-     * @var int The id of the post_parent that this group represents.
+     * The post id for this group.
      *
      * @since 1.0.0
+     *
+     * @var int The id of the parent post that this group represents.
      */
     public $id;
 
     /**
-     * @var \WP_Post The post that this group represents.
+     * The post object for this group.
      *
      * @since 1.0.0
+     *
+     * @var \WP_Post The post that this group represents.
      */
     public $post;
 
@@ -142,15 +146,15 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
      *
      * @since 1.0.0
      *
-     * @param int $parent_post_id Optional. The post id of an existing page.
+     * @param int $post_id Optional. The post id of an existing page.
      * Default 0 to use the current group object.
      *
-     * @return int The count
+     * @return int The count.
      */
-    function count_children( int $parent_post_id = 0 ) : int {
+    function count_children( int $post_id = 0 ) : int {
 
-      if ( $parent_post_id < 1 ) {
-        $parent_post_id = $this->id;
+      if ( $post_id < 1 ) {
+        $post_id = $this->id;
       }
 
       global $wpdb;
@@ -160,7 +164,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
           WHERE posts.post_parent = %d
             AND posts.post_type = 'page'
         ",
-        $parent_post_id
+        $post_id
       ) );
 
       if ( is_numeric( $child_count ) ) {
@@ -175,10 +179,18 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
      * Retrieve the post ids of the direct child pages of the group.
      *
      * @since 1.0.0
+     * @since 1.2.0 Added optional $post_id argument.
+     *
+     * @param int $post_id Optional. The post id to retrieve all child ids.
+     * Default 0 to use the current group.
      *
      * @return int[] The post ids.
      */
-    function get_all_children_ids() : array {
+    function get_all_children_ids( int $post_id = 0 ) : array {
+
+      if ( $post_id < 1 ) {
+        $post_id = $this->id;
+      }
 
       global $wpdb;
       $children_post_ids = $wpdb->get_results( $wpdb->prepare(
@@ -188,7 +200,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
             AND posts.post_type = 'page'
           ORDER BY posts.menu_order, posts.post_title ASC
         ",
-        $this->id
+        $post_id
       ), ARRAY_N );
 
       if ( is_array( $children_post_ids ) && ! empty( $children_post_ids[0] ) ) {
@@ -212,7 +224,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
      * @since 1.0.0
      *
      * @param int $parent_post_id Optional. The post id of an existing page.
-     * Default 0 to use the current group object.
+     * Default 0 to use the current group.
      *
      * @return int The count.
      */
@@ -248,10 +260,18 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
      * direct subgroups of the group.
      *
      * @since 1.0.0
+     * @since 1.2.0 Added optional $post_id argument.
+     *
+     * @param int $post_id Optional. The post id to retrieve child parent ids.
+     * Default 0 to use the current group.
      *
      * @return int[] The post ids.
      */
-    function get_child_parent_ids() : array {
+    function get_child_parent_ids( int $post_id = 0 ) : array {
+
+      if ( $post_id < 1 ) {
+        $post_id = $this->id;
+      }
 
       global $wpdb;
       $child_parent_post_ids = $wpdb->get_results( $wpdb->prepare(
@@ -262,7 +282,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
             AND posts.ID IN( SELECT post_parent FROM {$wpdb->posts} WHERE post_parent != 0 AND post_type = 'page' )
           ORDER BY posts.menu_order, posts.post_title ASC
         ",
-        $this->id
+        $post_id
       ), ARRAY_N );
 
       if ( is_array( $child_parent_post_ids ) && ! empty( $child_parent_post_ids[0] ) ) {
@@ -287,7 +307,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
      * @param int $post_id Optional. The post id to retrieve the post_parent.
      * Default 0 to use the current group.
      *
-     * @return int[] The post ids.
+     * @return int The post id.
      */
     function get_parent_id( int $post_id = 0 ) : int {
 
@@ -338,6 +358,62 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Group' ) ) {
       }
 
       return [];
+
+    }
+
+    /**
+     * Retrieve all descendent children ids in a flat array.
+     *
+     * @since 1.2.0
+     *
+     * @param int $post_id Optional. The post id to retrieve all descendents.
+     * Default 0 to use the current group.
+     *
+     * @return int[] The post ids.
+     */
+    function get_all_descendent_ids( int $post_id = 0 ) : array {
+
+      if ( $post_id < 1 ) {
+        $post_id = $this->id;
+      }
+
+      $descendent_ids = [];
+
+      $child_ids = $this->get_all_children_ids( $post_id );
+
+      if ( count( $child_ids ) > 0 ) {
+        $found_children = TRUE;
+      } else {
+        $found_children = FALSE;
+      }
+
+      while ( $found_children ) {
+
+        $found_children = FALSE;
+        $next_child_ids = [];
+
+        foreach ( $child_ids as $c_id ) {
+
+          $descendent_ids[] = $c_id;
+          $current_child_ids = $this->get_all_children_ids( $c_id );
+
+          if ( count( $current_child_ids ) > 0 ) {
+
+            foreach ( $current_child_ids as $current_c_id ) {
+              $next_child_ids[] = $current_c_id;
+            }
+
+            $found_children = TRUE;
+
+          }
+
+        }//end foreach $child_ids
+
+        $child_ids = $next_child_ids;
+
+      }//end while $found_children
+
+      return $descendent_ids;
 
     }
 
