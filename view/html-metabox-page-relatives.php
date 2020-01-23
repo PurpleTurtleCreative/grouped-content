@@ -14,12 +14,35 @@ namespace ptc_grouped_content;
 
 defined( 'ABSPATH' ) || die();
 
-global $post;
-// TODO: if not defined due to AJAX refresh for Gutenberg, check POSTed id then use get_post()
+/* Use passed post if AJAX refresh, else use global $post */
+if (
+  isset( $post_id )
+  && isset( $the_post )
+  && isset( $res )
+  && isset( $nonce )
+) {
 
-if ( isset( $post ) && 'page' == $post->post_type ) {
+  $res['status'] = 'success';
 
-  $is_tree_displayed = output_page_family_subtree( $post );
+  if (
+    NULL === $the_post
+    || FALSE === wp_verify_nonce( $nonce, 'ptc_page_relatives' )
+  ) {
+    $res['status'] = 'fail';
+    return;
+  }
+
+} else {
+
+  global $post;
+  $the_post = $post;
+
+}
+
+/* Metabox Content */
+if ( isset( $the_post ) && 'page' == $the_post->post_type ) {
+
+  $is_tree_displayed = output_page_family_subtree( $the_post );
 
   if ( $is_tree_displayed ) {
     echo '<p class="page-family-tree-help"><i class="fas fa-mouse-pointer"></i><strong>TIP:</strong> Click a folder icon to visit the group. Click a page title to edit that page.</p>';

@@ -108,9 +108,13 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
      * @ignore
      */
     function register() {
+
       add_action( 'admin_menu', [ $this, 'add_admin_pages' ] );
       add_action( 'admin_enqueue_scripts', [ $this, 'register_scripts' ] );
+
       add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
+      add_action( 'wp_ajax_refresh_page_relatives', [ $this, 'related_content_metabox_html_ajax_refresh' ] );
+
     }
 
     /**
@@ -193,14 +197,24 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
      * @ignore
      */
     function related_content_metabox_html() {
-      include_once $this->plugin_path . 'view/html-metabox-page-attributes.php';
+      include_once $this->plugin_path . 'view/html-metabox-page-relatives.php';
+    }
+
+    /**
+     * AJAX handler for refreshing the Page Relatives metabox in Gutenberg.
+     *
+     * @since 1.2.0
+     *
+     * @ignore
+     */
+    function related_content_metabox_html_ajax_refresh() {
+      require_once $this->plugin_path . 'src/ajax-refresh-metabox-page-relatives.php';
     }
 
     /**
      * Register and enqueue plugin CSS and JS.
      *
      * @since 1.0.0
-     * @since 1.1.0 Added content generator scripts
      *
      * @ignore
      */
@@ -228,6 +242,17 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
             plugins_url( 'assets/css/metabox_page-relatives.css', __FILE__ ),
             [ 'fontawesome-5' ],
             '0.0.0'
+          );
+          wp_enqueue_script(
+            'ptc-grouped-content_metabox-page-relatives-js',
+            plugins_url( 'assets/js/metabox-page-relatives.js', __FILE__ ),
+            [ 'jquery' ],
+            '0.0.0'
+          );
+          wp_localize_script(
+            'ptc-grouped-content_metabox-page-relatives-js',
+            'ptc_page_relatives',
+            [ 'nonce' => wp_create_nonce( 'ptc_page_relatives' ) ]
           );
           break;
         case 'groups_page_ptc-grouped-content_generator':

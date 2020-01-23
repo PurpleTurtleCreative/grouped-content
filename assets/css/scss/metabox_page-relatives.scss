@@ -86,3 +86,17 @@
 #ptc-grouped-content .inside .page-family-tree-help strong {
   color: #627D98;
 }
+
+/* Refresh Notice for Gutenberg AJAX */
+
+#ptc-grouped-content .inside p#ptc-notice-refreshing-metabox {
+  padding: 15px;
+  font-style: italic;
+  color: #627D98;
+  background: #F0F4F8;
+}
+
+#ptc-grouped-content .inside p#ptc-notice-refreshing-metabox i {
+  margin-right: 7px;
+  color: #1992D4;
+}

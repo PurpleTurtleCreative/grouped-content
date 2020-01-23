@@ -11,8 +11,6 @@ Enhances the use of page hierarchies by providing easy access to the parent page
 
 == Description ==
 
-= **Version 1.1.0 includes new Content Generator feature for you to quickly build out your site's structure!** Learn more in the Content Generator section below. =
-
 Parent pages and hierarchical content strategies are often overlooked when building a WordPress site because it’s too illusive. When setting a parent page, what does it really mean in terms of your site’s overall structure?
 
 Maintaining content organization documentation becomes exhausting and can lose its accuracy as changes are made to your site’s pages. Not to mention the ever-growing list of unorganized Pages!
@@ -33,7 +31,7 @@ Now that you’re able to automatically see your site’s structure as you estab
 = Developer Friendly Code =
 Grouped Content is built open-source and fully documented so that your developers can quickly build Grouped Content into exactly what you need it to be. To make customization even easier, plenty of hooks are also made available to developers so that changes can be quickly added and easily maintained as new versions of Grouped Content are released.
 
-= **NEW!** Content Generator =
+= Content Generator =
 Quickly add new draft pages and automate menu creation to rapidly create new groups of content for your site. Clicking to add new pages, assigning each the same parent page, and then putting all the pages in a new menu is a tedious and inefficient process. With the **Add New** Groups page, you can use Content Generator to rapidly add new groups of pages and even automatically create a new menu for the group.
 
 == Installation ==
@@ -84,10 +82,11 @@ Tutorials and developer documentation for Grouped Content are currently being pr
 
 == Changelog ==
 
-= 1.2.0 – 2020-01-21 =
+= 1.2.0 – 2020-01-22 =
 * New: Groups toplevel directory details
 * New: Added sequential content option to Content Generator to improve page order when listed
 * Tweak: Improved styling consistency for Groups admin screens
+* Tweak: Page Relatives metabox refreshes when saving a new Parent Page in the Gutenberg editor
 
 = 1.1.0 – 2020-01-13 =
 * New: Content Generator
