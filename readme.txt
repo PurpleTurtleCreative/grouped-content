@@ -1,8 +1,8 @@
 ﻿=== Grouped Content ===
 Contributors: michelleblanchette
-Tags: page, generator, menu, hierarchy, efficiency tool, automation, organize, order, sort, view, content, group, related, create, metabox
+Tags: page, generator, management, hierarchy, automation, efficiency tool, organize, order, sort, view, content, group, related, create, menu
 Tested up to: 5.3.2
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 Requires PHP: 7.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -11,28 +11,25 @@ Enhances the use of page hierarchies by providing easy access to the parent page
 
 == Description ==
 
-Parent pages and hierarchical content strategies are often overlooked when building a WordPress site because it’s too illusive. When setting a parent page, what does it really mean in terms of your site’s overall structure?
+Managing pages in WordPress quickly becomes burdensome as your website grows. This is because the default Pages directory makes the common task of finding pages an intimidating challenge. When finally editing pages, you also cannot quickly get to a related page, so you have to head back to the extensive listing. As a result, much time that should be spent on content creation goes to waste.
 
-Maintaining content organization documentation becomes exhausting and can lose its accuracy as changes are made to your site’s pages. Not to mention the ever-growing list of unorganized Pages!
+**What about content organizer plugins?** Surprisingly, the same amount of energy and time can be wasted. Instead of spending time searching for pages, you are now tasked with keeping content properly organized and designing appropriate folder structures. You even might _also_ need to train your team on your site’s organization standards so that it doesn’t get disorganized all over again!
 
-Grouped Content helps you easily organize your website’s content by unleashing the true potential of WordPress’s hierarchical system for pages. You’ll be able to quickly access related pages and see where each page fits in your site’s hierarchy. Maintaining proper content organization and site structure has never been easier.
+Grouped Content, on the other hand, helps you manage your pages naturally and automatically. **All it takes is the simple action of setting a parent page.** _(Which you should already be doing!)_
 
-Here are some of the ways Grouped Content helps you build a better site structure:
+= Enhanced Page Management =
+With Grouped Content, you’ll be able to access pages faster, quickly generate new draft pages in bulk, and better visualize your site’s hierarchy.
 
-= Access Related Pages =
-When a page is assigned a Parent Page, you’ll instantly be able to see and access sibling pages. When that page becomes a Parent Page of another page, you’ll also be able to access all of its child pages. It’s all right there, in your Page Relatives metabox.
-
-= Organized Content =
-In the Groups admin page, you can quickly navigate through the page hierarchies you’ve so simply established by assigning Parent Pages. Quickly access everything you need for your pages in an organized hierarchical view so that you can focus on what you came to do.
-
-= Improve Site Experience =
-Now that you’re able to automatically see your site’s structure as you establish hierarchies, you’ve improved the content structure for you and your visitors. Hierarchical URLs improve your visitors’ experience with your site by producing more memorable links that let your visitors know where they are.
+= Features =
+Grouped Content is light and simple with a few powerful features. For this reason, you don’t need to commit to reading an entire knowledge base or hire an expensive tech expert. You can get started immediately all while keeping control of your site’s pages with these main features:
+* **Groups Admin Page** - View hierarchical pages in an easy-to-navigate, distraction-free area.
+* **Page Relatives Metabox** - Access parent, sibling, and child pages immediately upon setting a parent page.
+* **Content Generator** - Quickly add new draft pages and automate menu creation to efficiently create new groups of content for your site.
 
 = Developer Friendly Code =
 Grouped Content is built open-source and fully documented so that your developers can quickly build Grouped Content into exactly what you need it to be. To make customization even easier, plenty of hooks are also made available to developers so that changes can be quickly added and easily maintained as new versions of Grouped Content are released.
 
-= Content Generator =
-Quickly add new draft pages and automate menu creation to rapidly create new groups of content for your site. Clicking to add new pages, assigning each the same parent page, and then putting all the pages in a new menu is a tedious and inefficient process. With the **Add New** Groups page, you can use Content Generator to rapidly add new groups of pages and even automatically create a new menu for the group.
+_If you’d like to read more about the benefits of using Grouped Content, you can read more at [Grouped Content’s official website](https://purpleturtlecreative.com/grouped-content/)._
 
 == Installation ==
 
@@ -56,7 +53,7 @@ Another noticeable feature that’s been added to your admin area is the Page Re
 
 Absolutely! Feedback and feature requests are strongly encouraged.
 
-Please email [hello@purpleturtlecreative.com](mailto:hello@purpleturtlecreative.com). It helps a lot if you describe your problem and how you see Grouped Content solving or improving your situation.
+Please email [hello@purpleturtlecreative.com](mailto:hello@purpleturtlecreative.com). It helps a lot if you describe your problem and how you see Grouped Content improving your situation.
 
 = Why don’t I see anything in Groups? =
 
@@ -76,22 +73,23 @@ Tutorials and developer documentation for Grouped Content are currently being pr
 
 == Screenshots ==
 
-1. **View Group Contents.** Quickly navigate through parent pages to access their child pages.
-2. **Content Generator.** Automate the process of adding new pages to your site's hierarchy and creating site menus for the generated pages.
-3. **Page Relatives Metabox.** Immediately have access to parent, sibling, and child pages and groups of the currently edited page.
+1. **Content Generator.** Automate the process of adding new pages to your site's hierarchy and creating site menus.
+2. **View Page Groups.** Quickly see top-level details and effortlessly navigate through your site’s pages.
+3. **Page Relatives Metabox.** Immediately have access to parent, sibling, and child pages with Gutenberg compatibility.
+4. **Classic or Gutenberg.** The Page Relatives metabox is conveniently available for whichever editor you prefer.
 
 == Changelog ==
 
-= 1.2.0 – 2020-01-22 =
+= 1.2.0 – 2020-01-24 =
 * New: Groups toplevel directory details
-* New: Added sequential content option to Content Generator to improve page order when listed
+* New: Added sequential content option to Content Generator for improved page sorting
 * Tweak: Improved styling consistency for Groups admin screens
-* Tweak: Page Relatives metabox refreshes when saving a new Parent Page in the Gutenberg editor
+* Tweak: Page Relatives metabox now refreshes when saving a new Parent Page in the Gutenberg editor
 
 = 1.1.0 – 2020-01-13 =
-* New: Content Generator
+* New: Content Generator feature to add new draft pages in bulk with a corresponding menu
 
 = 1.0.0 – 2020-01-03 =
-* New: Groups admin menu page
-* New: Page Relatives metabox
+* New: Groups admin menu page to navigate through hierarchical content in a natural, distraction-free area
+* New: Page Relatives metabox to quickly access related pages and groups
 * Initial Release
