@@ -13,7 +13,7 @@ Enhances the use of page hierarchies by providing easy access to the parent page
 
 Managing pages in WordPress quickly becomes burdensome as your website grows. This is because the default Pages directory makes the common task of finding pages an intimidating challenge. When finally editing pages, you also cannot quickly get to a related page, so you have to head back to the extensive listing. As a result, much time that should be spent on content creation goes to waste.
 
-**What about content organizer plugins?** Surprisingly, the same amount of energy and time can be wasted. Instead of spending time searching for pages, you are now tasked with keeping content properly organized and designing appropriate folder structures. You even might _also_ need to train your team on your site’s organization standards so that it doesn’t get disorganized all over again!
+**What about content organizer plugins?** Surprisingly, the same amount of energy and time can still be wasted. Instead of spending time searching for pages, you are now tasked with keeping content properly organized and designing appropriate folder structures. You might _also_ even need to train your team on your site’s organization standards so that it doesn’t get disorganized all over again!
 
 Grouped Content, on the other hand, helps you manage your pages naturally and automatically. **All it takes is the simple action of setting a parent page.** _(Which you should already be doing!)_
 
@@ -27,7 +27,7 @@ Grouped Content is light and simple with a few powerful features. For this reaso
 * **Content Generator** - Quickly add new draft pages and automate menu creation to efficiently create new groups of content for your site.
 
 = Developer Friendly Code =
-Grouped Content is built open-source and fully documented so that your developers can quickly build Grouped Content into exactly what you need it to be. To make customization even easier, plenty of hooks are also made available to developers so that changes can be quickly added and easily maintained as new versions of Grouped Content are released.
+Grouped Content is built open-source and fully documented so that your developers can quickly build Grouped Content into exactly what you need it to be. To make customization even easier, plenty of hooks are also made available to developers. This means that customizations can be quickly added and easily maintained as new versions of Grouped Content are released.
 
 _If you’d like to read more about the benefits of using Grouped Content, you can read more at [Grouped Content’s official website](https://purpleturtlecreative.com/grouped-content/)._
 
