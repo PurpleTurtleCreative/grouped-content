@@ -9,7 +9,7 @@
  * Plugin Name:       Grouped Content
  * Plugin URI:        https://purpleturtlecreative.com/grouped-content/
  * Description:       Enhances the use of page hierarchies by providing easy access to the parent page, sibling pages, and child pages in your admin area.
- * Version:           1.2.0
+ * Version:           1.2.1
  * Requires PHP:      7.0
  * Author:            Purple Turtle Creative
  * Author URI:        https://purpleturtlecreative.com/
@@ -236,7 +236,7 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
             '1.0.0'
           );
           break;
-        case 'post.php':
+        case 'post.php' && get_post_type() === 'page':
           wp_enqueue_style(
             'ptc-grouped-content_metabox-page-relatives-css',
             plugins_url( 'assets/css/metabox_page-relatives.css', __FILE__ ),
@@ -247,7 +247,7 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
             'ptc-grouped-content_metabox-page-relatives-js',
             plugins_url( 'assets/js/metabox-page-relatives.js', __FILE__ ),
             [ 'jquery' ],
-            '0.0.0'
+            '0.0.1'
           );
           wp_localize_script(
             'ptc-grouped-content_metabox-page-relatives-js',

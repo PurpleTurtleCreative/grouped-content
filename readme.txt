@@ -2,7 +2,7 @@
 Contributors: michelleblanchette
 Tags: page, generator, management, hierarchy, automation, efficiency tool, organize, order, sort, view, content, group, related, create, menu
 Tested up to: 5.3.2
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 Requires PHP: 7.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -79,6 +79,9 @@ Tutorials and developer documentation for Grouped Content are currently being pr
 4. **Classic or Gutenberg.** The Page Relatives metabox is conveniently available for whichever editor you prefer.
 
 == Changelog ==
+
+= 1.2.1 – 2020-01-24 =
+* Fix: Improved loading condition for Page Relatives metabox scripts
 
 = 1.2.0 – 2020-01-24 =
 * New: Groups toplevel directory details
