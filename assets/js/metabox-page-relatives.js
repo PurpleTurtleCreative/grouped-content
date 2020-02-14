@@ -1,10 +1,8 @@
 jQuery(function($) {
 
-  console.log('Loaded page relatives metabox JS!');
-
   try {
     if (
-      typeof wp.data !== undefined
+      typeof wp.data !== "undefined"
       && wp.data.select('core/editor') !== null
     ) {
 
