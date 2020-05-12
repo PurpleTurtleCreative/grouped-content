@@ -9,8 +9,9 @@
  * Plugin Name:       Grouped Content
  * Plugin URI:        https://purpleturtlecreative.com/grouped-content/
  * Description:       Enhances the use of page hierarchies by providing easy access to the parent page, sibling pages, and child pages in your admin area.
- * Version:           1.2.1
+ * Version:           1.2.2
  * Requires PHP:      7.0
+ * Requires at least: 4.7.1
  * Author:            Purple Turtle Creative
  * Author URI:        https://purpleturtlecreative.com/
  * License:           GPL v3 or later
@@ -115,6 +116,10 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
       add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
       add_action( 'wp_ajax_refresh_page_relatives', [ $this, 'related_content_metabox_html_ajax_refresh' ] );
 
+      /* Remove nags from plugin pages */
+      add_action( 'admin_head-groups_page_ptc-grouped-content_generator', [ $this, 'remove_all_admin_notices' ], 1);
+      add_action( 'admin_head-toplevel_page_ptc-grouped-content', [ $this, 'remove_all_admin_notices' ], 1);
+
     }
 
     /**
@@ -212,6 +217,18 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
     }
 
     /**
+     * Removes all admin notice actions.
+     *
+     * @since 1.2.2
+     *
+     * @ignore
+     */
+    function remove_all_admin_notices() {
+      remove_all_actions('admin_notices');
+      remove_all_actions('all_admin_notices');
+    }
+
+    /**
      * Register and enqueue plugin CSS and JS.
      *
      * @since 1.0.0
@@ -220,11 +237,11 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
      */
     function register_scripts( $hook_suffix ) {
 
-      wp_register_style(
+      wp_register_script(
         'fontawesome-5',
-        plugins_url( '/assets/fonts/fontawesome-free-5.12.0-web/css/all.min.css', __FILE__ ),
+        'https://kit.fontawesome.com/02ab9ff442.js',
         [],
-        '5.12.0'
+        '5.12.1'
       );
 
       switch ( $hook_suffix ) {
@@ -232,36 +249,41 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
           wp_enqueue_style(
             'ptc-grouped-content_view-groups-css',
             plugins_url( 'assets/css/view-groups.css', __FILE__ ),
-            [ 'fontawesome-5' ],
+            [],
             '1.0.0'
           );
+          wp_enqueue_script( 'fontawesome-5' );
           break;
-        case 'post.php' && get_post_type() === 'page':
-          wp_enqueue_style(
-            'ptc-grouped-content_metabox-page-relatives-css',
-            plugins_url( 'assets/css/metabox_page-relatives.css', __FILE__ ),
-            [ 'fontawesome-5' ],
-            '0.0.0'
-          );
-          wp_enqueue_script(
-            'ptc-grouped-content_metabox-page-relatives-js',
-            plugins_url( 'assets/js/metabox-page-relatives.js', __FILE__ ),
-            [ 'jquery' ],
-            '0.0.1'
-          );
-          wp_localize_script(
-            'ptc-grouped-content_metabox-page-relatives-js',
-            'ptc_page_relatives',
-            [ 'nonce' => wp_create_nonce( 'ptc_page_relatives' ) ]
-          );
+        case 'post.php':
+          if ( get_post_type() === 'page' ) {
+            wp_enqueue_style(
+              'ptc-grouped-content_metabox-page-relatives-css',
+              plugins_url( 'assets/css/metabox_page-relatives.css', __FILE__ ),
+              [],
+              '0.0.0'
+            );
+            wp_enqueue_script( 'fontawesome-5' );
+            wp_enqueue_script(
+              'ptc-grouped-content_metabox-page-relatives-js',
+              plugins_url( 'assets/js/metabox-page-relatives.js', __FILE__ ),
+              [ 'jquery' ],
+              '0.0.1'
+            );
+            wp_localize_script(
+              'ptc-grouped-content_metabox-page-relatives-js',
+              'ptc_page_relatives',
+              [ 'nonce' => wp_create_nonce( 'ptc_page_relatives' ) ]
+            );
+          }
           break;
         case 'groups_page_ptc-grouped-content_generator':
           wp_enqueue_style(
             'ptc-grouped-content_content-generator-css',
             plugins_url( 'assets/css/content-generator.css', __FILE__ ),
-            [ 'fontawesome-5' ],
+            [],
             '0.0.0'
           );
+          wp_enqueue_script( 'fontawesome-5' );
           wp_enqueue_script(
             'ptc-grouped-content_content-generator-js',
             plugins_url( 'assets/js/content-generator.js', __FILE__ ),

@@ -230,7 +230,7 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
  * "Subgroups" column header. Intended to match the argument with the same name
  * passed to \ptc_grouped_content\output_post_row(). Default FALSE.
  */
-function output_post_row_header( bool $is_current_group = FALSE ) : void {
+function output_post_row_header( bool $is_current_group = FALSE ) {
   ?>
   <div class="post-row-header">
 
@@ -260,7 +260,7 @@ function output_post_row_header( bool $is_current_group = FALSE ) : void {
  * "Subgroups" column content. Intended to match the argument with the same name
  * passed to \ptc_grouped_content\output_post_row_header(). Default FALSE.
  */
-function output_post_row( \WP_Post $the_post, bool $is_current_group = FALSE ) : void {
+function output_post_row( \WP_Post $the_post, bool $is_current_group = FALSE ) {
   if ( NULL === $the_post ) {
     return;
   }
@@ -336,7 +336,7 @@ function output_post_row( \WP_Post $the_post, bool $is_current_group = FALSE ) :
  *
  * @param \WP_Post $the_post The post for retrieving a date.
  */
-function output_post_date( \WP_Post $the_post ) : void {
+function output_post_date( \WP_Post $the_post ) {
 
   if ( '0000-00-00 00:00:00' === $the_post->post_date ) {
     $t_time    = __( 'Unpublished' );

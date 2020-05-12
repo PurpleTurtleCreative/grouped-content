@@ -204,7 +204,7 @@ function output_page_family_subtree( \WP_Post $post ) : bool {
  * * the $root_group has no children
  * * a child is retrieved that is not an actual page-type post
  */
-function output_page_family_subtree_children( PTC_Content_Group $root_group, int $current_post_id = 0, bool $is_subtree = FALSE, bool $is_last_subtree = FALSE ) : void {
+function output_page_family_subtree_children( PTC_Content_Group $root_group, int $current_post_id = 0, bool $is_subtree = FALSE, bool $is_last_subtree = FALSE ) {
 
   if ( ! $is_subtree ) {
     if ( $root_group->id === $current_post_id ) {
