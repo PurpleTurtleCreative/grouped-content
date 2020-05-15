@@ -101,7 +101,7 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
         $subgroup_ids = $content_group->get_child_parent_ids();
 
         if ( empty( $subgroup_ids ) ) {
-          echo  '<p class="default subgroups-none"><i class="fas fa-folder-open"></i>There are no subgroups.</p>';
+          echo  '<p class="default subgroups-none"><i class="fa fa-folder-open"></i>There are no subgroups.</p>';
         } else {
           foreach ( $subgroup_ids as $subgroup_id ) {
             $subgroup = get_post( $subgroup_id );
@@ -114,7 +114,7 @@ require_once $ptc_grouped_content->plugin_path . 'view/wp-handle-row-actions.php
             }
             echo  '<p class="subgroup">' .
                     '<a href="' . esc_url( $view_subgroup_url ) . '">' .
-                      '<i class="fas fa-folder"></i>' . esc_html( $subgroup->post_title ) .
+                      '<i class="fa fa-folder"></i>' . esc_html( $subgroup->post_title ) .
                     '</a>' .
                     '&ndash;<span class="subgroup-children-count">' .
                     esc_html( $child_page_count ) . esc_html( $page_or_pages ) .
@@ -289,7 +289,7 @@ function output_post_row( \WP_Post $the_post, bool $is_current_group = FALSE ) {
           global $ptc_grouped_content;
           $view_subgroup_url = $ptc_grouped_content->get_groups_list_admin_url( $subgroup->id );
           echo  '<a href="' . esc_url( $view_subgroup_url ) . '">' .
-                  '<i class="fas fa-folder"></i>' .
+                  '<i class="fa fa-folder"></i>' .
                 '</a>';
         } catch ( \Exception $e ) {
           echo '<span class="default">&mdash;</span>';

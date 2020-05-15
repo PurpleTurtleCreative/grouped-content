@@ -19,14 +19,13 @@ With Grouped Content, you’ll be able to access pages faster, quickly generate 
 
 = Features =
 Grouped Content is light and simple with a few powerful features. For this reason, you don’t need to commit to reading an entire knowledge base or hire an expensive tech expert. You can get started immediately all while keeping control of your site’s pages with these main features:
-- **Groups Admin Page** - View hierarchical pages and group statistics in an easy-to-navigate, distraction-free area.
-- **Page Relatives Metabox** - Access parent, sibling, and child pages immediately upon setting a parent page.
-- **Content Generator** - Quickly add new draft pages and automate menu creation to efficiently create new groups of content and navigation for your site.
+
+- **Groups Admin Page**. View hierarchical pages and group statistics in an easy-to-navigate, distraction-free area.
+- **Page Relatives Metabox**. Access parent, sibling, and child pages immediately upon setting a parent page.
+- **Content Generator**. Quickly add new draft pages and automate menu creation to efficiently create new groups of content and navigation for your site.
 
 = Developer Friendly Code =
 Grouped Content is built open-source and fully documented so that your developers can quickly build Grouped Content into exactly what you need it to be. To make customization even easier, plenty of hooks are also made available. This lets customizations be quickly added and easily maintained as new versions of Grouped Content are released.
-
-_If you’d like to read more about the benefits of using Grouped Content, you can read more at [Grouped Content’s official website](https://purpleturtlecreative.com/grouped-content/)._
 
 == Installation ==
 
@@ -64,6 +63,10 @@ If the Page Relatives metabox is not listed on the righthand side when editing a
 4. **Classic or Gutenberg.** The Page Relatives metabox is conveniently available for whichever editor you prefer.
 
 == Changelog ==
+
+= 1.2.3 – 2020-05-15 =
+* Fix: Draft parent pages would be overwritten when the child is updated
+* Tweak: Changed Font Awesome 5 for anonymous loading of Font Awesome 4.7.0 as suggested by the plugins team
 
 = 1.2.2 – 2020-05-12 =
 * Fix: PHP 7.0 compatibility issue breaking the Groups details output screen

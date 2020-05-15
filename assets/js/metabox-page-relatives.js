@@ -31,7 +31,7 @@ jQuery(function($) {
             var metaboxContainer = $('#ptc-grouped-content div.inside');
 
             var currentHTML = metaboxContainer.html();
-            metaboxContainer.html('<p id="ptc-notice-refreshing-metabox"><i class="fas fa-sync-alt fa-spin"></i>Refreshing page relatives...</p>');
+            metaboxContainer.html('<p id="ptc-notice-refreshing-metabox"><i class="fa fa-refresh fa-spin"></i>Refreshing page relatives...</p>');
 
             var data = {
               'action': 'refresh_page_relatives',

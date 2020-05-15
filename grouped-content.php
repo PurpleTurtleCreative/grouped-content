@@ -6,10 +6,10 @@
  * @copyright         2020 Michelle Blanchette
  * @license           GPL-3.0-or-later
  *
- * Plugin Name:       Grouped Content
+ * Plugin Name:       Grouped Content – Enhanced Page Hierarchies
  * Plugin URI:        https://purpleturtlecreative.com/grouped-content/
  * Description:       Enhances the use of page hierarchies by providing easy access to the parent page, sibling pages, and child pages in your admin area.
- * Version:           1.2.2
+ * Version:           1.2.3
  * Requires PHP:      7.0
  * Requires at least: 4.7.1
  * Author:            Purple Turtle Creative
@@ -237,11 +237,11 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
      */
     function register_scripts( $hook_suffix ) {
 
-      wp_register_script(
-        'fontawesome-5',
-        'https://kit.fontawesome.com/02ab9ff442.js',
+      wp_register_style(
+        'fontawesome',
+        'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
         [],
-        '5.12.1'
+        '4.7.0'
       );
 
       switch ( $hook_suffix ) {
@@ -249,20 +249,18 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
           wp_enqueue_style(
             'ptc-grouped-content_view-groups-css',
             plugins_url( 'assets/css/view-groups.css', __FILE__ ),
-            [],
+            [ 'fontawesome' ],
             '1.0.0'
           );
-          wp_enqueue_script( 'fontawesome-5' );
           break;
         case 'post.php':
           if ( get_post_type() === 'page' ) {
             wp_enqueue_style(
               'ptc-grouped-content_metabox-page-relatives-css',
               plugins_url( 'assets/css/metabox_page-relatives.css', __FILE__ ),
-              [],
+              [ 'fontawesome' ],
               '0.0.0'
             );
-            wp_enqueue_script( 'fontawesome-5' );
             wp_enqueue_script(
               'ptc-grouped-content_metabox-page-relatives-js',
               plugins_url( 'assets/js/metabox-page-relatives.js', __FILE__ ),
@@ -280,10 +278,9 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
           wp_enqueue_style(
             'ptc-grouped-content_content-generator-css',
             plugins_url( 'assets/css/content-generator.css', __FILE__ ),
-            [],
+            [ 'fontawesome' ],
             '0.0.0'
           );
-          wp_enqueue_script( 'fontawesome-5' );
           wp_enqueue_script(
             'ptc-grouped-content_content-generator-js',
             plugins_url( 'assets/js/content-generator.js', __FILE__ ),

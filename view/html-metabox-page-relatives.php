@@ -45,7 +45,7 @@ if ( isset( $the_post ) && 'page' == $the_post->post_type ) {
   $is_tree_displayed = output_page_family_subtree( $the_post );
 
   if ( $is_tree_displayed ) {
-    echo '<p class="page-family-tree-help"><i class="fas fa-mouse-pointer"></i><strong>TIP:</strong> Click a folder icon to visit the group. Click a page title to edit that page.</p>';
+    echo '<p class="page-family-tree-help"><i class="fa fa-mouse-pointer"></i><strong>TIP:</strong> Click a folder icon to visit the group. Click a page title to edit that page.</p>';
   }
 
 } else {
@@ -106,7 +106,7 @@ function output_page_family_subtree( \WP_Post $post ) : bool {
   try {
 
     echo  '<p class="post-parent">' .
-            group_icon_link( $parent_content_group->id, 'fas fa-folder-open' ) .
+            group_icon_link( $parent_content_group->id, 'fa fa-folder-open' ) .
             '<a class="post-title" href="' . esc_url( get_edit_post_link( $parent_content_group->post->ID ) ) . '">' .
               esc_html( $parent_content_group->post->post_title ) .
             '</a>' .
@@ -140,9 +140,9 @@ function output_page_family_subtree( \WP_Post $post ) : bool {
       }
 
       if ( $if_list_children ) {
-        $group_link = group_icon_link( $p->ID, 'fas fa-folder-open' );
+        $group_link = group_icon_link( $p->ID, 'fa fa-folder-open' );
       } else {
-        $group_link = group_icon_link( $p->ID, 'fas fa-folder' );
+        $group_link = group_icon_link( $p->ID, 'fa fa-folder' );
       }
 
       if ( $i < $sibling_ids_count - 1 ) {
@@ -213,7 +213,7 @@ function output_page_family_subtree_children( PTC_Content_Group $root_group, int
       $class_list = 'post-parent';
     }
     echo  '<p class="' . esc_attr( $class_list ) . '">' .
-            group_icon_link( $root_group->id, 'fas fa-folder-open' ) .
+            group_icon_link( $root_group->id, 'fa fa-folder-open' ) .
             '<a class="post-title" href="' . esc_url( get_edit_post_link( $root_group->post->ID ) ) . '">' .
               esc_html( $root_group->post->post_title ) .
             '</a>' .
@@ -254,7 +254,7 @@ function output_page_family_subtree_children( PTC_Content_Group $root_group, int
     echo  '<p class="' . esc_attr( $class_list ) . '">' .
             $box_drawing_parent_level .
             '<span class="box-level-2">' . $box_drawing_entity . '</span>' .
-            group_icon_link( $p->ID, 'fas fa-folder' ) .
+            group_icon_link( $p->ID, 'fa fa-folder' ) .
             '<a class="post-title" href="' . esc_url( get_edit_post_link( $p->ID ) ) . '">' .
               esc_html( $p->post_title ) .
             '</a>' .
@@ -275,14 +275,14 @@ function output_page_family_subtree_children( PTC_Content_Group $root_group, int
  * @param int $post_id The post id for creating the group link.
  *
  * @param string $fontawesome_classlist Optional. The Font Awesome class list
- * for the icon. Default 'fas fa-folder'.
+ * for the icon. Default 'fa fa-folder'.
  *
  * @param string $fallback_html Optional. HTML to return if the provided
  * $post_id cannot represent a group. Default ''.
  *
  * @return string The anchor tag.
  */
-function group_icon_link( int $post_id, string $fontawesome_classlist = 'fas fa-folder', string $fallback_html = '' ) : string {
+function group_icon_link( int $post_id, string $fontawesome_classlist = 'fa fa-folder', string $fallback_html = '' ) : string {
   try {
     $subgroup = new PTC_Content_Group( $post_id );
     global $ptc_grouped_content;

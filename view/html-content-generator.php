@@ -98,7 +98,7 @@ global $ptc_grouped_content;
 
     <section id="help-box">
 
-      <h2><i class="far fa-life-ring"></i>Need Help?</h2>
+      <h2><i class="fa fa-life-ring"></i>Need Help?</h2>
 
       <div>
 
@@ -119,7 +119,7 @@ global $ptc_grouped_content;
       </div>
 
       <p id="contact-support">
-        <i class="fas fa-envelope"></i> If you have any questions, suggestions, or feedback, please submit your comments to the <a href="https://wordpress.org/support/plugin/grouped-content/" target="_blank">Grouped Content plugin support forum</a>.
+        <i class="fa fa-envelope"></i> If you have any questions, suggestions, or feedback, please submit your comments to the <a href="https://wordpress.org/support/plugin/grouped-content/" target="_blank">support forum</a>.
       </p>
 
     </section>

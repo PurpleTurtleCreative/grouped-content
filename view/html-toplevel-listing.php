@@ -60,7 +60,7 @@ $count = count( $toplevel_parent_ids );
       <div class="ptc-content-group post-row" data-post-id="<?php echo esc_attr( $parent_id ); ?>">
 
           <div class="col-group-title">
-            <a class="title" href="<?php echo esc_url( $view_group_url ); ?>"><i class="fas fa-folder"></i><?php echo esc_html( $the_post->post_title ); ?></a>
+            <a class="title" href="<?php echo esc_url( $view_group_url ); ?>"><i class="fa fa-folder"></i><?php echo esc_html( $the_post->post_title ); ?></a>
             <?php
             if ( $the_post->post_status !== 'publish' ) {
               echo  '<span class="post-status post-status_' . esc_attr( $the_post->post_status ) . '">' .
@@ -80,15 +80,15 @@ $count = count( $toplevel_parent_ids );
                     global $ptc_grouped_content;
                     $view_subgroup_url = $ptc_grouped_content->get_groups_list_admin_url( $subgroup->id );
                     echo  '<a href="' . esc_url( $view_subgroup_url ) . '">' .
-                            '<i class="fas fa-folder"></i>' .
+                            '<i class="fa fa-folder"></i>' .
                             esc_html( $subgroup->post->post_title ) .
                           '</a>';
                   } catch ( \Exception $e ) {
-                    echo '<p class="default subgroups-none"><i class="fas fa-folder-open"></i>There are no subgroups.</p>';
+                    echo '<p class="default subgroups-none"><i class="fa fa-folder-open"></i>There are no subgroups.</p>';
                   }
                 }
               } else {
-                echo '<p class="default subgroups-none"><i class="fas fa-folder-open"></i>There are no subgroups.</p>';
+                echo '<p class="default subgroups-none"><i class="fa fa-folder-open"></i>There are no subgroups.</p>';
               }
               ?>
             </div>
@@ -115,7 +115,7 @@ $count = count( $toplevel_parent_ids );
               }//end foreach $post_status_keys
 
               if ( ! $found_unpublished ) {
-                echo '<p class="default count-post-status-none"><i class="fas fa-clipboard-check"></i>All published!</p>';
+                echo '<p class="default count-post-status-none"><i class="fa fa-check"></i>All published!</p>';
               }
               ?>
             </div>
@@ -124,10 +124,10 @@ $count = count( $toplevel_parent_ids );
           <div class="col-total-pages">
             <div class="container">
               <p class="count-total-descendants">
-                <i class="fas fa-copy"></i><?php echo esc_html( "$descendant_ids_count Total Pages" ); ?>
+                <i class="fa fa-files-o"></i><?php echo esc_html( "$descendant_ids_count Total Pages" ); ?>
               </p>
               <p class="count-total-child-pages">
-                <i class="fas fa-file"></i><?php echo esc_html( "$child_page_count $child_page_or_pages" ); ?>
+                <i class="fa fa-file-o"></i><?php echo esc_html( "$child_page_count $child_page_or_pages" ); ?>
               </p>
             </div>
           </div>
