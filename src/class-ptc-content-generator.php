@@ -78,7 +78,7 @@ if ( ! class_exists( '\ptc_grouped_content\PTC_Content_Generator' ) ) {
             'post_title' => $sanitized_title,
             'post_content' => '',
             'post_type' => 'page',
-            'post_status' => 'draft',
+            'post_status' => 'publish',
             'post_parent' => $parent_page_id,
             'menu_order' => $menu_order,
           ] );

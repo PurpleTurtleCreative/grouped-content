@@ -33,6 +33,7 @@ if (
     ) {
 
       $parent_page_id = (int) filter_var( wp_unslash( $_POST['parent_page_id'] ), FILTER_SANITIZE_NUMBER_INT );
+      $created_parent_page = FALSE;
 
       if (
         isset( $_POST['children_page_titles'] )
@@ -69,10 +70,10 @@ if (
             ) {
 
               $parent_page_id = $new_parent_page_id_arr[0];
-
               $parent_page_post = get_post( $parent_page_id );
 
               if ( NULL !== $parent_page_post && 'page' === $parent_page_post->post_type ) {
+                $created_parent_page = TRUE;
                 display_notice( 'success', 'Created parent page: <a href="' . esc_url( get_edit_post_link( $parent_page_post->ID ) ) . '">' . esc_html( $parent_page_post->post_title ) . '</a>' );
               } else {
                 throw new \Exception( 'Something went wrong when creating the parent page.' );
@@ -153,6 +154,22 @@ if (
           }
 
         }//end if create_menu
+
+        /*
+        Draft all pages - Pages must first be published so that permalinks are
+        properly generated when creating child pages. Once all pages are
+        created with the correct relationships, they can then all be drafted.
+        */
+
+        if ( $created_parent_page === TRUE && $parent_page_id > 0 ) {
+          wp_update_post( [ 'ID' => $parent_page_id, 'post_status' => 'draft' ] );
+        }
+
+        if ( ! empty( $child_page_ids ) && is_array( $child_page_ids ) ) {
+          foreach ( $child_page_ids as $page_id ) {
+            wp_update_post( [ 'ID' => $page_id, 'post_status' => 'draft' ] );
+          }
+        }
 
       }//end if children_page_titles
 
