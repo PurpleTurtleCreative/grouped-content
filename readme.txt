@@ -1,9 +1,9 @@
 ﻿=== Grouped Content ===
 Contributors: michelleblanchette
 Tags: page, generator, management, hierarchy, automation, efficiency tool, organize, order, sort, view, content, group, related, create, menu
-Tested up to: 5.3.2
+Tested up to: 5.4.1
 Requires at least: 4.7.1
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 Requires PHP: 7.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -64,9 +64,9 @@ If the Page Relatives metabox is not listed on the righthand side when editing a
 
 == Changelog ==
 
-= 1.2.3 – 2020-05-15 =
+= 1.2.3 – 2020-05-18 =
 * Fix: Child pages published before their parent would have malformed permalinks
-* Fix: Parent pages would be overwritten when the child is updated if the parent is still draft
+* Fix: Parent page setting would be overwritten when updating a child page that has a draft parent
 * Tweak: Changed Font Awesome 5 for anonymous loading of Font Awesome 4.7.0 as suggested by the plugins team
 
 = 1.2.2 – 2020-05-12 =
