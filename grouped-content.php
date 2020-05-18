@@ -255,23 +255,41 @@ if ( ! class_exists( '\PTC_Grouped_Content' ) ) {
           break;
         case 'post.php':
           if ( get_post_type() === 'page' ) {
+
             wp_enqueue_style(
               'ptc-grouped-content_metabox-page-relatives-css',
               plugins_url( 'assets/css/metabox_page-relatives.css', __FILE__ ),
               [ 'fontawesome' ],
               '0.0.0'
             );
+
             wp_enqueue_script(
               'ptc-grouped-content_metabox-page-relatives-js',
               plugins_url( 'assets/js/metabox-page-relatives.js', __FILE__ ),
               [ 'jquery' ],
               '0.0.1'
             );
+
+            $the_post = get_post();
+            $the_parent_post_id = -1;
+            $the_parent_post_title = '';
+            if ( is_object( $the_post ) && is_a( $the_post, '\WP_Post' ) ) {
+              if ( isset( $the_post->post_parent ) && $the_post->post_parent > 0 ) {
+                $the_parent_post_id = $the_post->post_parent;
+                $the_parent_post_title = get_the_title( $the_parent_post_id );
+              }
+            }
+
             wp_localize_script(
               'ptc-grouped-content_metabox-page-relatives-js',
               'ptc_page_relatives',
-              [ 'nonce' => wp_create_nonce( 'ptc_page_relatives' ) ]
+              [
+                'nonce' => wp_create_nonce( 'ptc_page_relatives' ),
+                'post_parent' => $the_parent_post_id,
+                'post_parent_title' => $the_parent_post_title,
+              ]
             );
+
           }
           break;
         case 'groups_page_ptc-grouped-content_generator':

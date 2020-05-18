@@ -65,7 +65,8 @@ If the Page Relatives metabox is not listed on the righthand side when editing a
 == Changelog ==
 
 = 1.2.3 – 2020-05-15 =
-* Fix: Draft parent pages would be overwritten when the child is updated
+* Fix: Child pages published before their parent would have malformed permalinks
+* Fix: Parent pages would be overwritten when the child is updated if the parent is still draft
 * Tweak: Changed Font Awesome 5 for anonymous loading of Font Awesome 4.7.0 as suggested by the plugins team
 
 = 1.2.2 – 2020-05-12 =

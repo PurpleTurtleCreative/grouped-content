@@ -1,22 +1,52 @@
 jQuery(function($) {
 
+  /* Classic Editor */
   try {
-    if (
-      typeof wp.data !== "undefined"
-      && wp.data.select('core/editor') !== null
-    ) {
+    if ( typeof wp.data === "undefined" || wp.data.select('core/editor') === null ) {
+      /* Add parent page option */
+      if ( ptc_page_relatives.post_parent > 0 && ptc_page_relatives.post_parent_title !== '' ) {
+        let parentPageSelect = jQuery('#pageparentdiv select#parent_id');
+        if ( parentPageSelect.length === 1 && parentPageSelect.val() !== ptc_page_relatives.post_parent ) {
+          parentPageSelect.append('<option class="level-0" value="'+ptc_page_relatives.post_parent+'">'+ptc_page_relatives.post_parent_title+'</option>');
+          parentPageSelect.val(ptc_page_relatives.post_parent);
+        }
+      }
+    }
+  } catch(error) {
+    console.error(error.message);
+  }
 
-      var hasChangedParentPage = false;//keeps track if parent page was actually changed between multiple saves
-      var requestRefreshTimers = [];//keep track of timers for clearing once successful
+  /* Gutenberg Editor */
+  try {
+    if ( typeof wp.data !== "undefined" && wp.data.select('core/editor') !== null ) {
+
+      /* Add parent page option */
+      if ( ptc_page_relatives.post_parent > 0 && ptc_page_relatives.post_parent_title !== '' ) {
+        let postParentAttributesInterval = setInterval(function() {
+          console.log('[Grouped Content] Checking for post parent select input...');
+          let parentPageSelect = jQuery('div.editor-page-attributes__parent select');
+          if ( parentPageSelect.length === 1 && parentPageSelect.val() !== ptc_page_relatives.post_parent ) {
+            clearInterval(postParentAttributesInterval);
+            if ( ptc_page_relatives.post_parent == wp.data.select('core/editor').getCurrentPostAttribute('parent') ) {
+              parentPageSelect.append('<option value="'+ptc_page_relatives.post_parent+'">'+ptc_page_relatives.post_parent_title+'</option>');
+              parentPageSelect.val(ptc_page_relatives.post_parent);
+            }
+          }
+        }, 500);
+      }
+
+      /* Refresh Page Relatives metabox if post_parent is updated */
+      let hasChangedParentPage = false;//keeps track if parent page was actually changed between multiple saves
+      let requestRefreshTimers = [];//keep track of timers for clearing once successful
 
       wp.data.subscribe(function() {
 
-        var isSavingPost = wp.data.select('core/editor').isSavingPost();//boolean
-        var isAutosavingPost = wp.data.select('core/editor').isAutosavingPost();//boolean
-        var hadSuccessfulSave = wp.data.select('core/editor').didPostSaveRequestSucceed();//boolean
+        let isSavingPost = wp.data.select('core/editor').isSavingPost();//boolean
+        let isAutosavingPost = wp.data.select('core/editor').isAutosavingPost();//boolean
+        let hadSuccessfulSave = wp.data.select('core/editor').didPostSaveRequestSucceed();//boolean
 
-        var currentParentPage = wp.data.select( 'core/editor' ).getCurrentPostAttribute( 'parent' );//int
-        var editedParentPage = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'parent' );//string
+        let currentParentPage = wp.data.select('core/editor').getCurrentPostAttribute('parent');//int
+        let editedParentPage = wp.data.select('core/editor').getEditedPostAttribute('parent');//string
 
         if (
           isSavingPost
@@ -28,12 +58,12 @@ jQuery(function($) {
 
           requestRefresh = setTimeout(function() {
 
-            var metaboxContainer = $('#ptc-grouped-content div.inside');
+            let metaboxContainer = $('#ptc-grouped-content div.inside');
 
-            var currentHTML = metaboxContainer.html();
+            let currentHTML = metaboxContainer.html();
             metaboxContainer.html('<p id="ptc-notice-refreshing-metabox"><i class="fa fa-refresh fa-spin"></i>Refreshing page relatives...</p>');
 
-            var data = {
+            let data = {
               'action': 'refresh_page_relatives',
               'nonce': ptc_page_relatives.nonce,
               'post_id': wp.data.select('core/editor').getCurrentPostId(),
