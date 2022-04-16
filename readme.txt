@@ -3,7 +3,7 @@ Contributors: michelleblanchette
 Tags: page, generator, management, hierarchy, automation, efficiency tool, organize, order, sort, view, content, group, related, create, menu
 Tested up to: 5.9.3
 Requires at least: 4.7.1
-Stable tag: 1.2.3
+Stable tag: 2.0.0
 Requires PHP: 7.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -24,7 +24,7 @@ Grouped Content is light and simple with a few powerful features. For this reaso
 - **Page Relatives Metabox**. Access parent, sibling, and child pages immediately upon setting a parent page.
 - **Content Generator**. Quickly add new draft pages and automate menu creation to efficiently create new groups of content and navigation for your site.
 
-= Developer Friendly Code =
+= Developer-Friendly Code =
 Grouped Content is built open-source and fully documented so that your developers can quickly build Grouped Content into exactly what you need it to be. To make customization even easier, plenty of hooks are also made available. This lets customizations be quickly added and easily maintained as new versions of Grouped Content are released.
 
 == Installation ==
@@ -64,9 +64,9 @@ If the Page Relatives metabox is not listed on the righthand side when editing a
 
 == Changelog ==
 
-= [Unreleased] – 2022-06-16 =
+= 2.0.0 – 2022-06-16 =
 * Fix: Author link ?post_type=page param was misspelled as ?post-type=page in the Groups details admin screen
-* Tweak: Refactored code to better follow WordPress Coding Standards and improve source code organization
+* Tweak: Refactored code to improve source code organization and better follow WordPress Coding Standards
 
 = 1.2.3 – 2020-05-18 =
 * Fix: Child pages published before their parent would have malformed permalinks
