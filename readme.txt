@@ -8,7 +8,7 @@ Requires PHP: 7.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
-Enhances the use of page hierarchies by providing easy access to the parent page, sibling pages, and child pages in your admin area.
+Provides easy access and insight into hierarchical posts' parent page, sibling pages, and child pages in your admin area.
 
 == Description ==
 
