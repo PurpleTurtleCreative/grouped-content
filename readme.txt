@@ -1,7 +1,7 @@
 ﻿=== Grouped Content ===
 Contributors: michelleblanchette
 Tags: page, generator, management, hierarchy, automation, efficiency tool, organize, order, sort, view, content, group, related, create, menu
-Tested up to: 5.4.1
+Tested up to: 5.9.3
 Requires at least: 4.7.1
 Stable tag: 1.2.3
 Requires PHP: 7.0
@@ -49,11 +49,11 @@ Another noticeable feature that’s been added to your admin area is the Page Re
 
 Groups are formed when you set a Parent Page for a page. When editing a page, you may assign a Parent Page in the Page Attributes section on the righthand side of your edit screen.
 
-If you can’t find this panel, it may be hidden. [This article](https://purpleturtlecreative.com/completionist/pinned-tasks/metabox-visibility/) demonstrates how to show/hide metabox panels in both WordPress editors, Gutenberg and Classic.
+If you can’t find this panel, it may be hidden. Be sure to check the Screen Options to enable the metabox.
 
 = Why can’t I find the Page Relatives metabox? =
 
-If the Page Relatives metabox is not listed on the righthand side when editing a page, it may be hidden. [This article](https://purpleturtlecreative.com/completionist/pinned-tasks/metabox-visibility/) demonstrates how to show/hide metabox panels in both WordPress editors, Gutenberg and Classic.
+If the Page Relatives metabox is not listed on the righthand side when editing a page, it may be hidden. Be sure to check the Screen Options to enable the metabox.
 
 == Screenshots ==
 
@@ -63,6 +63,10 @@ If the Page Relatives metabox is not listed on the righthand side when editing a
 4. **Classic or Gutenberg.** The Page Relatives metabox is conveniently available for whichever editor you prefer.
 
 == Changelog ==
+
+= [Unreleased] – 2022-06-16 =
+* Fix: Author link ?post_type=page param was misspelled as ?post-type=page in the Groups details admin screen
+* Tweak: Refactored code to better follow WordPress Coding Standards and improve source code organization
 
 = 1.2.3 – 2020-05-18 =
 * Fix: Child pages published before their parent would have malformed permalinks

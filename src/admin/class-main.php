@@ -52,7 +52,7 @@ class Main {
 	 */
 	public static function get_groups_list_admin_url( int $post_parent_id = 0 ) : string {
 
-		require_once PLUGIN_PATH . 'src/class-ptc-content-group.php';
+		require_once PLUGIN_PATH . 'src/includes/class-ptc-content-group.php';
 
 		try {
 			$content_group = new \ptc_grouped_content\PTC_Content_Group( $post_parent_id );
@@ -85,9 +85,9 @@ class Main {
 				if ( current_user_can( 'edit_pages' ) ) {
 
 					if ( isset( $_GET['post_parent'] ) ) {
-						$html_to_require = PLUGIN_PATH . 'view/html-group-details.php';
+						$html_to_require = PLUGIN_PATH . 'src/admin/templates/html-group-details.php';
 					} else {
-						$html_to_require = PLUGIN_PATH . 'view/html-toplevel-listing.php';
+						$html_to_require = PLUGIN_PATH . 'src/admin/templates/html-toplevel-listing.php';
 					}
 
 					require_once $html_to_require;
@@ -109,7 +109,7 @@ class Main {
 			function() {
 
 				if ( current_user_can( 'publish_pages' ) ) {
-					require_once PLUGIN_PATH . 'view/html-content-generator.php';
+					require_once PLUGIN_PATH . 'src/admin/templates/html-content-generator.php';
 				} else {
 					echo '<p><strong>You do not have the proper permissions to access this page.</strong></p>';
 				}
@@ -129,7 +129,7 @@ class Main {
 		add_meta_box(
 			'ptc-grouped-content',
 			'Page Relatives',
-			[ $this, 'related_content_metabox_html' ],
+			__CLASS__ . '::related_content_metabox_html',
 			'page',
 			'side'
 		);
@@ -143,7 +143,7 @@ class Main {
 	 * @ignore
 	 */
 	public static function related_content_metabox_html() {
-		include_once PLUGIN_PATH . 'view/html-metabox-page-relatives.php';
+		include_once PLUGIN_PATH . 'src/admin/templates/html-metabox-page-relatives.php';
 	}
 
 	/**
@@ -154,7 +154,7 @@ class Main {
 	 * @ignore
 	 */
 	public static function related_content_metabox_html_ajax_refresh() {
-		require_once PLUGIN_PATH . 'src/ajax-refresh-metabox-page-relatives.php';
+		require_once PLUGIN_PATH . 'src/admin/ajax-refresh-metabox-page-relatives.php';
 	}
 
 	/**
@@ -191,7 +191,7 @@ class Main {
 			case 'toplevel_page_ptc-grouped-content':
 				wp_enqueue_style(
 					'ptc-grouped-content_view-groups-css',
-					plugins_url( 'assets/css/view-groups.css', __FILE__ ),
+					PLUGIN_URL . 'assets/css/view-groups.css',
 					[ 'fontawesome' ],
 					'1.0.0'
 				);
@@ -201,14 +201,14 @@ class Main {
 
 					wp_enqueue_style(
 						'ptc-grouped-content_metabox-page-relatives-css',
-						plugins_url( 'assets/css/metabox_page-relatives.css', __FILE__ ),
+						PLUGIN_URL . 'assets/css/metabox_page-relatives.css',
 						[ 'fontawesome' ],
 						'0.0.0'
 					);
 
 					wp_enqueue_script(
 						'ptc-grouped-content_metabox-page-relatives-js',
-						plugins_url( 'assets/js/metabox-page-relatives.js', __FILE__ ),
+						PLUGIN_URL . 'assets/js/metabox-page-relatives.js',
 						[ 'jquery' ],
 						'0.0.1'
 					);
@@ -238,13 +238,13 @@ class Main {
 			case 'groups_page_ptc-grouped-content_generator':
 				wp_enqueue_style(
 					'ptc-grouped-content_content-generator-css',
-					plugins_url( 'assets/css/content-generator.css', __FILE__ ),
+					PLUGIN_URL . 'assets/css/content-generator.css',
 					[ 'fontawesome' ],
 					'0.0.0'
 				);
 				wp_enqueue_script(
 					'ptc-grouped-content_content-generator-js',
-					plugins_url( 'assets/js/content-generator.js', __FILE__ ),
+					PLUGIN_URL . 'assets/js/content-generator.js',
 					[ 'jquery' ],
 					'0.0.0'
 				);

@@ -10,7 +10,7 @@
  * @wordpress-plugin
  * Plugin Name:       Grouped Content
  * Plugin URI:        https://purpleturtlecreative.com/grouped-content/
- * Description:       Provides easy access to hierarchical posts' parent page, sibling pages, and child pages in your admin area.
+ * Description:       Provides easy access and insight into hierarchical posts' parent page, sibling pages, and child pages in your admin area.
  * Version:           2.0.0
  * Requires PHP:      7.0
  * Requires at least: 4.7.1
@@ -106,18 +106,18 @@ function register_class_from_file( string $file ) {
 }
 
 /* Register Public Functionality */
-foreach ( glob( THEME_PATH . '/functions/public/class-*.php' ) as $file ) {
+foreach ( glob( PLUGIN_PATH . '/src/public/class-*.php' ) as $file ) {
 	register_class_from_file( $file );
 }
 
 if ( is_admin() ) {
 	/* Register Admin-Only Functionality */
-	foreach ( glob( THEME_PATH . '/functions/admin/class-*.php' ) as $file ) {
+	foreach ( glob( PLUGIN_PATH . '/src/admin/class-*.php' ) as $file ) {
 		register_class_from_file( $file );
 	}
 } else {
 	/* Register Frontend-Only Functionality */
-	foreach ( glob( THEME_PATH . '/functions/public/frontend/class-*.php' ) as $file ) {
+	foreach ( glob( PLUGIN_PATH . '/src/public/frontend/class-*.php' ) as $file ) {
 		register_class_from_file( $file );
 	}
 }
