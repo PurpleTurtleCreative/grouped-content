@@ -64,7 +64,7 @@ If the Page Relatives metabox is not listed on the righthand side when editing a
 
 == Changelog ==
 
-= 2.0.0 – 2022-06-16 =
+= 2.0.0 – 2022-05-04 =
 * Fix: Author link ?post_type=page param was misspelled as ?post-type=page in the Groups details admin screen
 * Tweak: Refactored code to improve source code organization and better follow WordPress Coding Standards
 
