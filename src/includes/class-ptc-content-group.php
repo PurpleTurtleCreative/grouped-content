@@ -6,6 +6,7 @@
  * hierarchies by providing additional relational information for page posts.
  * The PTC_Content_Group class is the core class that provides this information.
  *
+ * @since 3.0.0 Removed $id member variable.
  * @since 1.0.0
  *
  * @package PTC_Grouped_Content
@@ -32,7 +33,11 @@ class PTC_Content_Group {
 	/**
 	 * Get all post ids of pages assigned as a post_parent.
 	 *
+	 * @since 3.0.0 Added $post_type optional param.
 	 * @since 1.0.0
+	 *
+	 * @param string $post_type Optional. The post type to query.
+	 * Default 'page'.
 	 *
 	 * @return int[] The post ids.
 	 */
@@ -70,7 +75,11 @@ class PTC_Content_Group {
 	 * Get all post ids of pages assigned as a post_parent that
 	 * do not have a post_parent (where post_parent = 0, the default).
 	 *
+	 * @since 3.0.0 Added $post_type optional param.
 	 * @since 1.0.0
+	 *
+	 * @param string $post_type Optional. The post type to query.
+	 * Default 'page'.
 	 *
 	 * @return int[] The post ids.
 	 */
@@ -144,10 +153,10 @@ class PTC_Content_Group {
 	 * @param int $parent_post_id The post id of an existing page that is
 	 * assigned as the post_parent on other page posts.
 	 *
-	 * @throws \Exception if the provided post id is invalid to represent a page
-	 * group by the provided id:
-	 * * not being greater than 1
-	 * * not belonging to an existing "page" typed post
+	 * @throws \Exception If the provided post id is invalid to represent a page
+	 * group due to the provided id:
+	 * * not belonging to an existing post
+	 * * not belonging to a hierarchical post type
 	 * * not having any children pages
 	 */
 	public function __construct( int $parent_post_id ) {
@@ -176,11 +185,16 @@ class PTC_Content_Group {
 	 *
 	 * @return int The count.
 	 */
-	public function count_children( int $post_id = 0, $post_type = 'page' ) : int {
+	public function count_children( int $post_id = 0 ) : int {
 
 		if ( $post_id < 1 ) {
 			$post_id = $this->post->ID;
 			$post_type = $this->post->post_type;
+		} else {
+			$post_type = get_post_type( $post_id );
+			if ( false === $post_type ) {
+				return 0;
+			}
 		}
 
 		global $wpdb;
@@ -206,19 +220,24 @@ class PTC_Content_Group {
 	/**
 	 * Retrieve the post ids of the direct child pages of the group.
 	 *
-	 * @since 1.0.0
 	 * @since 1.2.0 Added optional $post_id argument.
+	 * @since 1.0.0
 	 *
 	 * @param int $post_id Optional. The post id to retrieve all child ids.
 	 * Default 0 to use the current group.
 	 *
 	 * @return int[] The post ids.
 	 */
-	public function get_all_children_ids( int $post_id = 0, $post_type = 'page' ) : array {
+	public function get_all_children_ids( int $post_id = 0 ) : array {
 
 		if ( $post_id < 1 ) {
 			$post_id = $this->post->ID;
 			$post_type = $this->post->post_type;
+		} else {
+			$post_type = get_post_type( $post_id );
+			if ( false === $post_type ) {
+				return 0;
+			}
 		}
 
 		global $wpdb;
@@ -259,11 +278,16 @@ class PTC_Content_Group {
 	 *
 	 * @return int The count.
 	 */
-	public function count_children_parents( int $parent_post_id = 0, $post_type = 'page' ) : int {
+	public function count_children_parents( int $parent_post_id = 0 ) : int {
 
 		if ( $parent_post_id < 1 ) {
 			$parent_post_id = $this->post->ID;
 			$post_type = $this->post->post_type;
+		} else {
+			$post_type = get_post_type( $parent_post_id );
+			if ( false === $post_type ) {
+				return 0;
+			}
 		}
 
 		global $wpdb;
@@ -294,19 +318,24 @@ class PTC_Content_Group {
 	 * assigned as a post_parent. This is analogous to retrieving the ids of
 	 * direct subgroups of the group.
 	 *
-	 * @since 1.0.0
 	 * @since 1.2.0 Added optional $post_id argument.
+	 * @since 1.0.0
 	 *
 	 * @param int $post_id Optional. The post id to retrieve child parent ids.
 	 * Default 0 to use the current group.
 	 *
 	 * @return int[] The post ids.
 	 */
-	public function get_child_parent_ids( int $post_id = 0, $post_type = 'page' ) : array {
+	public function get_child_parent_ids( int $post_id = 0 ) : array {
 
 		if ( $post_id < 1 ) {
 			$post_id = $this->post->ID;
 			$post_type = $this->post->post_type;
+		} else {
+			$post_type = get_post_type( $post_id );
+			if ( false === $post_type ) {
+				return 0;
+			}
 		}
 
 		global $wpdb;
@@ -348,11 +377,16 @@ class PTC_Content_Group {
 	 *
 	 * @return int The post id.
 	 */
-	public function get_parent_id( int $post_id = 0, $post_type = 'page' ) : int {
+	public function get_parent_id( int $post_id = 0 ) : int {
 
 		if ( $post_id < 1 ) {
 			$post_id = $this->post->ID;
 			$post_type = $this->post->post_type;
+		} else {
+			$post_type = get_post_type( $post_id );
+			if ( false === $post_type ) {
+				return 0;
+			}
 		}
 
 		global $wpdb;

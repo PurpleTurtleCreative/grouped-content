@@ -19,6 +19,13 @@ defined( 'ABSPATH' ) || die();
  */
 class Main {
 
+	/**
+	 * The post object for this group.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var \WP_Post_Type[] The post that this group represents.
+	 */
 	public static $grouped_post_types = [];
 
 	/**
@@ -61,7 +68,7 @@ class Main {
 			// $url = admin_url( 'admin.php?page=ptc-grouped-content&post_parent=' . $post_parent_id );
 			$url = admin_url( "edit.php?post_type={$content_group->post->post_type}&page=ptc-grouped-content_post-type-{$content_group->post->post_type}&post_parent={$content_group->post->ID}" );
 		} catch ( \Exception $e ) {
-			$url = admin_url( 'admin.php?page=ptc-grouped-content' );
+			$url = admin_url( "edit.php?post_type={$GLOBALS['typenow']}&page=ptc-grouped-content_post-type-{$GLOBALS['typenow']}" );
 		}
 
 		return $url;
