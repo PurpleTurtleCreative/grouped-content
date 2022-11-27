@@ -40,14 +40,17 @@ class PTC_Content_Group {
 
 		global $wpdb;
 		$parent_post_ids = $wpdb->get_results(
-			"
-				SELECT DISTINCT parents.ID FROM {$wpdb->posts} posts
-				JOIN {$wpdb->posts} parents
-					ON parents.ID = posts.post_parent
-				WHERE posts.post_parent != 0
-					AND posts.post_type = '{$post_type}'
-				ORDER BY parents.menu_order, parents.post_title ASC
-			",
+			$wpdb->prepare(
+				"
+					SELECT DISTINCT parents.ID FROM {$wpdb->posts} posts
+					JOIN {$wpdb->posts} parents
+						ON parents.ID = posts.post_parent
+					WHERE posts.post_parent != 0
+						AND posts.post_type = %s
+					ORDER BY parents.menu_order, parents.post_title ASC
+				",
+				$post_type
+			),
 			ARRAY_N
 		);
 
@@ -75,15 +78,18 @@ class PTC_Content_Group {
 
 		global $wpdb;
 		$parent_post_ids = $wpdb->get_results(
-			"
-				SELECT DISTINCT parents.ID FROM {$wpdb->posts} posts
-				JOIN {$wpdb->posts} parents
-					ON parents.ID = posts.post_parent
-				WHERE posts.post_parent != 0
-					AND posts.post_type = '{$post_type}'
-					AND parents.post_parent = 0
-				ORDER BY parents.menu_order, parents.post_title ASC
-			",
+			$wpdb->prepare(
+				"
+					SELECT DISTINCT parents.ID FROM {$wpdb->posts} posts
+					JOIN {$wpdb->posts} parents
+						ON parents.ID = posts.post_parent
+					WHERE posts.post_parent != 0
+						AND posts.post_type = %s
+						AND parents.post_parent = 0
+					ORDER BY parents.menu_order, parents.post_title ASC
+				",
+				$post_type
+			),
 			ARRAY_N
 		);
 
@@ -183,9 +189,10 @@ class PTC_Content_Group {
 				"
 					SELECT COUNT( DISTINCT posts.ID ) FROM {$wpdb->posts} posts
 					WHERE posts.post_parent = %d
-						AND posts.post_type = '{$post_type}'
+						AND posts.post_type = %s
 				",
-				$post_id
+				$post_id,
+				$post_type
 			)
 		);
 
@@ -220,10 +227,11 @@ class PTC_Content_Group {
 				"
 					SELECT DISTINCT posts.ID FROM {$wpdb->posts} posts
 					WHERE posts.post_parent = %d
-						AND posts.post_type = '{$post_type}'
+						AND posts.post_type = %s
 					ORDER BY posts.menu_order, posts.post_title ASC
 				",
-				$post_id
+				$post_id,
+				$post_type
 			),
 			ARRAY_N
 		);
@@ -264,11 +272,13 @@ class PTC_Content_Group {
 				"
 					SELECT COUNT( DISTINCT posts.ID ) FROM {$wpdb->posts} posts
 					WHERE posts.post_parent = %d
-						AND posts.post_type = '{$post_type}'
-						AND posts.ID IN( SELECT post_parent FROM {$wpdb->posts} WHERE post_parent != 0 AND post_type = '{$post_type}' )
+						AND posts.post_type = %s
+						AND posts.ID IN( SELECT post_parent FROM {$wpdb->posts} WHERE post_parent != 0 AND post_type = %s )
 					ORDER BY posts.menu_order, posts.post_title ASC
 				",
-				$parent_post_id
+				$parent_post_id,
+				$post_type,
+				$post_type
 			)
 		);
 
@@ -305,11 +315,13 @@ class PTC_Content_Group {
 				"
 					SELECT DISTINCT posts.ID FROM {$wpdb->posts} posts
 					WHERE posts.post_parent = %d
-						AND posts.post_type = '{$post_type}'
-						AND posts.ID IN( SELECT post_parent FROM {$wpdb->posts} WHERE post_parent != 0 AND post_type = '{$post_type}' )
+						AND posts.post_type = %s
+						AND posts.ID IN( SELECT post_parent FROM {$wpdb->posts} WHERE post_parent != 0 AND post_type = %s )
 					ORDER BY posts.menu_order, posts.post_title ASC
 				",
-				$post_id
+				$post_id,
+				$post_type,
+				$post_type
 			),
 			ARRAY_N
 		);
@@ -351,9 +363,10 @@ class PTC_Content_Group {
 					JOIN {$wpdb->posts} parent
 						ON parent.ID = post.post_parent
 					WHERE post.ID = %d
-						AND parent.post_type = '{$post_type}'
+						AND parent.post_type = %s
 				",
-				$post_id
+				$post_id,
+				$post_type
 			)
 		);
 
