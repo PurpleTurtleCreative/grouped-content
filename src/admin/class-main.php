@@ -19,6 +19,8 @@ defined( 'ABSPATH' ) || die();
  */
 class Main {
 
+	public static $grouped_post_types = [];
+
 	/**
 	 * Hooks code into WordPress.
 	 *
@@ -56,7 +58,8 @@ class Main {
 
 		try {
 			$content_group = new \ptc_grouped_content\PTC_Content_Group( $post_parent_id );
-			$url = admin_url( 'admin.php?page=ptc-grouped-content&post_parent=' . $post_parent_id );
+			// $url = admin_url( 'admin.php?page=ptc-grouped-content&post_parent=' . $post_parent_id );
+			$url = admin_url( "edit.php?post_type={$content_group->post->post_type}&page=ptc-grouped-content_post-type-{$content_group->post->post_type}&post_parent={$content_group->post->ID}" );
 		} catch ( \Exception $e ) {
 			$url = admin_url( 'admin.php?page=ptc-grouped-content' );
 		}
@@ -74,6 +77,51 @@ class Main {
 	 * @ignore
 	 */
 	public static function add_admin_pages() {
+
+		static::$grouped_post_types = get_post_types(
+			[
+				'show_ui' => true,
+				'show_in_menu' => true,
+				'show_in_nav_menus' => true,
+				'hierarchical' => true,
+			],
+			'objects',
+			'and'
+		);
+
+		foreach ( static::$grouped_post_types as $post_type => $post_type_args ) {
+
+			$singular_name = $post_type;
+			if ( ! empty( $post_type_args->labels->singular_name ) ) {
+				$singular_name = $post_type_args->labels->singular_name;
+			} elseif ( ! empty( $post_type_args->label ) ) {
+				$singular_name = $post_type_args->label;
+			}
+
+			add_submenu_page(
+				"edit.php?post_type={$post_type}",
+				"{$singular_name} Groups",
+				"{$singular_name} Groups",
+				'edit_pages',
+				"ptc-grouped-content_post-type-{$post_type}",
+				function() {
+
+					if ( current_user_can( 'edit_pages' ) ) {
+
+						if ( isset( $_GET['post_parent'] ) ) {
+							$html_to_require = PLUGIN_PATH . 'src/admin/templates/html-group-details.php';
+						} else {
+							$html_to_require = PLUGIN_PATH . 'src/admin/templates/html-toplevel-listing.php';
+						}
+
+						require_once $html_to_require;
+
+					} else {
+						echo '<p><strong>You do not have the proper permissions to access this page.</strong></p>';
+					}
+				}
+			);
+		}
 
 		add_menu_page(
 			'Grouped Content &mdash; View Groups',
@@ -104,11 +152,11 @@ class Main {
 			'ptc-grouped-content',
 			'Grouped Content &mdash; Generator',
 			'Add New',
-			'publish_pages',
+			'edit_pages',
 			'ptc-grouped-content_generator',
 			function() {
 
-				if ( current_user_can( 'publish_pages' ) ) {
+				if ( current_user_can( 'edit_pages' ) ) {
 					require_once PLUGIN_PATH . 'src/admin/templates/html-content-generator.php';
 				} else {
 					echo '<p><strong>You do not have the proper permissions to access this page.</strong></p>';
@@ -186,6 +234,15 @@ class Main {
 			[],
 			'4.7.0'
 		);
+
+		if ( false !== strpos( $hook_suffix, 'ptc-grouped-content_post-type-' ) ) {
+			wp_enqueue_style(
+				'ptc-grouped-content_view-groups-css',
+				PLUGIN_URL . 'assets/css/view-groups.css',
+				[ 'fontawesome' ],
+				'1.0.0'
+			);
+		}
 
 		switch ( $hook_suffix ) {
 			case 'toplevel_page_ptc-grouped-content':

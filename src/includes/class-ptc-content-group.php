@@ -21,15 +21,6 @@ defined( 'ABSPATH' ) || die();
 class PTC_Content_Group {
 
 	/**
-	 * The post id for this group.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var int The id of the parent post that this group represents.
-	 */
-	public $id;
-
-	/**
 	 * The post object for this group.
 	 *
 	 * @since 1.0.0
@@ -45,7 +36,7 @@ class PTC_Content_Group {
 	 *
 	 * @return int[] The post ids.
 	 */
-	public static function get_all_post_parent_ids() : array {
+	public static function get_all_post_parent_ids( $post_type = 'page' ) : array {
 
 		global $wpdb;
 		$parent_post_ids = $wpdb->get_results(
@@ -54,7 +45,7 @@ class PTC_Content_Group {
 				JOIN {$wpdb->posts} parents
 					ON parents.ID = posts.post_parent
 				WHERE posts.post_parent != 0
-					AND posts.post_type = 'page'
+					AND posts.post_type = '{$post_type}'
 				ORDER BY parents.menu_order, parents.post_title ASC
 			",
 			ARRAY_N
@@ -80,7 +71,7 @@ class PTC_Content_Group {
 	 *
 	 * @return int[] The post ids.
 	 */
-	public static function get_all_toplevel_parent_ids() : array {
+	public static function get_all_toplevel_parent_ids( $post_type = 'page' ) : array {
 
 		global $wpdb;
 		$parent_post_ids = $wpdb->get_results(
@@ -89,7 +80,7 @@ class PTC_Content_Group {
 				JOIN {$wpdb->posts} parents
 					ON parents.ID = posts.post_parent
 				WHERE posts.post_parent != 0
-					AND posts.post_type = 'page'
+					AND posts.post_type = '{$post_type}'
 					AND parents.post_parent = 0
 				ORDER BY parents.menu_order, parents.post_title ASC
 			",
@@ -155,18 +146,17 @@ class PTC_Content_Group {
 	 */
 	public function __construct( int $parent_post_id ) {
 
-		$this->id = $parent_post_id;
-		if ( $this->id < 1 ) {
-			throw new \Exception( "Cannot make page group from post id {$this->id} because the post id is invalid." );
+		$this->post = get_post( $parent_post_id );
+		if ( null === $this->post ) {
+			throw new \Exception( "Cannot make page group from post id {$parent_post_id} because the post id is invalid." );
 		}
 
-		$this->post = get_post( $this->id );
-		if ( null === $this->post || 'page' !== $this->post->post_type ) {
-			throw new \Exception( "Cannot make page group from post id {$this->id} because it is not a page post." );
+		if ( false === is_post_type_hierarchical( $this->post->post_type ) ) {
+			throw new \Exception( "Cannot make page group from post id {$parent_post_id} because it is not a hierarchical post type." );
 		}
 
-		if ( $this->count_children() === 0 ) {
-			throw new \Exception( "Cannot make page group from post id {$this->id} because it is not assigned as a parent of any page post." );
+		if ( 0 === $this->count_children( 0, $this->post->post_type ) ) {
+			throw new \Exception( "Cannot make page group from post id {$parent_post_id} because it is not assigned as a parent of any page post." );
 		}
 	}
 
@@ -180,10 +170,11 @@ class PTC_Content_Group {
 	 *
 	 * @return int The count.
 	 */
-	public function count_children( int $post_id = 0 ) : int {
+	public function count_children( int $post_id = 0, $post_type = 'page' ) : int {
 
 		if ( $post_id < 1 ) {
-			$post_id = $this->id;
+			$post_id = $this->post->ID;
+			$post_type = $this->post->post_type;
 		}
 
 		global $wpdb;
@@ -192,7 +183,7 @@ class PTC_Content_Group {
 				"
 					SELECT COUNT( DISTINCT posts.ID ) FROM {$wpdb->posts} posts
 					WHERE posts.post_parent = %d
-						AND posts.post_type = 'page'
+						AND posts.post_type = '{$post_type}'
 				",
 				$post_id
 			)
@@ -216,10 +207,11 @@ class PTC_Content_Group {
 	 *
 	 * @return int[] The post ids.
 	 */
-	public function get_all_children_ids( int $post_id = 0 ) : array {
+	public function get_all_children_ids( int $post_id = 0, $post_type = 'page' ) : array {
 
 		if ( $post_id < 1 ) {
-			$post_id = $this->id;
+			$post_id = $this->post->ID;
+			$post_type = $this->post->post_type;
 		}
 
 		global $wpdb;
@@ -228,7 +220,7 @@ class PTC_Content_Group {
 				"
 					SELECT DISTINCT posts.ID FROM {$wpdb->posts} posts
 					WHERE posts.post_parent = %d
-						AND posts.post_type = 'page'
+						AND posts.post_type = '{$post_type}'
 					ORDER BY posts.menu_order, posts.post_title ASC
 				",
 				$post_id
@@ -259,10 +251,11 @@ class PTC_Content_Group {
 	 *
 	 * @return int The count.
 	 */
-	public function count_children_parents( int $parent_post_id = 0 ) : int {
+	public function count_children_parents( int $parent_post_id = 0, $post_type = 'page' ) : int {
 
 		if ( $parent_post_id < 1 ) {
-			$parent_post_id = $this->id;
+			$parent_post_id = $this->post->ID;
+			$post_type = $this->post->post_type;
 		}
 
 		global $wpdb;
@@ -271,8 +264,8 @@ class PTC_Content_Group {
 				"
 					SELECT COUNT( DISTINCT posts.ID ) FROM {$wpdb->posts} posts
 					WHERE posts.post_parent = %d
-						AND posts.post_type = 'page'
-						AND posts.ID IN( SELECT post_parent FROM {$wpdb->posts} WHERE post_parent != 0 AND post_type = 'page' )
+						AND posts.post_type = '{$post_type}'
+						AND posts.ID IN( SELECT post_parent FROM {$wpdb->posts} WHERE post_parent != 0 AND post_type = '{$post_type}' )
 					ORDER BY posts.menu_order, posts.post_title ASC
 				",
 				$parent_post_id
@@ -299,10 +292,11 @@ class PTC_Content_Group {
 	 *
 	 * @return int[] The post ids.
 	 */
-	public function get_child_parent_ids( int $post_id = 0 ) : array {
+	public function get_child_parent_ids( int $post_id = 0, $post_type = 'page' ) : array {
 
 		if ( $post_id < 1 ) {
-			$post_id = $this->id;
+			$post_id = $this->post->ID;
+			$post_type = $this->post->post_type;
 		}
 
 		global $wpdb;
@@ -311,8 +305,8 @@ class PTC_Content_Group {
 				"
 					SELECT DISTINCT posts.ID FROM {$wpdb->posts} posts
 					WHERE posts.post_parent = %d
-						AND posts.post_type = 'page'
-						AND posts.ID IN( SELECT post_parent FROM {$wpdb->posts} WHERE post_parent != 0 AND post_type = 'page' )
+						AND posts.post_type = '{$post_type}'
+						AND posts.ID IN( SELECT post_parent FROM {$wpdb->posts} WHERE post_parent != 0 AND post_type = '{$post_type}' )
 					ORDER BY posts.menu_order, posts.post_title ASC
 				",
 				$post_id
@@ -342,10 +336,11 @@ class PTC_Content_Group {
 	 *
 	 * @return int The post id.
 	 */
-	public function get_parent_id( int $post_id = 0 ) : int {
+	public function get_parent_id( int $post_id = 0, $post_type = 'page' ) : int {
 
 		if ( $post_id < 1 ) {
-			$post_id = $this->id;
+			$post_id = $this->post->ID;
+			$post_type = $this->post->post_type;
 		}
 
 		global $wpdb;
@@ -356,7 +351,7 @@ class PTC_Content_Group {
 					JOIN {$wpdb->posts} parent
 						ON parent.ID = post.post_parent
 					WHERE post.ID = %d
-						AND parent.post_type = 'page'
+						AND parent.post_type = '{$post_type}'
 				",
 				$post_id
 			)
@@ -407,7 +402,7 @@ class PTC_Content_Group {
 	public function get_all_descendant_ids( int $post_id = 0 ) : array {
 
 		if ( $post_id < 1 ) {
-			$post_id = $this->id;
+			$post_id = $this->post->ID;
 		}
 
 		$descendant_ids = [];
