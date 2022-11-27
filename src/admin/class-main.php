@@ -37,7 +37,7 @@ class Main {
 		add_action( 'wp_ajax_refresh_page_relatives', __CLASS__ . '::related_content_metabox_html_ajax_refresh' );
 
 		/* Remove nags from plugin pages */
-		add_action( 'admin_head-groups_page_ptc-grouped-content_generator', __CLASS__ . '::remove_all_admin_notices', 1 );
+		add_action( 'admin_head-tools_page_ptc-grouped-content_generator', __CLASS__ . '::remove_all_admin_notices', 1 );
 		add_action( 'admin_head-toplevel_page_ptc-grouped-content', __CLASS__ . '::remove_all_admin_notices', 1 );
 	}
 
@@ -123,35 +123,10 @@ class Main {
 			);
 		}
 
-		add_menu_page(
-			'Grouped Content &mdash; View Groups',
-			'Groups',
-			'edit_pages',
-			'ptc-grouped-content',
-			function() {
-
-				if ( current_user_can( 'edit_pages' ) ) {
-
-					if ( isset( $_GET['post_parent'] ) ) {
-						$html_to_require = PLUGIN_PATH . 'src/admin/templates/html-group-details.php';
-					} else {
-						$html_to_require = PLUGIN_PATH . 'src/admin/templates/html-toplevel-listing.php';
-					}
-
-					require_once $html_to_require;
-
-				} else {
-					echo '<p><strong>You do not have the proper permissions to access this page.</strong></p>';
-				}
-			},
-			'dashicons-portfolio',
-			21 /* Pages menu item is priority 20, see https://developer.wordpress.org/reference/functions/add_menu_page/#default-bottom-of-menu-structure */
-		);
-
 		add_submenu_page(
-			'ptc-grouped-content',
+			'tools.php',
 			'Grouped Content &mdash; Generator',
-			'Add New',
+			'Create Drafts',
 			'edit_pages',
 			'ptc-grouped-content_generator',
 			function() {
@@ -163,7 +138,6 @@ class Main {
 				}
 			}
 		);
-
 	}//end add_admin_pages()
 
 	/**
@@ -174,6 +148,7 @@ class Main {
 	 * @ignore
 	 */
 	public static function add_meta_boxes() {
+		// TODO - Add metabox for each static::$grouped_post_types !
 		add_meta_box(
 			'ptc-grouped-content',
 			'Page Relatives',
@@ -245,14 +220,6 @@ class Main {
 		}
 
 		switch ( $hook_suffix ) {
-			case 'toplevel_page_ptc-grouped-content':
-				wp_enqueue_style(
-					'ptc-grouped-content_view-groups-css',
-					PLUGIN_URL . 'assets/css/view-groups.css',
-					[ 'fontawesome' ],
-					'1.0.0'
-				);
-				break;
 			case 'post.php':
 				if ( get_post_type() === 'page' ) {
 
@@ -292,7 +259,7 @@ class Main {
 
 				}
 				break;
-			case 'groups_page_ptc-grouped-content_generator':
+			case 'tools_page_ptc-grouped-content_generator':
 				wp_enqueue_style(
 					'ptc-grouped-content_content-generator-css',
 					PLUGIN_URL . 'assets/css/content-generator.css',
