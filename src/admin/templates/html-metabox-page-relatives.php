@@ -32,8 +32,7 @@ if (
 		return;
 	}
 } else {
-	global $post;
-	$the_post = $post;
+	$the_post = $GLOBALS['post'];
 }
 
 /* Metabox Content */
@@ -100,7 +99,12 @@ function output_page_family_subtree( \WP_Post $post ) : bool {
 	/* BEGIN DRAWING */
 	try {
 
-		echo '<p class="post-parent">' .
+		$parent_class_list = 'post-parent';
+		if ( $parent_content_group->post->ID === $post->ID ) {
+			$parent_class_list .= ' post-current';
+		}
+
+		echo '<p class="' . esc_attr( $parent_class_list ) . '">' .
 						group_icon_link( $parent_content_group->post->ID, 'fa fa-folder-open' ) .
 						'<a class="post-title" href="' . esc_url( get_edit_post_link( $parent_content_group->post->ID ) ) . '">' .
 							esc_html( $parent_content_group->post->post_title ) .
