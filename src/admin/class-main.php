@@ -133,7 +133,7 @@ class Main {
 		add_submenu_page(
 			'tools.php',
 			'Grouped Content &mdash; Generator',
-			'Create Drafts',
+			'Create Draft Pages',
 			'edit_pages',
 			'ptc-grouped-content_generator',
 			function() {
@@ -155,14 +155,23 @@ class Main {
 	 * @ignore
 	 */
 	public static function add_meta_boxes() {
-		// TODO - Add metabox for each static::$grouped_post_types !
-		add_meta_box(
-			'ptc-grouped-content',
-			'Page Relatives',
-			__CLASS__ . '::related_content_metabox_html',
-			'page',
-			'side'
-		);
+		foreach ( static::$grouped_post_types as $post_type => $post_type_args ) {
+
+			$singular_name = $post_type;
+			if ( ! empty( $post_type_args->labels->singular_name ) ) {
+				$singular_name = $post_type_args->labels->singular_name;
+			} elseif ( ! empty( $post_type_args->label ) ) {
+				$singular_name = $post_type_args->label;
+			}
+
+			add_meta_box(
+				'ptc-grouped-content',
+				"{$singular_name} Relatives",
+				__CLASS__ . '::related_content_metabox_html',
+				$post_type,
+				'side'
+			);
+		}
 	}
 
 	/**
@@ -226,9 +235,11 @@ class Main {
 			);
 		}
 
+		$grouped_post_type_slugs = array_keys( static::$grouped_post_types );
+
 		switch ( $hook_suffix ) {
 			case 'post.php':
-				if ( get_post_type() === 'page' ) {
+				if ( in_array( get_post_type(), $grouped_post_type_slugs, true ) ) {
 
 					wp_enqueue_style(
 						'ptc-grouped-content_metabox-page-relatives-css',
