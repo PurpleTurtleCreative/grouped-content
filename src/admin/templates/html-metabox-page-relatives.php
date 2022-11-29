@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || die();
 
 /* Use passed post if AJAX refresh, else use global $post */
 if (
-	isset( $post_id )
+	isset( $the_post_id )
 	&& isset( $the_post )
 	&& isset( $res )
 	&& isset( $nonce )

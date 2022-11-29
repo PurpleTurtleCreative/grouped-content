@@ -44,8 +44,7 @@ if (
 
 		ob_start();
 		require PLUGIN_PATH . 'src/admin/templates/html-metabox-page-relatives.php';
-		$contents = ob_get_contents();
-		ob_end_clean();
+		$contents = ob_get_clean();
 
 		if (
 			! empty( $contents )
