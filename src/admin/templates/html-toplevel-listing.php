@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || die();
 
 require_once PLUGIN_PATH . 'src/includes/class-ptc-content-group.php';
 
-$toplevel_parent_ids = PTC_Content_Group::get_all_toplevel_parent_ids();
+$toplevel_parent_ids = PTC_Content_Group::get_all_toplevel_parent_ids( $GLOBALS['typenow'] );
 $count = count( $toplevel_parent_ids );
 ?>
 
@@ -75,7 +75,7 @@ $count = count( $toplevel_parent_ids );
 								foreach ( $child_subgroups as $subgroup_id ) {
 									try {
 										$subgroup = new PTC_Content_Group( $subgroup_id );
-										$view_subgroup_url = Main::get_groups_list_admin_url( $subgroup->id );
+										$view_subgroup_url = Main::get_groups_list_admin_url( $subgroup->post->ID );
 										echo '<a href="' . esc_url( $view_subgroup_url ) . '">' .
 														'<i class="fa fa-folder"></i>' .
 														esc_html( $subgroup->post->post_title ) .

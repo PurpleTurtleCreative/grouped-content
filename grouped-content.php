@@ -9,9 +9,9 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Grouped Content
- * Plugin URI:        https://purpleturtlecreative.com/grouped-content/
- * Description:       Provides easy access and insight into hierarchical posts' parent page, sibling pages, and child pages in your admin area.
- * Version:           2.0.0
+ * Plugin URI:        https://wordpress.org/plugins/grouped-content/
+ * Description:       Provides easy access to hierarchical posts' parent page, sibling pages, and child pages in wp-admin.
+ * Version:           3.0.0
  * Requires PHP:      7.0
  * Requires at least: 4.7.1
  * Author:            Purple Turtle Creative

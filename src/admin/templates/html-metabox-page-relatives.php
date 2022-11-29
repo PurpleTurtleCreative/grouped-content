@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || die();
 
 /* Use passed post if AJAX refresh, else use global $post */
 if (
-	isset( $post_id )
+	isset( $the_post_id )
 	&& isset( $the_post )
 	&& isset( $res )
 	&& isset( $nonce )
@@ -32,19 +32,17 @@ if (
 		return;
 	}
 } else {
-	global $post;
-	$the_post = $post;
+	$the_post = $GLOBALS['post'];
 }
 
 /* Metabox Content */
-if ( isset( $the_post ) && 'page' == $the_post->post_type ) {
+if ( ! empty( $the_post ) ) {
 
 	$is_tree_displayed = output_page_family_subtree( $the_post );
 
 	if ( $is_tree_displayed ) {
 		echo '<p class="page-family-tree-help"><i class="fa fa-mouse-pointer"></i><strong>TIP:</strong> Click a folder icon to visit the group. Click a page title to edit that page.</p>';
 	}
-
 } else {
 	return;
 }
@@ -101,8 +99,13 @@ function output_page_family_subtree( \WP_Post $post ) : bool {
 	/* BEGIN DRAWING */
 	try {
 
-		echo '<p class="post-parent">' .
-						group_icon_link( $parent_content_group->id, 'fa fa-folder-open' ) .
+		$parent_class_list = 'post-parent';
+		if ( $parent_content_group->post->ID === $post->ID ) {
+			$parent_class_list .= ' post-current';
+		}
+
+		echo '<p class="' . esc_attr( $parent_class_list ) . '">' .
+						group_icon_link( $parent_content_group->post->ID, 'fa fa-folder-open' ) .
 						'<a class="post-title" href="' . esc_url( get_edit_post_link( $parent_content_group->post->ID ) ) . '">' .
 							esc_html( $parent_content_group->post->post_title ) .
 						'</a>' .
@@ -112,12 +115,12 @@ function output_page_family_subtree( \WP_Post $post ) : bool {
 		$sibling_ids_count = count( $sibling_ids );
 
 		if ( $sibling_ids_count < 1 ) {
-			throw new \Exception( "Sibling page {$parent_content_group->id} is a parent with no children...?" );
+			throw new \Exception( "Sibling page {$parent_content_group->post->ID} is a parent with no children...?" );
 		}
 
 		foreach ( $sibling_ids as $i => $sibling_id ) {
 
-			if ( $this_content_group->id === $sibling_id ) {
+			if ( $this_content_group->post->ID === $sibling_id ) {
 				$class_list = 'post-sibling post-current';
 				$p = $this_content_group->post;
 				if ( $this_content_group->count_children() < 1 ) {
@@ -131,8 +134,8 @@ function output_page_family_subtree( \WP_Post $post ) : bool {
 				$if_list_children = false;
 			}
 
-			if ( null === $p || 'page' !== $p->post_type ) {
-				throw new \Exception( "Sibling post $sibling_id is an invalid page post." );
+			if ( null === $p ) {
+				throw new \Exception( "Sibling post $sibling_id is invalid." );
 			}
 
 			if ( $if_list_children ) {
@@ -160,7 +163,7 @@ function output_page_family_subtree( \WP_Post $post ) : bool {
 			if ( $if_list_children ) {
 				output_page_family_subtree_children(
 					$this_content_group,
-					$this_content_group->id,
+					$this_content_group->post->ID,
 					true,
 					$is_last_subtree
 				);
@@ -197,13 +200,13 @@ function output_page_family_subtree( \WP_Post $post ) : bool {
 function output_page_family_subtree_children( PTC_Content_Group $root_group, int $current_post_id = 0, bool $is_subtree = false, bool $is_last_subtree = false ) {
 
 	if ( ! $is_subtree ) {
-		if ( $root_group->id === $current_post_id ) {
+		if ( $root_group->post->ID === $current_post_id ) {
 			$class_list = 'post-parent post-current';
 		} else {
 			$class_list = 'post-parent';
 		}
 		echo  '<p class="' . esc_attr( $class_list ) . '">' .
-						group_icon_link( $root_group->id, 'fa fa-folder-open' ) .
+						group_icon_link( $root_group->post->ID, 'fa fa-folder-open' ) .
 						'<a class="post-title" href="' . esc_url( get_edit_post_link( $root_group->post->ID ) ) . '">' .
 							esc_html( $root_group->post->post_title ) .
 						'</a>' .
@@ -219,14 +222,14 @@ function output_page_family_subtree_children( PTC_Content_Group $root_group, int
 	$children_ids_count = count( $children_ids );
 
 	if ( $children_ids_count < 1 ) {
-		throw new \Exception( "Page {$root_group->id} is a parent with no children...?" );
+		throw new \Exception( "Page {$root_group->post->ID} is a parent with no children...?" );
 	}
 
 	foreach ( $children_ids as $i => $child_id ) {
 
 		$p = get_post( $child_id );
-		if ( null === $p || 'page' !== $p->post_type ) {
-			throw new \Exception( "Child post $child_id is an invalid page post." );
+		if ( null === $p ) {
+			throw new \Exception( "Child post $child_id is invalid." );
 		}
 
 		if ( $current_post_id === $child_id ) {
@@ -273,7 +276,7 @@ function output_page_family_subtree_children( PTC_Content_Group $root_group, int
 function group_icon_link( int $post_id, string $fontawesome_classlist = 'fa fa-folder', string $fallback_html = '' ) : string {
 	try {
 		$subgroup = new PTC_Content_Group( $post_id );
-		$view_subgroup_url = Main::get_groups_list_admin_url( $subgroup->id );
+		$view_subgroup_url = Main::get_groups_list_admin_url( $subgroup->post->ID );
 		return '<a class="group-link" href="' . esc_url( $view_subgroup_url ) . '">' .
 							'<i class="' . esc_attr( $fontawesome_classlist ) . '"></i>' .
 						'</a>';

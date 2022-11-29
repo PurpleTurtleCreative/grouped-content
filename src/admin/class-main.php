@@ -20,6 +20,15 @@ defined( 'ABSPATH' ) || die();
 class Main {
 
 	/**
+	 * The post object for this group.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var \WP_Post_Type[] The post that this group represents.
+	 */
+	public static $grouped_post_types = [];
+
+	/**
 	 * Hooks code into WordPress.
 	 *
 	 * @since 2.0.0
@@ -35,7 +44,7 @@ class Main {
 		add_action( 'wp_ajax_refresh_page_relatives', __CLASS__ . '::related_content_metabox_html_ajax_refresh' );
 
 		/* Remove nags from plugin pages */
-		add_action( 'admin_head-groups_page_ptc-grouped-content_generator', __CLASS__ . '::remove_all_admin_notices', 1 );
+		add_action( 'admin_head-tools_page_ptc-grouped-content_generator', __CLASS__ . '::remove_all_admin_notices', 1 );
 		add_action( 'admin_head-toplevel_page_ptc-grouped-content', __CLASS__ . '::remove_all_admin_notices', 1 );
 	}
 
@@ -56,9 +65,10 @@ class Main {
 
 		try {
 			$content_group = new \ptc_grouped_content\PTC_Content_Group( $post_parent_id );
-			$url = admin_url( 'admin.php?page=ptc-grouped-content&post_parent=' . $post_parent_id );
+			// $url = admin_url( 'admin.php?page=ptc-grouped-content&post_parent=' . $post_parent_id );
+			$url = admin_url( "edit.php?post_type={$content_group->post->post_type}&page=ptc-grouped-content_post-type-{$content_group->post->post_type}&post_parent={$content_group->post->ID}" );
 		} catch ( \Exception $e ) {
-			$url = admin_url( 'admin.php?page=ptc-grouped-content' );
+			$url = admin_url( "edit.php?post_type={$GLOBALS['typenow']}&page=ptc-grouped-content_post-type-{$GLOBALS['typenow']}" );
 		}
 
 		return $url;
@@ -75,35 +85,55 @@ class Main {
 	 */
 	public static function add_admin_pages() {
 
-		add_menu_page(
-			'Grouped Content &mdash; View Groups',
-			'Groups',
-			'edit_pages',
-			'ptc-grouped-content',
-			function() {
-
-				if ( current_user_can( 'edit_pages' ) ) {
-
-					if ( isset( $_GET['post_parent'] ) ) {
-						$html_to_require = PLUGIN_PATH . 'src/admin/templates/html-group-details.php';
-					} else {
-						$html_to_require = PLUGIN_PATH . 'src/admin/templates/html-toplevel-listing.php';
-					}
-
-					require_once $html_to_require;
-
-				} else {
-					echo '<p><strong>You do not have the proper permissions to access this page.</strong></p>';
-				}
-			},
-			'dashicons-portfolio',
-			21 /* Pages menu item is priority 20, see https://developer.wordpress.org/reference/functions/add_menu_page/#default-bottom-of-menu-structure */
+		static::$grouped_post_types = get_post_types(
+			[
+				'show_ui' => true,
+				'show_in_menu' => true,
+				'show_in_nav_menus' => true,
+				'hierarchical' => true,
+			],
+			'objects',
+			'and'
 		);
 
+		foreach ( static::$grouped_post_types as $post_type => $post_type_args ) {
+
+			$singular_name = $post_type;
+			if ( ! empty( $post_type_args->labels->singular_name ) ) {
+				$singular_name = $post_type_args->labels->singular_name;
+			} elseif ( ! empty( $post_type_args->label ) ) {
+				$singular_name = $post_type_args->label;
+			}
+
+			add_submenu_page(
+				"edit.php?post_type={$post_type}",
+				"{$singular_name} Groups",
+				"{$singular_name} Groups",
+				'edit_pages',
+				"ptc-grouped-content_post-type-{$post_type}",
+				function() {
+
+					if ( current_user_can( 'edit_pages' ) ) {
+
+						if ( isset( $_GET['post_parent'] ) ) {
+							$html_to_require = PLUGIN_PATH . 'src/admin/templates/html-group-details.php';
+						} else {
+							$html_to_require = PLUGIN_PATH . 'src/admin/templates/html-toplevel-listing.php';
+						}
+
+						require_once $html_to_require;
+
+					} else {
+						echo '<p><strong>You do not have the proper permissions to access this page.</strong></p>';
+					}
+				}
+			);
+		}
+
 		add_submenu_page(
-			'ptc-grouped-content',
+			'tools.php',
 			'Grouped Content &mdash; Generator',
-			'Add New',
+			'Create Draft Pages',
 			'publish_pages',
 			'ptc-grouped-content_generator',
 			function() {
@@ -115,7 +145,6 @@ class Main {
 				}
 			}
 		);
-
 	}//end add_admin_pages()
 
 	/**
@@ -126,13 +155,23 @@ class Main {
 	 * @ignore
 	 */
 	public static function add_meta_boxes() {
-		add_meta_box(
-			'ptc-grouped-content',
-			'Page Relatives',
-			__CLASS__ . '::related_content_metabox_html',
-			'page',
-			'side'
-		);
+		foreach ( static::$grouped_post_types as $post_type => $post_type_args ) {
+
+			$singular_name = $post_type;
+			if ( ! empty( $post_type_args->labels->singular_name ) ) {
+				$singular_name = $post_type_args->labels->singular_name;
+			} elseif ( ! empty( $post_type_args->label ) ) {
+				$singular_name = $post_type_args->label;
+			}
+
+			add_meta_box(
+				'ptc-grouped-content',
+				"{$singular_name} Relatives",
+				__CLASS__ . '::related_content_metabox_html',
+				$post_type,
+				'side'
+			);
+		}
 	}
 
 	/**
@@ -187,17 +226,20 @@ class Main {
 			'4.7.0'
 		);
 
+		if ( false !== strpos( $hook_suffix, 'ptc-grouped-content_post-type-' ) ) {
+			wp_enqueue_style(
+				'ptc-grouped-content_view-groups-css',
+				PLUGIN_URL . 'assets/css/view-groups.css',
+				[ 'fontawesome' ],
+				'1.0.0'
+			);
+		}
+
+		$grouped_post_type_slugs = array_keys( static::$grouped_post_types );
+
 		switch ( $hook_suffix ) {
-			case 'toplevel_page_ptc-grouped-content':
-				wp_enqueue_style(
-					'ptc-grouped-content_view-groups-css',
-					PLUGIN_URL . 'assets/css/view-groups.css',
-					[ 'fontawesome' ],
-					'1.0.0'
-				);
-				break;
 			case 'post.php':
-				if ( get_post_type() === 'page' ) {
+				if ( in_array( get_post_type(), $grouped_post_type_slugs, true ) ) {
 
 					wp_enqueue_style(
 						'ptc-grouped-content_metabox-page-relatives-css',
@@ -235,7 +277,7 @@ class Main {
 
 				}
 				break;
-			case 'groups_page_ptc-grouped-content_generator':
+			case 'tools_page_ptc-grouped-content_generator':
 				wp_enqueue_style(
 					'ptc-grouped-content_content-generator-css',
 					PLUGIN_URL . 'assets/css/content-generator.css',

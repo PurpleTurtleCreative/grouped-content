@@ -23,7 +23,7 @@ jQuery(function($) {
       /* Add parent page option */
       if ( ptc_page_relatives.post_parent > 0 && ptc_page_relatives.post_parent_title !== '' ) {
         let postParentAttributesInterval = setInterval(function() {
-          console.log('[Grouped Content] Checking for post parent select input...');
+          // console.log('[Grouped Content] Checking for post parent select input...');
           let parentPageSelect = jQuery('div.editor-page-attributes__parent select');
           if ( parentPageSelect.length === 1 && parentPageSelect.val() !== ptc_page_relatives.post_parent ) {
             clearInterval(postParentAttributesInterval);

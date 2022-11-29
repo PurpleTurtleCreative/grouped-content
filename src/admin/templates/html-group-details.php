@@ -282,7 +282,7 @@ function output_post_row( \WP_Post $the_post, bool $is_current_group = false ) {
 			if ( ! $is_current_group ) {
 				try {
 					$subgroup = new PTC_Content_Group( $the_post->ID );
-					$view_subgroup_url = Main::get_groups_list_admin_url( $subgroup->id );
+					$view_subgroup_url = Main::get_groups_list_admin_url( $subgroup->post->ID );
 					echo '<a href="' . esc_url( $view_subgroup_url ) . '">' .
 									'<i class="fa fa-folder"></i>' .
 								'</a>';
@@ -298,7 +298,7 @@ function output_post_row( \WP_Post $the_post, bool $is_current_group = false ) {
 			$the_author = get_user_by( 'ID', $the_post->post_author );
 			if ( false !== $the_author ) {
 				echo get_avatar( $the_author->ID, 25, 'mystery' );
-				echo '<a class="author-name" href="' . esc_url( admin_url( 'edit.php?post_type=page&author=' . $the_author->ID ) ) . '">' .
+				echo '<a class="author-name" href="' . esc_url( admin_url( 'edit.php?post_type=' . $the_post->post_type . '&author=' . $the_author->ID ) ) . '">' .
 								esc_html( $the_author->display_name ) .
 							'</a>';
 			} else {
