@@ -134,11 +134,11 @@ class Main {
 			'tools.php',
 			'Grouped Content &mdash; Generator',
 			'Create Draft Pages',
-			'edit_pages',
+			'publish_pages',
 			'ptc-grouped-content_generator',
 			function() {
 
-				if ( current_user_can( 'edit_pages' ) ) {
+				if ( current_user_can( 'publish_pages' ) ) {
 					require_once PLUGIN_PATH . 'src/admin/templates/html-content-generator.php';
 				} else {
 					echo '<p><strong>You do not have the proper permissions to access this page.</strong></p>';
